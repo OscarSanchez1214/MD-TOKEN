@@ -1,21 +1,32 @@
-"use client";
-import { signIn, signOut, useSession } from "next-auth/react";
+'use client';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
-export const SignIn = () => {
+export function SignIn() {
   const { data: session } = useSession();
-  if (session) {
+
+  if (!session) {
     return (
-      <>
-        Signed in as {session?.user?.name?.slice(0, 10)} <br />
-        <button onClick={() => signOut()}>Sign out</button>
-      </>
-    );
-  } else {
-    return (
-      <>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </>
+      <div className="flex flex-col items-center">
+        <p className="mb-2">No has iniciado sesión</p>
+        <button
+          onClick={() => signIn()}
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          Iniciar sesión
+        </button>
+      </div>
     );
   }
-};
+
+  return (
+    <div className="flex flex-col items-center">
+      <p className="mb-2">Sesión iniciada como: {session.user?.name}</p>
+      <button
+        onClick={() => signOut()}
+        className="bg-gray-500 text-white px-4 py-2 rounded"
+      >
+        Cerrar sesión
+      </button>
+    </div>
+  );
+}
