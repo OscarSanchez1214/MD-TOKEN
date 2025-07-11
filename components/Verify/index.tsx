@@ -1,79 +1,58 @@
-"use client";
-import {
-  MiniKit,
-  VerificationLevel,
-  ISuccessResult,
-  MiniAppVerifyActionErrorPayload,
-  IVerifyResponse,
-} from "@worldcoin/minikit-js";
-import { useCallback, useState } from "react";
+'use client';
+import { useState } from 'react';
+import { MiniKit, VerificationLevel, ISuccessResult } from '@worldcoin/minikit-js';
 
-export type VerifyCommandInput = {
-  action: string;
-  signal?: string;
-  verification_level?: VerificationLevel; // Default: Orb
-};
+export function VerifyBlock() {
+  const [status, setStatus] = useState('Esperando verificación...');
 
-const verifyPayload: VerifyCommandInput = {
-  action: "test-action", // This is your action ID from the Developer Portal
-  signal: "",
-  verification_level: VerificationLevel.Orb, // Orb | Device
-};
+  const verifyPayload = {
+    action: 'voting-action',
+    signal: '0x12312',
+    verification_level: VerificationLevel.Orb,
+  };
 
-export const VerifyBlock = () => {
-  const [handleVerifyResponse, setHandleVerifyResponse] = useState<
-    MiniAppVerifyActionErrorPayload | IVerifyResponse | null
-  >(null);
-
-  const handleVerify = useCallback(async () => {
+  const handleVerify = async () => {
     if (!MiniKit.isInstalled()) {
-      console.warn("Tried to invoke 'verify', but MiniKit is not installed.");
-      return null;
+      setStatus('❌ MiniKit no está instalado. Abre esta MiniApp desde World App.');
+      return;
     }
 
-    const { finalPayload } = await MiniKit.commandsAsync.verify(verifyPayload);
+    try {
+      const { finalPayload } = await MiniKit.commandsAsync.verify(verifyPayload);
 
-    // no need to verify if command errored
-    if (finalPayload.status === "error") {
-      console.log("Command error");
-      console.log(finalPayload);
+      if (finalPayload.status === 'error') {
+        setStatus('❌ Verificación cancelada o fallida.');
+        return;
+      }
 
-      setHandleVerifyResponse(finalPayload);
-      return finalPayload;
+      const response = await fetch('/api/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          payload: finalPayload,
+          action: verifyPayload.action,
+          signal: verifyPayload.signal,
+        }),
+      });
+
+      const result = await response.json();
+      setStatus(result.status === 200 ? '✅ Verificación exitosa' : '❌ Verificación fallida');
+    } catch (err) {
+      console.error(err);
+      setStatus('❌ Ocurrió un error en la verificación.');
     }
-
-    // Verify the proof in the backend
-    const verifyResponse = await fetch(`/api/verify`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        payload: finalPayload as ISuccessResult, // Parses only the fields we need to verify
-        action: verifyPayload.action,
-        signal: verifyPayload.signal, // Optional
-      }),
-    });
-
-    // TODO: Handle Success!
-    const verifyResponseJson = await verifyResponse.json();
-
-    if (verifyResponseJson.status === 200) {
-      console.log("Verification success!");
-      console.log(finalPayload);
-    }
-
-    setHandleVerifyResponse(verifyResponseJson);
-    return verifyResponseJson;
-  }, []);
+  };
 
   return (
-    <div>
-      <h1>Verify Block</h1>
-      <button className="bg-green-500 p-4" onClick={handleVerify}>
-        Test Verify
+    <div className="flex flex-col items-center mt-4">
+      <h2 className="text-xl font-bold mb-2">Verificación de Identidad</h2>
+      <p className="mb-2">{status}</p>
+      <button
+        onClick={handleVerify}
+        className="bg-green-600 text-white px-4 py-2 rounded"
+      >
+        Verificar con World ID
       </button>
-      <span>{JSON.stringify(handleVerifyResponse, null, 2)}</span>
     </div>
   );
-};
+}
