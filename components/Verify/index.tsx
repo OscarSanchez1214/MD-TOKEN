@@ -1,30 +1,34 @@
 'use client';
 
 import { useState } from 'react';
-import { MiniKit, VerificationLevel } from '@worldcoin/minikit-js';
+import {
+  MiniKit,
+  VerificationLevel,
+  ISuccessResult,
+} from '@worldcoin/minikit-js';
 
 export function VerifyBlock() {
-  const [status, setStatus] = useState('Esperando verificación...');
+  const [estado, setEstado] = useState('🔄 Esperando verificación...');
 
   const verifyPayload = {
-    action: 'voting-action', // ⚠️ Asegúrate de que este ID exista en developer.worldcoin.org
-    signal: '0x12312',
-    verification_level: VerificationLevel.Orb, // Puedes cambiar a .Device para pruebas
+    action: 'vota-por-proyecto', // Debe coincidir exactamente con lo registrado en el Developer Portal
+    signal: 'usuario-unico',     // Puedes usar un identificador específico si lo deseas
+    verification_level: VerificationLevel.Orb,
   };
 
   const handleVerify = async () => {
     if (!MiniKit.isInstalled()) {
-      setStatus('❌ MiniKit no está instalado. Abre esta MiniApp desde World App.');
+      setEstado('❌ MiniKit no está instalado. Abre esta MiniApp desde World App.');
       return;
     }
 
     try {
       const { finalPayload } = await MiniKit.commandsAsync.verify(verifyPayload);
 
-      // 👇 Mostrar código de error exacto si falla
+      console.log("Payload recibido:", finalPayload);
+
       if (finalPayload.status === 'error') {
-        console.error("Falló verificación:", finalPayload);
-        setStatus(`❌ Verificación fallida. Código: ${finalPayload.error_code ?? 'desconocido'}`);
+        setEstado('❌ Verificación cancelada o fallida.');
         return;
       }
 
@@ -39,30 +43,24 @@ export function VerifyBlock() {
       });
 
       const result = await response.json();
+      console.log("Resultado de verificación:", result);
 
-      // ✅ Estado según la respuesta del servidor
-      if (result.success || result.status === 200) {
-        setStatus('✅ Verificación exitosa');
-      } else {
-        console.error('Respuesta del servidor inesperada:', result);
-        setStatus('❌ Verificación fallida (backend)');
-      }
-
+      setEstado(result.success ? '✅ Verificación exitosa' : '❌ Verificación fallida');
     } catch (err) {
-      console.error('Error inesperado:', err);
-      setStatus('❌ Ocurrió un error en la verificación.');
+      console.error('Error en el proceso de verificación:', err);
+      setEstado('❌ Error inesperado durante la verificación.');
     }
   };
 
   return (
-    <div className="flex flex-col items-center mt-4">
-      <h2 className="text-xl font-bold mb-2">Verificación de Identidad</h2>
-      <p className="mb-2">{status}</p>
+    <div className="flex flex-col items-center mt-6 text-center">
+      <h2 className="text-xl font-bold mb-2">Verificación con World ID</h2>
+      <p className="mb-3">{estado}</p>
       <button
         onClick={handleVerify}
-        className="bg-green-600 text-white px-4 py-2 rounded"
+        className="bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded-lg shadow-md"
       >
-        Verificar con World ID
+        Verificar Identidad
       </button>
     </div>
   );
