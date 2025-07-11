@@ -1,67 +1,90 @@
 'use client';
 
-import { useState } from 'react';
 import {
   MiniKit,
   VerificationLevel,
   ISuccessResult,
+  MiniAppVerifyActionErrorPayload,
+  IVerifyResponse,
 } from '@worldcoin/minikit-js';
 
-export function VerifyBlock() {
-  const [estado, setEstado] = useState('🔄 Esperando verificación...');
+import { useCallback, useState } from 'react';
 
-  const verifyPayload = {
-    action: 'vota-por-proyecto', // Debe coincidir exactamente con lo registrado en el Developer Portal
-    signal: 'usuario-unico',     // Puedes usar un identificador específico si lo deseas
-    verification_level: VerificationLevel.Orb,
-  };
+export type VerifyCommandInput = {
+  action: string;
+  signal?: string;
+  verification_level?: VerificationLevel;
+};
 
-  const handleVerify = async () => {
+const verifyPayload: VerifyCommandInput = {
+  action: 'vota-por-proyecto', // Asegúrate que coincida con tu acción real
+  signal: '',
+  verification_level: VerificationLevel.Orb,
+};
+
+export const VerifyBlock = () => {
+  const [mensaje, setMensaje] = useState<string>('Esperando verificación...');
+  const [respuesta, setRespuesta] = useState<MiniAppVerifyActionErrorPayload | IVerifyResponse | null>(null);
+
+  const handleVerify = useCallback(async () => {
     if (!MiniKit.isInstalled()) {
-      setEstado('❌ MiniKit no está instalado. Abre esta MiniApp desde World App.');
+      setMensaje('❌ MiniKit no está instalado. Abre esta MiniApp desde World App.');
       return;
     }
 
     try {
       const { finalPayload } = await MiniKit.commandsAsync.verify(verifyPayload);
 
-      console.log("Payload recibido:", finalPayload);
-
       if (finalPayload.status === 'error') {
-        setEstado('❌ Verificación cancelada o fallida.');
+        console.error('Error al ejecutar comando de verificación:', finalPayload);
+        setMensaje('❌ Verificación cancelada o fallida.');
+        setRespuesta(finalPayload);
         return;
       }
 
-      const response = await fetch('/api/verify', {
+      const response = await fetch(`/api/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          payload: finalPayload,
+          payload: finalPayload as ISuccessResult,
           action: verifyPayload.action,
           signal: verifyPayload.signal,
         }),
       });
 
-      const result = await response.json();
-      console.log("Resultado de verificación:", result);
+      const json = await response.json();
 
-      setEstado(result.success ? '✅ Verificación exitosa' : '❌ Verificación fallida');
+      if (response.ok && json.success) {
+        setMensaje('✅ Verificación exitosa');
+      } else {
+        const errorCode = json?.verifyRes?.error_code || 'desconocido';
+        setMensaje(`❌ Verificación fallida. Código: ${errorCode}`);
+      }
+
+      setRespuesta(json);
     } catch (err) {
-      console.error('Error en el proceso de verificación:', err);
-      setEstado('❌ Error inesperado durante la verificación.');
+      console.error('Error inesperado durante la verificación:', err);
+      setMensaje('❌ Error inesperado durante la verificación.');
     }
-  };
+  }, []);
 
   return (
-    <div className="flex flex-col items-center mt-6 text-center">
-      <h2 className="text-xl font-bold mb-2">Verificación con World ID</h2>
-      <p className="mb-3">{estado}</p>
+    <div className="flex flex-col items-center mt-4">
+      <h2 className="text-xl font-bold mb-2">Verificación de Identidad</h2>
+      <p className="mb-2">{mensaje}</p>
       <button
         onClick={handleVerify}
-        className="bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded-lg shadow-md"
+        className="bg-green-600 text-white px-4 py-2 rounded"
       >
-        Verificar Identidad
+        Verificar con World ID
       </button>
+
+      {respuesta && (
+        <pre className="text-sm text-left mt-4 bg-gray-100 p-2 rounded max-w-md overflow-auto">
+          {JSON.stringify(respuesta, null, 2)}
+        </pre>
+      )}
     </div>
   );
-}
+};
+
