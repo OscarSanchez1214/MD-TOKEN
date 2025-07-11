@@ -1,14 +1,15 @@
 'use client';
+
 import { useState } from 'react';
-import { MiniKit, VerificationLevel, ISuccessResult } from '@worldcoin/minikit-js';
+import { MiniKit, VerificationLevel } from '@worldcoin/minikit-js';
 
 export function VerifyBlock() {
   const [status, setStatus] = useState('Esperando verificación...');
 
   const verifyPayload = {
-    action: 'voting-action',
+    action: 'voting-action', // ⚠️ Asegúrate de que este ID exista en developer.worldcoin.org
     signal: '0x12312',
-    verification_level: VerificationLevel.Orb,
+    verification_level: VerificationLevel.Orb, // Puedes cambiar a .Device para pruebas
   };
 
   const handleVerify = async () => {
@@ -20,8 +21,10 @@ export function VerifyBlock() {
     try {
       const { finalPayload } = await MiniKit.commandsAsync.verify(verifyPayload);
 
+      // 👇 Mostrar código de error exacto si falla
       if (finalPayload.status === 'error') {
-        setStatus('❌ Verificación cancelada o fallida.');
+        console.error("Falló verificación:", finalPayload);
+        setStatus(`❌ Verificación fallida. Código: ${finalPayload.error_code ?? 'desconocido'}`);
         return;
       }
 
@@ -36,9 +39,17 @@ export function VerifyBlock() {
       });
 
       const result = await response.json();
-      setStatus(result.status === 200 ? '✅ Verificación exitosa' : '❌ Verificación fallida');
+
+      // ✅ Estado según la respuesta del servidor
+      if (result.success || result.status === 200) {
+        setStatus('✅ Verificación exitosa');
+      } else {
+        console.error('Respuesta del servidor inesperada:', result);
+        setStatus('❌ Verificación fallida (backend)');
+      }
+
     } catch (err) {
-      console.error(err);
+      console.error('Error inesperado:', err);
       setStatus('❌ Ocurrió un error en la verificación.');
     }
   };
