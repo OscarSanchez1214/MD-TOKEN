@@ -6,7 +6,7 @@ import {
   ISuccessResult,
 } from "@worldcoin/minikit-js";
 import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation"; // Importa el router de Next.js
+import { useRouter } from "next/navigation";
 
 export type VerifyCommandInput = {
   action: string;
@@ -14,7 +14,6 @@ export type VerifyCommandInput = {
   verification_level?: VerificationLevel;
 };
 
-// ⚠️ Asegúrate que este `action` esté registrado y habilitado en el portal de Worldcoin
 const verifyPayload: VerifyCommandInput = {
   action: "vota-por-proyecto",
   signal: "",
@@ -22,8 +21,8 @@ const verifyPayload: VerifyCommandInput = {
 };
 
 export const VerifyBlock = () => {
-  const [status, setStatus] = useState("Esperando verificación...");
-  const router = useRouter(); // Hook para redirigir
+  const [status, setStatus] = useState("Verifica para leer las recomendaciones financieras de hoy");
+  const router = useRouter();
 
   const handleVerify = useCallback(async () => {
     if (!MiniKit.isInstalled()) {
@@ -54,7 +53,6 @@ export const VerifyBlock = () => {
 
       if (res.status === 200 && result.success) {
         setStatus("✅ Verificación exitosa. Redirigiendo...");
-        // Redirige al blog después de 1 segundo
         setTimeout(() => {
           router.push("/blog");
         }, 1000);
