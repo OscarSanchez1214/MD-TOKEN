@@ -4,8 +4,6 @@ import {
   MiniKit,
   VerificationLevel,
   ISuccessResult,
-  MiniAppVerifyActionErrorPayload,
-  IVerifyResponse,
 } from "@worldcoin/minikit-js";
 import { useCallback, useState } from "react";
 
@@ -16,7 +14,7 @@ export type VerifyCommandInput = {
 };
 
 const verifyPayload: VerifyCommandInput = {
-  action: "vota-por-proyecto", // Usa el Action ID real registrado en el Developer Portal
+  action: "vota-por-proyecto", // Tu acción registrada en Worldcoin Developer Portal
   signal: "",
   verification_level: VerificationLevel.Orb,
 };
@@ -53,9 +51,12 @@ export const VerifyBlock = () => {
 
       if (res.status === 200 && result.success) {
         setStatus("✅ Verificación exitosa.");
+      } else if (result.verifyRes?.code === "already_verified") {
+        setStatus("✅ Ya estabas verificado anteriormente.");
       } else {
         setStatus(`❌ Falló verificación: ${result.verifyRes?.detail || "Error desconocido."}`);
       }
+
     } catch (err) {
       console.error("Error al verificar:", err);
       setStatus("❌ Error inesperado en la verificación.");
