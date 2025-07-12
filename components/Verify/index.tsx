@@ -13,8 +13,9 @@ export type VerifyCommandInput = {
   verification_level?: VerificationLevel;
 };
 
+// ⚠️ Asegúrate que este `action` esté registrado y habilitado en el portal de Worldcoin
 const verifyPayload: VerifyCommandInput = {
-  action: "vota-por-proyecto", // Tu acción registrada en Worldcoin Developer Portal
+  action: "vota-por-proyecto",
   signal: "",
   verification_level: VerificationLevel.Orb,
 };
