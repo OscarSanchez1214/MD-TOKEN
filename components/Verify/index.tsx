@@ -6,6 +6,7 @@ import {
   ISuccessResult,
 } from "@worldcoin/minikit-js";
 import { useCallback, useState } from "react";
+import { useRouter } from "next/navigation"; // Importa el router de Next.js
 
 export type VerifyCommandInput = {
   action: string;
@@ -22,6 +23,7 @@ const verifyPayload: VerifyCommandInput = {
 
 export const VerifyBlock = () => {
   const [status, setStatus] = useState("Esperando verificación...");
+  const router = useRouter(); // Hook para redirigir
 
   const handleVerify = useCallback(async () => {
     if (!MiniKit.isInstalled()) {
@@ -51,9 +53,16 @@ export const VerifyBlock = () => {
       const result = await res.json();
 
       if (res.status === 200 && result.success) {
-        setStatus("✅ Verificación exitosa.");
+        setStatus("✅ Verificación exitosa. Redirigiendo...");
+        // Redirige al blog después de 1 segundo
+        setTimeout(() => {
+          router.push("/blog");
+        }, 1000);
       } else if (result.verifyRes?.code === "already_verified") {
-        setStatus("✅ Ya estabas verificado anteriormente.");
+        setStatus("✅ Ya estabas verificado. Redirigiendo...");
+        setTimeout(() => {
+          router.push("/blog");
+        }, 1000);
       } else {
         setStatus(`❌ Falló verificación: ${result.verifyRes?.detail || "Error desconocido."}`);
       }
@@ -62,7 +71,7 @@ export const VerifyBlock = () => {
       console.error("Error al verificar:", err);
       setStatus("❌ Error inesperado en la verificación.");
     }
-  }, []);
+  }, [router]);
 
   return (
     <div className="flex flex-col items-center mt-6">
