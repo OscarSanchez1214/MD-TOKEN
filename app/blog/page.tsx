@@ -7,19 +7,19 @@ import {
   Tokens,
   PayCommandInput,
 } from "@worldcoin/minikit-js";
+import recomendaciones from "@/data/recomendaciones.json";
+
+const hoy = new Date().toISOString().split("T")[0];
+const recomendacionDelDia = recomendaciones.find(r => r.fecha === hoy);
 
 const enviarPago = async () => {
   try {
-    const res = await fetch(`/api/initiate-payment`, {
-      method: "POST",
-    });
-
+    const res = await fetch(`/api/initiate-payment`, { method: "POST" });
     const { id } = await res.json();
-    console.log("ID de pago:", id);
 
     const payload: PayCommandInput = {
       reference: id,
-      to: "0x1bd597c5296b6a25f72ed557d5b85bff41186c28", // Tu dirección
+      to: "0x1bd597c5296b6a25f72ed557d5b85bff41186c28",
       tokens: [
         {
           symbol: Tokens.WLD,
@@ -30,7 +30,7 @@ const enviarPago = async () => {
           token_amount: tokenToDecimals(0.1, Tokens.USDCE).toString(),
         },
       ],
-      description: "Este es un pago de prueba",
+      description: "Pago de apoyo al contenido educativo",
     };
 
     if (MiniKit.isInstalled()) {
@@ -39,7 +39,7 @@ const enviarPago = async () => {
 
     console.warn("MiniKit no está instalado");
     return null;
-  } catch (error: unknown) {
+  } catch (error) {
     console.error("Error al enviar el pago:", error);
     return null;
   }
@@ -67,10 +67,8 @@ const manejarPago = async () => {
 
     if (confirmacion.success) {
       alert("✅ ¡Pago realizado con éxito!");
-      console.log("Pago exitoso");
     } else {
       alert("❌ El pago no se pudo confirmar.");
-      console.log("Fallo en la confirmación");
     }
   } else {
     alert("❌ El pago fue cancelado o falló.");
@@ -80,28 +78,16 @@ const manejarPago = async () => {
 export default function BlogPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold mb-6">Recomendaciones Financieras</h1>
+      <h1 className="text-3xl font-bold mb-6">Recomendación Financiera del Día</h1>
 
-      <div className="space-y-8">
-        <article>
-          <h2 className="text-xl font-semibold">1. Crea un fondo de emergencia</h2>
-          <p>Destina al menos 3-6 meses de tus gastos mensuales en una cuenta accesible. Te ayudará a afrontar imprevistos sin endeudarte.</p>
+      {recomendacionDelDia ? (
+        <article className="mb-10">
+          <h2 className="text-xl font-semibold">{recomendacionDelDia.titulo}</h2>
+          <p>{recomendacionDelDia.contenido}</p>
         </article>
-
-        <article>
-          <h2 className="text-xl font-semibold">2. No gastes más de lo que ganas</h2>
-          <p>Haz un presupuesto mensual. Prioriza necesidades antes que deseos. Vive por debajo de tus posibilidades para poder ahorrar.</p>
-        </article>
-
-        <article>
-          <h2 className="text-xl font-semibold">3. Invierte a largo plazo</h2>
-          <p>Usa instrumentos como fondos indexados o ETF. Cuanto antes empieces, más crecerá tu dinero gracias al interés compuesto.</p>
-        </article>
-
-        <article>
-          <h2 className="text-xl font-semibold">4. Visita nuestro blog</h2>
-        </article>
-      </div>
+      ) : (
+        <p>No hay recomendación disponible para hoy.</p>
+      )}
 
       <div className="mt-10 flex flex-col gap-4 items-center">
         <button
