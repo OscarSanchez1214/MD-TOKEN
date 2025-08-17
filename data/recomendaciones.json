@@ -1,452 +1,687 @@
 [
   {
-    "fecha": "2025-07-13",
-    "titulo": "Define tus metas financieras",
-    "contenido": "Tener objetivos claros te motiva a ahorrar e invertir."
+    "fecha": "2025-08-17",
+    "titulo": "Ahorra primero y gasta después",
+    "contenido": "Separa al inicio de mes un porcentaje fijo de tus ingresos para el ahorro."
   },
   {
-    "fecha": "2025-07-13",
-    "titulo": "Evita retiros de ahorro para gastos menores",
-    "contenido": "Disciplina es clave."
+    "fecha": "2025-08-18",
+    "titulo": "Revisa tus metas trimestrales",
+    "contenido": "Evalúa si tus objetivos financieros siguen alineados a tu plan."
   },
   {
-    "fecha": "2025-07-13",
-    "titulo": "Haz un presupuesto mensual",
-    "contenido": "Controla tus ingresos y egresos para tomar mejores decisiones."
+    "fecha": "2025-08-19",
+    "titulo": "Evita gastos por impulso",
+    "contenido": "Antes de comprar algo, espera 24 horas para decidir si realmente lo necesitas."
   },
   {
-    "fecha": "2025-07-14",
-    "titulo": "Aprovecha descuentos y ofertas",
-    "contenido": "Pero solo si realmente lo necesitas."
+    "fecha": "2025-08-20",
+    "titulo": "Diversifica tus inversiones",
+    "contenido": "No pongas todo tu dinero en un solo activo, reparte el riesgo."
   },
   {
-    "fecha": "2025-07-14",
-    "titulo": "Define tus metas financieras",
-    "contenido": "Tener objetivos claros te motiva a ahorrar e invertir."
+    "fecha": "2025-08-21",
+    "titulo": "Construye historial crediticio positivo",
+    "contenido": "Paga a tiempo tus obligaciones y evita sobregiros."
   },
   {
-    "fecha": "2025-07-14",
+    "fecha": "2025-08-22",
+    "titulo": "Haz seguimiento a tus deudas",
+    "contenido": "Mantén un control de cuánto debes y cuánto has pagado."
+  },
+  {
+    "fecha": "2025-08-23",
+    "titulo": "Separa un fondo para educación",
+    "contenido": "Invertir en tu aprendizaje siempre genera retorno."
+  },
+  {
+    "fecha": "2025-08-24",
+    "titulo": "Reduce gastos hormiga",
+    "contenido": "Pequeños consumos diarios pueden sumar grandes cantidades al mes."
+  },
+  {
+    "fecha": "2025-08-25",
+    "titulo": "Invierte en tu salud",
+    "contenido": "Un estilo de vida saludable también reduce gastos médicos futuros."
+  },
+  {
+    "fecha": "2025-08-26",
+    "titulo": "Automatiza tu ahorro",
+    "contenido": "Programa transferencias automáticas a tu cuenta de ahorro."
+  },
+  {
+    "fecha": "2025-08-27",
     "titulo": "Reserva para impuestos y seguros",
-    "contenido": "Evita sorpresas desagradables."
+    "contenido": "Anticipa esos pagos para evitar sorpresas desagradables."
   },
   {
-    "fecha": "2025-07-15",
-    "titulo": "Evalúa tus finanzas mensualmente",
-    "contenido": "Haz ajustes si es necesario."
-  },
-  {
-    "fecha": "2025-07-15",
-    "titulo": "Usa aplicaciones para controlar gastos",
-    "contenido": "Te ayudan a tener claridad financiera."
-  },
-  {
-    "fecha": "2025-07-15",
-    "titulo": "Sé paciente con tus inversiones",
-    "contenido": "El tiempo es tu aliado."
-  },
-  {
-    "fecha": "2025-07-16",
+    "fecha": "2025-08-28",
     "titulo": "Invierte a largo plazo",
-    "contenido": "Aprovecha el interés compuesto para hacer crecer tu dinero."
+    "contenido": "El interés compuesto funciona mejor con paciencia."
   },
   {
-    "fecha": "2025-07-16",
-    "titulo": "Ten un fondo para imprevistos",
-    "contenido": "Accidentes o emergencias no deberían desestabilizarte."
+    "fecha": "2025-08-29",
+    "titulo": "Evalúa tus finanzas mensualmente",
+    "contenido": "Haz ajustes en tu presupuesto si es necesario."
   },
   {
-    "fecha": "2025-07-16",
-    "titulo": "Define tus metas financieras",
-    "contenido": "Tener objetivos claros te motiva a ahorrar e invertir."
+    "fecha": "2025-08-30",
+    "titulo": "Revisa tus suscripciones",
+    "contenido": "Cancela servicios que no uses para ahorrar dinero."
   },
   {
-    "fecha": "2025-07-17",
-    "titulo": "Crea un fondo de emergencia",
-    "contenido": "Destina entre 3 y 6 meses de tus gastos mensuales en una cuenta accesible."
-  },
-  {
-    "fecha": "2025-07-17",
-    "titulo": "Aprende sobre instrumentos de inversión",
-    "contenido": "No dejes tu dinero dormido."
-  },
-  {
-    "fecha": "2025-07-17",
-    "titulo": "Sé paciente con tus inversiones",
-    "contenido": "El tiempo es tu aliado."
-  },
-  {
-    "fecha": "2025-07-18",
-    "titulo": "Haz un presupuesto mensual",
-    "contenido": "Controla tus ingresos y egresos para tomar mejores decisiones."
-  },
-  {
-    "fecha": "2025-07-18",
-    "titulo": "Evita las deudas innecesarias",
-    "contenido": "No compres a crédito lo que puedes pagar al contado."
-  },
-  {
-    "fecha": "2025-07-18",
-    "titulo": "Haz del ahorro un hábito",
-    "contenido": "La constancia es más importante que la cantidad."
-  },
-  {
-    "fecha": "2025-07-19",
-    "titulo": "No prestes dinero que no puedes perder",
-    "contenido": "Protege tus relaciones y tus finanzas."
-  },
-  {
-    "fecha": "2025-07-19",
-    "titulo": "Estudia sobre finanzas personales",
-    "contenido": "La educación financiera es clave para tu bienestar."
-  },
-  {
-    "fecha": "2025-07-19",
-    "titulo": "Define tus metas financieras",
-    "contenido": "Tener objetivos claros te motiva a ahorrar e invertir."
-  },
-  {
-    "fecha": "2025-07-20",
-    "titulo": "Compara antes de comprar",
+    "fecha": "2025-08-31",
+    "titulo": "Compara precios antes de comprar",
     "contenido": "Busca calidad al mejor precio."
   },
   {
-    "fecha": "2025-07-20",
-    "titulo": "Revisa tu historial crediticio",
-    "contenido": "Es importante saber cómo te ve el sistema financiero."
-  },
-  {
-    "fecha": "2025-07-20",
-    "titulo": "Ahorra primero, gasta después",
-    "contenido": "Separa un porcentaje de tus ingresos para el ahorro antes de gastar."
-  },
-  {
-    "fecha": "2025-07-21",
-    "titulo": "Evita retiros de ahorro para gastos menores",
-    "contenido": "Disciplina es clave."
-  },
-  {
-    "fecha": "2025-07-21",
-    "titulo": "Crea un fondo de emergencia",
-    "contenido": "Destina entre 3 y 6 meses de tus gastos mensuales en una cuenta accesible."
-  },
-  {
-    "fecha": "2025-07-21",
-    "titulo": "Usa aplicaciones para controlar gastos",
-    "contenido": "Te ayudan a tener claridad financiera."
-  },
-  {
-    "fecha": "2025-07-22",
+    "fecha": "2025-09-01",
     "titulo": "Haz un presupuesto mensual",
     "contenido": "Controla tus ingresos y egresos para tomar mejores decisiones."
   },
   {
-    "fecha": "2025-07-22",
-    "titulo": "Ten un fondo para imprevistos",
-    "contenido": "Accidentes o emergencias no deberían desestabilizarte."
-  },
-  {
-    "fecha": "2025-07-22",
-    "titulo": "Aprovecha descuentos y ofertas",
-    "contenido": "Pero solo si realmente lo necesitas."
-  },
-  {
-    "fecha": "2025-07-23",
-    "titulo": "Ahorra primero, gasta después",
-    "contenido": "Separa un porcentaje de tus ingresos para el ahorro antes de gastar."
-  },
-  {
-    "fecha": "2025-07-23",
-    "titulo": "Usa solo una tarjeta de crédito",
-    "contenido": "Evita complicarte con múltiples deudas."
-  },
-  {
-    "fecha": "2025-07-23",
-    "titulo": "Haz compras planificadas",
-    "contenido": "Evita decisiones impulsivas al comprar."
-  },
-  {
-    "fecha": "2025-07-24",
+    "fecha": "2025-09-02",
     "titulo": "Crea un fondo de emergencia",
-    "contenido": "Destina entre 3 y 6 meses de tus gastos mensuales en una cuenta accesible."
+    "contenido": "Asegura entre 3 y 6 meses de tus gastos mensuales en una cuenta accesible."
   },
   {
-    "fecha": "2025-07-24",
+    "fecha": "2025-09-03",
+    "titulo": "Usa aplicaciones de control de gastos",
+    "contenido": "La tecnología puede ayudarte a tener claridad financiera."
+  },
+  {
+    "fecha": "2025-09-04",
+    "titulo": "No prestes dinero que no puedes perder",
+    "contenido": "Protege tus relaciones y tus finanzas."
+  },
+  {
+    "fecha": "2025-09-05",
     "titulo": "Vive por debajo de tus posibilidades",
     "contenido": "Así tendrás margen de maniobra."
   },
   {
-    "fecha": "2025-07-24",
-    "titulo": "Evita gastos hormiga",
-    "contenido": "Pequeños gastos diarios pueden convertirse en grandes pérdidas."
-  },
-  {
-    "fecha": "2025-07-25",
-    "titulo": "Crea un fondo de emergencia",
-    "contenido": "Destina entre 3 y 6 meses de tus gastos mensuales en una cuenta accesible."
-  },
-  {
-    "fecha": "2025-07-25",
-    "titulo": "No prestes dinero que no puedes perder",
-    "contenido": "Protege tus relaciones y tus finanzas."
-  },
-  {
-    "fecha": "2025-07-25",
-    "titulo": "Haz compras planificadas",
-    "contenido": "Evita decisiones impulsivas al comprar."
-  },
-  {
-    "fecha": "2025-07-26",
-    "titulo": "Ten un fondo para imprevistos",
-    "contenido": "Accidentes o emergencias no deberían desestabilizarte."
-  },
-  {
-    "fecha": "2025-07-26",
-    "titulo": "Sé paciente con tus inversiones",
-    "contenido": "El tiempo es tu aliado."
-  },
-  {
-    "fecha": "2025-07-26",
-    "titulo": "Haz un presupuesto mensual",
-    "contenido": "Controla tus ingresos y egresos para tomar mejores decisiones."
-  },
-  {
-    "fecha": "2025-07-27",
-    "titulo": "Evita retiros de ahorro para gastos menores",
-    "contenido": "Disciplina es clave."
-  },
-  {
-    "fecha": "2025-07-27",
-    "titulo": "Diversifica tus ingresos",
-    "contenido": "No dependas de una sola fuente."
-  },
-  {
-    "fecha": "2025-07-27",
-    "titulo": "Aprende a decir no",
-    "contenido": "No todo gasto es necesario, incluso si es social."
-  },
-  {
-    "fecha": "2025-07-28",
-    "titulo": "Define tus metas financieras",
-    "contenido": "Tener objetivos claros te motiva a ahorrar e invertir."
-  },
-  {
-    "fecha": "2025-07-28",
-    "titulo": "Haz compras planificadas",
-    "contenido": "Evita decisiones impulsivas al comprar."
-  },
-  {
-    "fecha": "2025-07-28",
-    "titulo": "Educa a tu familia sobre finanzas",
-    "contenido": "La educación financiera empieza en casa."
-  },
-  {
-    "fecha": "2025-07-29",
-    "titulo": "Aprende a decir no",
-    "contenido": "No todo gasto es necesario, incluso si es social."
-  },
-  {
-    "fecha": "2025-07-29",
-    "titulo": "Define tus metas financieras",
-    "contenido": "Tener objetivos claros te motiva a ahorrar e invertir."
-  },
-  {
-    "fecha": "2025-07-29",
-    "titulo": "Revisa tu historial crediticio",
-    "contenido": "Es importante saber cómo te ve el sistema financiero."
-  },
-  {
-    "fecha": "2025-07-30",
-    "titulo": "Evalúa tus finanzas mensualmente",
-    "contenido": "Haz ajustes si es necesario."
-  },
-  {
-    "fecha": "2025-07-30",
-    "titulo": "Aprovecha descuentos y ofertas",
-    "contenido": "Pero solo si realmente lo necesitas."
-  },
-  {
-    "fecha": "2025-07-30",
-    "titulo": "No prestes dinero que no puedes perder",
-    "contenido": "Protege tus relaciones y tus finanzas."
-  },
-  {
-    "fecha": "2025-07-31",
-    "titulo": "Reduce gastos fijos innecesarios",
-    "contenido": "Simplifica tu estilo de vida."
-  },
-  {
-    "fecha": "2025-07-31",
-    "titulo": "Evita retiros de ahorro para gastos menores",
-    "contenido": "Disciplina es clave."
-  },
-  {
-    "fecha": "2025-07-31",
-    "titulo": "Evita las deudas innecesarias",
-    "contenido": "No compres a crédito lo que puedes pagar al contado."
-  },
-  {
-    "fecha": "2025-08-01",
-    "titulo": "Diversifica tus ingresos",
-    "contenido": "No dependas de una sola fuente."
-  },
-  {
-    "fecha": "2025-08-01",
-    "titulo": "Revisa tus suscripciones",
-    "contenido": "Cancela las que no uses para ahorrar dinero."
-  },
-  {
-    "fecha": "2025-08-01",
-    "titulo": "Ten un fondo para imprevistos",
-    "contenido": "Accidentes o emergencias no deberían desestabilizarte."
-  },
-  {
-    "fecha": "2025-08-02",
-    "titulo": "Invierte a largo plazo",
-    "contenido": "Aprovecha el interés compuesto para hacer crecer tu dinero."
-  },
-  {
-    "fecha": "2025-08-02",
-    "titulo": "Revisa tu historial crediticio",
-    "contenido": "Es importante saber cómo te ve el sistema financiero."
-  },
-  {
-    "fecha": "2025-08-02",
-    "titulo": "Evita las deudas innecesarias",
-    "contenido": "No compres a crédito lo que puedes pagar al contado."
-  },
-  {
-    "fecha": "2025-08-03",
-    "titulo": "Revisa tus suscripciones",
-    "contenido": "Cancela las que no uses para ahorrar dinero."
-  },
-  {
-    "fecha": "2025-08-03",
-    "titulo": "Ten un fondo para imprevistos",
-    "contenido": "Accidentes o emergencias no deberían desestabilizarte."
-  },
-  {
-    "fecha": "2025-08-03",
-    "titulo": "Revisa tu historial crediticio",
-    "contenido": "Es importante saber cómo te ve el sistema financiero."
-  },
-  {
-    "fecha": "2025-08-04",
-    "titulo": "Evita gastos hormiga",
-    "contenido": "Pequeños gastos diarios pueden convertirse en grandes pérdidas."
-  },
-  {
-    "fecha": "2025-08-04",
-    "titulo": "Crea un fondo de emergencia",
-    "contenido": "Destina entre 3 y 6 meses de tus gastos mensuales en una cuenta accesible."
-  },
-  {
-    "fecha": "2025-08-04",
-    "titulo": "Evita retiros de ahorro para gastos menores",
-    "contenido": "Disciplina es clave."
-  },
-  {
-    "fecha": "2025-08-05",
-    "titulo": "Vive por debajo de tus posibilidades",
-    "contenido": "Así tendrás margen de maniobra."
-  },
-  {
-    "fecha": "2025-08-05",
-    "titulo": "No prestes dinero que no puedes perder",
-    "contenido": "Protege tus relaciones y tus finanzas."
-  },
-  {
-    "fecha": "2025-08-05",
-    "titulo": "Revisa tus suscripciones",
-    "contenido": "Cancela las que no uses para ahorrar dinero."
-  },
-  {
-    "fecha": "2025-08-06",
-    "titulo": "Haz compras planificadas",
-    "contenido": "Evita decisiones impulsivas al comprar."
-  },
-  {
-    "fecha": "2025-08-06",
-    "titulo": "Reserva para impuestos y seguros",
-    "contenido": "Evita sorpresas desagradables."
-  },
-  {
-    "fecha": "2025-08-06",
-    "titulo": "No prestes dinero que no puedes perder",
-    "contenido": "Protege tus relaciones y tus finanzas."
-  },
-  {
-    "fecha": "2025-08-07",
-    "titulo": "Crea un fondo de emergencia",
-    "contenido": "Destina entre 3 y 6 meses de tus gastos mensuales en una cuenta accesible."
-  },
-  {
-    "fecha": "2025-08-07",
-    "titulo": "Reserva para impuestos y seguros",
-    "contenido": "Evita sorpresas desagradables."
-  },
-  {
-    "fecha": "2025-08-07",
-    "titulo": "Usa aplicaciones para controlar gastos",
-    "contenido": "Te ayudan a tener claridad financiera."
-  },
-  {
-    "fecha": "2025-08-08",
-    "titulo": "Evita las deudas innecesarias",
-    "contenido": "No compres a crédito lo que puedes pagar al contado."
-  },
-  {
-    "fecha": "2025-08-08",
-    "titulo": "Revisa tu historial crediticio",
-    "contenido": "Es importante saber cómo te ve el sistema financiero."
-  },
-  {
-    "fecha": "2025-08-08",
+    "fecha": "2025-09-06",
     "titulo": "Estudia sobre finanzas personales",
     "contenido": "La educación financiera es clave para tu bienestar."
   },
   {
-    "fecha": "2025-08-09",
-    "titulo": "Reduce gastos fijos innecesarios",
-    "contenido": "Simplifica tu estilo de vida."
+    "fecha": "2025-09-07",
+    "titulo": "Aprende a decir no",
+    "contenido": "No todo gasto es necesario, incluso si es social."
   },
   {
-    "fecha": "2025-08-09",
-    "titulo": "Revisa tus suscripciones",
-    "contenido": "Cancela las que no uses para ahorrar dinero."
+    "fecha": "2025-09-08",
+    "titulo": "Planifica tus compras",
+    "contenido": "Evita decisiones impulsivas al comprar."
   },
   {
-    "fecha": "2025-08-09",
-    "titulo": "Usa solo una tarjeta de crédito",
-    "contenido": "Evita complicarte con múltiples deudas."
+    "fecha": "2025-09-09",
+    "titulo": "Revisa tu historial crediticio",
+    "contenido": "Es importante saber cómo te ve el sistema financiero."
   },
   {
-    "fecha": "2025-08-10",
+    "fecha": "2025-09-10",
     "titulo": "Aprovecha descuentos y ofertas",
     "contenido": "Pero solo si realmente lo necesitas."
   },
   {
-    "fecha": "2025-08-10",
-    "titulo": "Educa a tu familia sobre finanzas",
-    "contenido": "La educación financiera empieza en casa."
+    "fecha": "2025-09-11",
+    "titulo": "Define metas financieras claras",
+    "contenido": "Los objetivos te motivan a ahorrar e invertir."
   },
   {
-    "fecha": "2025-08-10",
+    "fecha": "2025-09-12",
     "titulo": "Evita las deudas innecesarias",
     "contenido": "No compres a crédito lo que puedes pagar al contado."
   },
   {
-    "fecha": "2025-08-11",
-    "titulo": "Sé paciente con tus inversiones",
-    "contenido": "El tiempo es tu aliado."
+    "fecha": "2025-09-13",
+    "titulo": "Reduce gastos fijos",
+    "contenido": "Simplifica tu estilo de vida eliminando lo que no necesitas."
   },
   {
-    "fecha": "2025-08-11",
+    "fecha": "2025-09-14",
+    "titulo": "Diversifica tus ingresos",
+    "contenido": "No dependas de una sola fuente de dinero."
+  },
+  {
+    "fecha": "2025-09-15",
+    "titulo": "Educa a tu familia sobre finanzas",
+    "contenido": "La educación financiera empieza en casa."
+  },
+  {
+    "fecha": "2025-09-16",
+    "titulo": "Ahorra primero y gasta después",
+    "contenido": "Separa al inicio de mes un porcentaje fijo de tus ingresos para el ahorro."
+  },
+  {
+    "fecha": "2025-09-17",
+    "titulo": "Revisa tus metas trimestrales",
+    "contenido": "Evalúa si tus objetivos financieros siguen alineados a tu plan."
+  },
+  {
+    "fecha": "2025-09-18",
+    "titulo": "Evita gastos por impulso",
+    "contenido": "Antes de comprar algo, espera 24 horas para decidir si realmente lo necesitas."
+  },
+  {
+    "fecha": "2025-09-19",
+    "titulo": "Diversifica tus inversiones",
+    "contenido": "No pongas todo tu dinero en un solo activo, reparte el riesgo."
+  },
+  {
+    "fecha": "2025-09-20",
+    "titulo": "Construye historial crediticio positivo",
+    "contenido": "Paga a tiempo tus obligaciones y evita sobregiros."
+  },
+  {
+    "fecha": "2025-09-21",
+    "titulo": "Haz seguimiento a tus deudas",
+    "contenido": "Mantén un control de cuánto debes y cuánto has pagado."
+  },
+  {
+    "fecha": "2025-09-22",
+    "titulo": "Separa un fondo para educación",
+    "contenido": "Invertir en tu aprendizaje siempre genera retorno."
+  },
+  {
+    "fecha": "2025-09-23",
+    "titulo": "Reduce gastos hormiga",
+    "contenido": "Pequeños consumos diarios pueden sumar grandes cantidades al mes."
+  },
+  {
+    "fecha": "2025-09-24",
+    "titulo": "Invierte en tu salud",
+    "contenido": "Un estilo de vida saludable también reduce gastos médicos futuros."
+  },
+  {
+    "fecha": "2025-09-25",
+    "titulo": "Automatiza tu ahorro",
+    "contenido": "Programa transferencias automáticas a tu cuenta de ahorro."
+  },
+  {
+    "fecha": "2025-09-26",
     "titulo": "Reserva para impuestos y seguros",
-    "contenido": "Evita sorpresas desagradables."
+    "contenido": "Anticipa esos pagos para evitar sorpresas desagradables."
   },
   {
-    "fecha": "2025-08-11",
+    "fecha": "2025-09-27",
+    "titulo": "Invierte a largo plazo",
+    "contenido": "El interés compuesto funciona mejor con paciencia."
+  },
+  {
+    "fecha": "2025-09-28",
+    "titulo": "Evalúa tus finanzas mensualmente",
+    "contenido": "Haz ajustes en tu presupuesto si es necesario."
+  },
+  {
+    "fecha": "2025-09-29",
+    "titulo": "Revisa tus suscripciones",
+    "contenido": "Cancela servicios que no uses para ahorrar dinero."
+  },
+  {
+    "fecha": "2025-09-30",
+    "titulo": "Compara precios antes de comprar",
+    "contenido": "Busca calidad al mejor precio."
+  },
+  {
+    "fecha": "2025-10-01",
+    "titulo": "Haz un presupuesto mensual",
+    "contenido": "Controla tus ingresos y egresos para tomar mejores decisiones."
+  },
+  {
+    "fecha": "2025-10-02",
+    "titulo": "Crea un fondo de emergencia",
+    "contenido": "Asegura entre 3 y 6 meses de tus gastos mensuales en una cuenta accesible."
+  },
+  {
+    "fecha": "2025-10-03",
+    "titulo": "Usa aplicaciones de control de gastos",
+    "contenido": "La tecnología puede ayudarte a tener claridad financiera."
+  },
+  {
+    "fecha": "2025-10-04",
+    "titulo": "No prestes dinero que no puedes perder",
+    "contenido": "Protege tus relaciones y tus finanzas."
+  },
+  {
+    "fecha": "2025-10-05",
+    "titulo": "Vive por debajo de tus posibilidades",
+    "contenido": "Así tendrás margen de maniobra."
+  },
+  {
+    "fecha": "2025-10-06",
+    "titulo": "Estudia sobre finanzas personales",
+    "contenido": "La educación financiera es clave para tu bienestar."
+  },
+  {
+    "fecha": "2025-10-07",
+    "titulo": "Aprende a decir no",
+    "contenido": "No todo gasto es necesario, incluso si es social."
+  },
+  {
+    "fecha": "2025-10-08",
+    "titulo": "Planifica tus compras",
+    "contenido": "Evita decisiones impulsivas al comprar."
+  },
+  {
+    "fecha": "2025-10-09",
+    "titulo": "Revisa tu historial crediticio",
+    "contenido": "Es importante saber cómo te ve el sistema financiero."
+  },
+  {
+    "fecha": "2025-10-10",
     "titulo": "Aprovecha descuentos y ofertas",
     "contenido": "Pero solo si realmente lo necesitas."
+  },
+  {
+    "fecha": "2025-10-11",
+    "titulo": "Define metas financieras claras",
+    "contenido": "Los objetivos te motivan a ahorrar e invertir."
+  },
+  {
+    "fecha": "2025-10-12",
+    "titulo": "Evita las deudas innecesarias",
+    "contenido": "No compres a crédito lo que puedes pagar al contado."
+  },
+  {
+    "fecha": "2025-10-13",
+    "titulo": "Reduce gastos fijos",
+    "contenido": "Simplifica tu estilo de vida eliminando lo que no necesitas."
+  },
+  {
+    "fecha": "2025-10-14",
+    "titulo": "Diversifica tus ingresos",
+    "contenido": "No dependas de una sola fuente de dinero."
+  },
+  {
+    "fecha": "2025-10-15",
+    "titulo": "Educa a tu familia sobre finanzas",
+    "contenido": "La educación financiera empieza en casa."
+  },
+  {
+    "fecha": "2025-10-16",
+    "titulo": "Ahorra primero y gasta después",
+    "contenido": "Separa al inicio de mes un porcentaje fijo de tus ingresos para el ahorro."
+  },
+  {
+    "fecha": "2025-10-17",
+    "titulo": "Revisa tus metas trimestrales",
+    "contenido": "Evalúa si tus objetivos financieros siguen alineados a tu plan."
+  },
+  {
+    "fecha": "2025-10-18",
+    "titulo": "Evita gastos por impulso",
+    "contenido": "Antes de comprar algo, espera 24 horas para decidir si realmente lo necesitas."
+  },
+  {
+    "fecha": "2025-10-19",
+    "titulo": "Diversifica tus inversiones",
+    "contenido": "No pongas todo tu dinero en un solo activo, reparte el riesgo."
+  },
+  {
+    "fecha": "2025-10-20",
+    "titulo": "Construye historial crediticio positivo",
+    "contenido": "Paga a tiempo tus obligaciones y evita sobregiros."
+  },
+  {
+    "fecha": "2025-10-21",
+    "titulo": "Haz seguimiento a tus deudas",
+    "contenido": "Mantén un control de cuánto debes y cuánto has pagado."
+  },
+  {
+    "fecha": "2025-10-22",
+    "titulo": "Separa un fondo para educación",
+    "contenido": "Invertir en tu aprendizaje siempre genera retorno."
+  },
+  {
+    "fecha": "2025-10-23",
+    "titulo": "Reduce gastos hormiga",
+    "contenido": "Pequeños consumos diarios pueden sumar grandes cantidades al mes."
+  },
+  {
+    "fecha": "2025-10-24",
+    "titulo": "Invierte en tu salud",
+    "contenido": "Un estilo de vida saludable también reduce gastos médicos futuros."
+  },
+  {
+    "fecha": "2025-10-25",
+    "titulo": "Automatiza tu ahorro",
+    "contenido": "Programa transferencias automáticas a tu cuenta de ahorro."
+  },
+  {
+    "fecha": "2025-10-26",
+    "titulo": "Reserva para impuestos y seguros",
+    "contenido": "Anticipa esos pagos para evitar sorpresas desagradables."
+  },
+  {
+    "fecha": "2025-10-27",
+    "titulo": "Invierte a largo plazo",
+    "contenido": "El interés compuesto funciona mejor con paciencia."
+  },
+  {
+    "fecha": "2025-10-28",
+    "titulo": "Evalúa tus finanzas mensualmente",
+    "contenido": "Haz ajustes en tu presupuesto si es necesario."
+  },
+  {
+    "fecha": "2025-10-29",
+    "titulo": "Revisa tus suscripciones",
+    "contenido": "Cancela servicios que no uses para ahorrar dinero."
+  },
+  {
+    "fecha": "2025-10-30",
+    "titulo": "Compara precios antes de comprar",
+    "contenido": "Busca calidad al mejor precio."
+  },
+  {
+    "fecha": "2025-10-31",
+    "titulo": "Haz un presupuesto mensual",
+    "contenido": "Controla tus ingresos y egresos para tomar mejores decisiones."
+  },
+  {
+    "fecha": "2025-11-01",
+    "titulo": "Crea un fondo de emergencia",
+    "contenido": "Asegura entre 3 y 6 meses de tus gastos mensuales en una cuenta accesible."
+  },
+  {
+    "fecha": "2025-11-02",
+    "titulo": "Usa aplicaciones de control de gastos",
+    "contenido": "La tecnología puede ayudarte a tener claridad financiera."
+  },
+  {
+    "fecha": "2025-11-03",
+    "titulo": "No prestes dinero que no puedes perder",
+    "contenido": "Protege tus relaciones y tus finanzas."
+  },
+  {
+    "fecha": "2025-11-04",
+    "titulo": "Vive por debajo de tus posibilidades",
+    "contenido": "Así tendrás margen de maniobra."
+  },
+  {
+    "fecha": "2025-11-05",
+    "titulo": "Estudia sobre finanzas personales",
+    "contenido": "La educación financiera es clave para tu bienestar."
+  },
+  {
+    "fecha": "2025-11-06",
+    "titulo": "Aprende a decir no",
+    "contenido": "No todo gasto es necesario, incluso si es social."
+  },
+  {
+    "fecha": "2025-11-07",
+    "titulo": "Planifica tus compras",
+    "contenido": "Evita decisiones impulsivas al comprar."
+  },
+  {
+    "fecha": "2025-11-08",
+    "titulo": "Revisa tu historial crediticio",
+    "contenido": "Es importante saber cómo te ve el sistema financiero."
+  },
+  {
+    "fecha": "2025-11-09",
+    "titulo": "Aprovecha descuentos y ofertas",
+    "contenido": "Pero solo si realmente lo necesitas."
+  },
+  {
+    "fecha": "2025-11-10",
+    "titulo": "Define metas financieras claras",
+    "contenido": "Los objetivos te motivan a ahorrar e invertir."
+  },
+  {
+    "fecha": "2025-11-11",
+    "titulo": "Evita las deudas innecesarias",
+    "contenido": "No compres a crédito lo que puedes pagar al contado."
+  },
+  {
+    "fecha": "2025-11-12",
+    "titulo": "Reduce gastos fijos",
+    "contenido": "Simplifica tu estilo de vida eliminando lo que no necesitas."
+  },
+  {
+    "fecha": "2025-11-13",
+    "titulo": "Diversifica tus ingresos",
+    "contenido": "No dependas de una sola fuente de dinero."
+  },
+  {
+    "fecha": "2025-11-14",
+    "titulo": "Educa a tu familia sobre finanzas",
+    "contenido": "La educación financiera empieza en casa."
+  },
+  {
+    "fecha": "2025-11-15",
+    "titulo": "Ahorra primero y gasta después",
+    "contenido": "Separa al inicio de mes un porcentaje fijo de tus ingresos para el ahorro."
+  },
+  {
+    "fecha": "2025-11-16",
+    "titulo": "Revisa tus metas trimestrales",
+    "contenido": "Evalúa si tus objetivos financieros siguen alineados a tu plan."
+  },
+  {
+    "fecha": "2025-11-17",
+    "titulo": "Evita gastos por impulso",
+    "contenido": "Antes de comprar algo, espera 24 horas para decidir si realmente lo necesitas."
+  },
+  {
+    "fecha": "2025-11-18",
+    "titulo": "Diversifica tus inversiones",
+    "contenido": "No pongas todo tu dinero en un solo activo, reparte el riesgo."
+  },
+  {
+    "fecha": "2025-11-19",
+    "titulo": "Construye historial crediticio positivo",
+    "contenido": "Paga a tiempo tus obligaciones y evita sobregiros."
+  },
+  {
+    "fecha": "2025-11-20",
+    "titulo": "Haz seguimiento a tus deudas",
+    "contenido": "Mantén un control de cuánto debes y cuánto has pagado."
+  },
+  {
+    "fecha": "2025-11-21",
+    "titulo": "Separa un fondo para educación",
+    "contenido": "Invertir en tu aprendizaje siempre genera retorno."
+  },
+  {
+    "fecha": "2025-11-22",
+    "titulo": "Reduce gastos hormiga",
+    "contenido": "Pequeños consumos diarios pueden sumar grandes cantidades al mes."
+  },
+  {
+    "fecha": "2025-11-23",
+    "titulo": "Invierte en tu salud",
+    "contenido": "Un estilo de vida saludable también reduce gastos médicos futuros."
+  },
+  {
+    "fecha": "2025-11-24",
+    "titulo": "Automatiza tu ahorro",
+    "contenido": "Programa transferencias automáticas a tu cuenta de ahorro."
+  },
+  {
+    "fecha": "2025-11-25",
+    "titulo": "Reserva para impuestos y seguros",
+    "contenido": "Anticipa esos pagos para evitar sorpresas desagradables."
+  },
+  {
+    "fecha": "2025-11-26",
+    "titulo": "Invierte a largo plazo",
+    "contenido": "El interés compuesto funciona mejor con paciencia."
+  },
+  {
+    "fecha": "2025-11-27",
+    "titulo": "Evalúa tus finanzas mensualmente",
+    "contenido": "Haz ajustes en tu presupuesto si es necesario."
+  },
+  {
+    "fecha": "2025-11-28",
+    "titulo": "Revisa tus suscripciones",
+    "contenido": "Cancela servicios que no uses para ahorrar dinero."
+  },
+  {
+    "fecha": "2025-11-29",
+    "titulo": "Compara precios antes de comprar",
+    "contenido": "Busca calidad al mejor precio."
+  },
+  {
+    "fecha": "2025-11-30",
+    "titulo": "Haz un presupuesto mensual",
+    "contenido": "Controla tus ingresos y egresos para tomar mejores decisiones."
+  },
+  {
+    "fecha": "2025-12-01",
+    "titulo": "Crea un fondo de emergencia",
+    "contenido": "Asegura entre 3 y 6 meses de tus gastos mensuales en una cuenta accesible."
+  },
+  {
+    "fecha": "2025-12-02",
+    "titulo": "Usa aplicaciones de control de gastos",
+    "contenido": "La tecnología puede ayudarte a tener claridad financiera."
+  },
+  {
+    "fecha": "2025-12-03",
+    "titulo": "No prestes dinero que no puedes perder",
+    "contenido": "Protege tus relaciones y tus finanzas."
+  },
+  {
+    "fecha": "2025-12-04",
+    "titulo": "Vive por debajo de tus posibilidades",
+    "contenido": "Así tendrás margen de maniobra."
+  },
+  {
+    "fecha": "2025-12-05",
+    "titulo": "Estudia sobre finanzas personales",
+    "contenido": "La educación financiera es clave para tu bienestar."
+  },
+  {
+    "fecha": "2025-12-06",
+    "titulo": "Aprende a decir no",
+    "contenido": "No todo gasto es necesario, incluso si es social."
+  },
+  {
+    "fecha": "2025-12-07",
+    "titulo": "Planifica tus compras",
+    "contenido": "Evita decisiones impulsivas al comprar."
+  },
+  {
+    "fecha": "2025-12-08",
+    "titulo": "Revisa tu historial crediticio",
+    "contenido": "Es importante saber cómo te ve el sistema financiero."
+  },
+  {
+    "fecha": "2025-12-09",
+    "titulo": "Aprovecha descuentos y ofertas",
+    "contenido": "Pero solo si realmente lo necesitas."
+  },
+  {
+    "fecha": "2025-12-10",
+    "titulo": "Define metas financieras claras",
+    "contenido": "Los objetivos te motivan a ahorrar e invertir."
+  },
+  {
+    "fecha": "2025-12-11",
+    "titulo": "Evita las deudas innecesarias",
+    "contenido": "No compres a crédito lo que puedes pagar al contado."
+  },
+  {
+    "fecha": "2025-12-12",
+    "titulo": "Reduce gastos fijos",
+    "contenido": "Simplifica tu estilo de vida eliminando lo que no necesitas."
+  },
+  {
+    "fecha": "2025-12-13",
+    "titulo": "Diversifica tus ingresos",
+    "contenido": "No dependas de una sola fuente de dinero."
+  },
+  {
+    "fecha": "2025-12-14",
+    "titulo": "Educa a tu familia sobre finanzas",
+    "contenido": "La educación financiera empieza en casa."
+  },
+  {
+    "fecha": "2025-12-15",
+    "titulo": "Ahorra primero y gasta después",
+    "contenido": "Separa al inicio de mes un porcentaje fijo de tus ingresos para el ahorro."
+  },
+  {
+    "fecha": "2025-12-16",
+    "titulo": "Revisa tus metas trimestrales",
+    "contenido": "Evalúa si tus objetivos financieros siguen alineados a tu plan."
+  },
+  {
+    "fecha": "2025-12-17",
+    "titulo": "Evita gastos por impulso",
+    "contenido": "Antes de comprar algo, espera 24 horas para decidir si realmente lo necesitas."
+  },
+  {
+    "fecha": "2025-12-18",
+    "titulo": "Diversifica tus inversiones",
+    "contenido": "No pongas todo tu dinero en un solo activo, reparte el riesgo."
+  },
+  {
+    "fecha": "2025-12-19",
+    "titulo": "Construye historial crediticio positivo",
+    "contenido": "Paga a tiempo tus obligaciones y evita sobregiros."
+  },
+  {
+    "fecha": "2025-12-20",
+    "titulo": "Haz seguimiento a tus deudas",
+    "contenido": "Mantén un control de cuánto debes y cuánto has pagado."
+  },
+  {
+    "fecha": "2025-12-21",
+    "titulo": "Separa un fondo para educación",
+    "contenido": "Invertir en tu aprendizaje siempre genera retorno."
+  },
+  {
+    "fecha": "2025-12-22",
+    "titulo": "Reduce gastos hormiga",
+    "contenido": "Pequeños consumos diarios pueden sumar grandes cantidades al mes."
+  },
+  {
+    "fecha": "2025-12-23",
+    "titulo": "Invierte en tu salud",
+    "contenido": "Un estilo de vida saludable también reduce gastos médicos futuros."
+  },
+  {
+    "fecha": "2025-12-24",
+    "titulo": "Automatiza tu ahorro",
+    "contenido": "Programa transferencias automáticas a tu cuenta de ahorro."
+  },
+  {
+    "fecha": "2025-12-25",
+    "titulo": "Reserva para impuestos y seguros",
+    "contenido": "Anticipa esos pagos para evitar sorpresas desagradables."
+  },
+  {
+    "fecha": "2025-12-26",
+    "titulo": "Invierte a largo plazo",
+    "contenido": "El interés compuesto funciona mejor con paciencia."
+  },
+  {
+    "fecha": "2025-12-27",
+    "titulo": "Evalúa tus finanzas mensualmente",
+    "contenido": "Haz ajustes en tu presupuesto si es necesario."
+  },
+  {
+    "fecha": "2025-12-28",
+    "titulo": "Revisa tus suscripciones",
+    "contenido": "Cancela servicios que no uses para ahorrar dinero."
+  },
+  {
+    "fecha": "2025-12-29",
+    "titulo": "Compara precios antes de comprar",
+    "contenido": "Busca calidad al mejor precio."
+  },
+  {
+    "fecha": "2025-12-30",
+    "titulo": "Haz un presupuesto mensual",
+    "contenido": "Controla tus ingresos y egresos para tomar mejores decisiones."
+  },
+  {
+    "fecha": "2025-12-31",
+    "titulo": "Crea un fondo de emergencia",
+    "contenido": "Asegura entre 3 y 6 meses de tus gastos mensuales en una cuenta accesible."
   }
 ]
