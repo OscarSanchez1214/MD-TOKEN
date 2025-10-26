@@ -1,4 +1,4 @@
-import { PayBlockWithQR } from "@/components/Pay";
+import PayComponent from "@/components/Pay";
 import { SignIn } from "@/components/SignIn";
 import { VerifyBlock } from "@/components/Verify";
 
