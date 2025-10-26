@@ -1,9 +1,17 @@
 "use client";
+import React from "react";
+import { Tokens as BaseTokens } from "@worldcoin/minikit-js";
 
-import { useEffect, useRef, useState } from "react";
-import { MiniKit, PayCommandInput, Tokens as BaseTokens } from "@worldcoin/minikit-js";
-import { Html5Qrcode } from "html5-qrcode";
-import { BrowserProvider, Contract, isAddress } from "ethers";
+// ✅ Extendemos el tipo original para incluir nuestros tokens personalizados
+type Tokens = BaseTokens | "MD" | "WLD" | "USDC";
+type TokenKey = "MD" | "WLD" | "USDC";
+
+const TOKEN_SYMBOL_MAP: Record<TokenKey, Tokens> = {
+  MD: "MD",
+  WLD: "WLD",
+  USDC: "USDC",
+};
+
 
 // === 🔧 EXTENSIÓN DEL TIPO TOKENS PARA INCLUIR "MD" ===
 type Tokens = BaseTokens | "MD";
