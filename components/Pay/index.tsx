@@ -1,20 +1,35 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MiniKit, PayCommandInput } from "@worldcoin/minikit-js";
+import { MiniKit, PayCommandInput, Tokens } from "@worldcoin/minikit-js";
 import { Html5Qrcode } from "html5-qrcode";
 import { BrowserProvider, Contract, isAddress } from "ethers";
 
 // === CONFIGURACIÓN DE TOKENS ===
-type TokenKey = "MD" | "WLD" | "USDC";
-
-const TOKEN_CONFIG: Record<TokenKey, { symbol: TokenKey; address: string }> = {
-  WLD: { symbol: "WLD", address: "0x2cFc85d8E48F8EAB294be644d9E25C3030863003" },
-  USDC: { symbol: "USDC", address: "0x79A02482A880bCE3F13e09Da970dC34db4CD24d1" },
-  MD: { symbol: "MD", address: "0x6335c1F2967A85e98cCc89dA0c87e672715284dB" },
+const TOKEN_CONFIG = {
+  WLD: {
+    symbol: "WLD",
+    address: "0x2cFc85d8E48F8EAB294be644d9E25C3030863003",
+  },
+  USDC: {
+    symbol: "USDC",
+    address: "0x79A02482A880bCE3F13e09Da970dC34db4CD24d1",
+  },
+  MD: {
+    symbol: "MD",
+    address: "0x6335c1F2967A85e98cCc89dA0c87e672715284dB",
+  },
 };
 
 const DEFAULT_DECIMALS = 18;
+
+// Mapeo TokenKey a Tokens de Worldcoin
+type TokenKey = "MD" | "WLD" | "USDC";
+const TOKEN_SYMBOL_MAP: Record<TokenKey, Tokens> = {
+  MD: "MD",
+  WLD: "WLD",
+  USDC: "USDC",
+};
 
 // === FUNCIONES AUXILIARES ===
 function amountToUnits(amount: string | number, decimals: number): string {
@@ -166,7 +181,7 @@ export const PayBlockWithQR = () => {
         to,
         tokens: [
           {
-            symbol: tokenInfo.symbol as TokenKey,
+            symbol: TOKEN_SYMBOL_MAP[selectedToken], // fix aplicado
             token_address: tokenInfo.address,
             token_amount: tokenAmount,
           },
@@ -291,37 +306,4 @@ export const PayBlockWithQR = () => {
 // === FORMULARIO MANUAL ===
 const ManualSendForm = ({
   onSend,
-  selectedToken,
-}: {
-  onSend: (to: string, amount?: string) => Promise<any>;
-  selectedToken: TokenKey;
-}) => {
-  const [to, setTo] = useState("");
-  const [amount, setAmount] = useState("");
-  const submit = async () => {
-    if (!isAddress(to)) {
-      alert("Dirección inválida");
-      return;
-    }
-    await onSend(to, amount || undefined);
-  };
-  return (
-    <div className="mt-2">
-      <input
-        placeholder="Dirección destino"
-        value={to}
-        onChange={(e) => setTo(e.target.value)}
-        className="border p-2 rounded w-full mb-2"
-      />
-      <input
-        placeholder={`Monto ${selectedToken} (ej: 1.5)`}
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-        className="border p-2 rounded w-full mb-2"
-      />
-      <button onClick={submit} className="bg-blue-600 text-white px-3 py-2 rounded">
-        Enviar {selectedToken}
-      </button>
-    </div>
-  );
-};
+ 
