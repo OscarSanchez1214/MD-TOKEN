@@ -5,7 +5,7 @@ import { MiniKit, PayCommandInput } from "@worldcoin/minikit-js";
 import { Html5Qrcode } from "html5-qrcode";
 import { BrowserProvider, Contract, isAddress } from "ethers";
 
-// --- CONFIGURACIÓN DE TOKENS ---
+// === CONFIGURACIÓN DE TOKENS ===
 const TOKEN_CONFIG = {
   WLD: {
     symbol: "WLD",
@@ -23,24 +23,24 @@ const TOKEN_CONFIG = {
 
 const DEFAULT_DECIMALS = 18;
 
-// --------------------------------
-// Convierte monto humano a unidades según decimales
+// === FUNCIONES AUXILIARES ===
+
+// Convierte monto humano a unidades
 function amountToUnits(amount: string | number, decimals: number): string {
   const amtStr = typeof amount === "number" ? amount.toString() : amount;
   if (!/^\d+(\.\d+)?$/.test(amtStr)) throw new Error("Formato de monto inválido");
   const [wholePart, fractionPart = ""] = amtStr.split(".");
   if (fractionPart.length > decimals) {
-    throw new Error(`Demasiados decimales permitidos (${decimals})`);
+    throw new Error(`Más decimales de los permitidos: ${decimals}`);
   }
   const fractionPadded = fractionPart.padEnd(decimals, "0");
-  const wholeBig = BigInt(wholePart || "0");
+  const wholeBig = BigInt(wholePart);
   const fractionBig = BigInt(fractionPadded || "0");
-  const multiplier = BigInt(10) ** BigInt(decimals);
-  const units = wholeBig * multiplier + fractionBig;
+  const units = wholeBig * (10n ** BigInt(decimals)) + fractionBig;
   return units.toString();
 }
 
-// Leer decimales del contrato ERC20
+// Intenta leer los decimales del token desde el contrato ERC20
 async function fetchTokenDecimals(tokenAddress: string): Promise<number> {
   try {
     if ((window as any).ethereum) {
@@ -54,63 +54,61 @@ async function fetchTokenDecimals(tokenAddress: string): Promise<number> {
       return d;
     }
   } catch (e) {
-    console.warn("No se pudo leer decimals:", e);
+    console.warn("No se pudo leer decimals desde provider:", e);
   }
   return DEFAULT_DECIMALS;
 }
 
-// Parsear contenido QR
+// Parsear contenido del QR
 function parseQrContent(text: string) {
   try {
     const j = JSON.parse(text);
     if (j.address) return { address: j.address, amount: j.amount?.toString() ?? null };
-  } catch {}
+  } catch (e) {}
 
   if (text.startsWith("ethereum:") || text.startsWith("wc:") || text.startsWith("md:")) {
     const withoutScheme = text.split(":")[1] ?? text;
     const [maybeAddress, query] = withoutScheme.split("?");
     const params = new URLSearchParams(query || "");
-    const amount = params.get("amount") || params.get("value") || null;
+    let amount = null;
+    if (params.get("amount")) amount = params.get("amount");
+    if (params.get("value")) amount = params.get("value");
     return { address: maybeAddress, amount };
   }
 
   const parts = text.trim().split(/\s+/);
-  if (isAddress(parts[0])) return { address: parts[0], amount: parts[1] ?? null };
+  if (isAddress(parts[0])) {
+    return { address: parts[0], amount: parts[1] ?? null };
+  }
+
   if (isAddress(text.trim())) return { address: text.trim(), amount: null };
 
   return null;
 }
 
-// ------------------------------
-// Componente principal
+// === COMPONENTE PRINCIPAL ===
 export const PayBlockWithQR = () => {
   const [scanning, setScanning] = useState(false);
   const [detected, setDetected] = useState<{ address: string; amount?: string } | null>(null);
   const [selectedToken, setSelectedToken] = useState<"MD" | "WLD" | "USDC">("MD");
+
   const readerRef = useRef<Html5Qrcode | null>(null);
   const html5QrId = "html5qr-reader";
 
-  // Limpieza al desmontar
   useEffect(() => {
     return () => {
       if (readerRef.current) {
-        try {
-          readerRef.current.stop?.();
-          readerRef.current.clear?.();
-        } catch (e) {
-          console.warn("Error limpiando lector QR:", e);
-        }
+        readerRef.current.stop().catch(() => {});
+        readerRef.current.clear().catch(() => {});
       }
     };
   }, []);
 
-  // Iniciar escáner
   const startScanner = async () => {
     setDetected(null);
     setScanning(true);
     const html5Qr = new Html5Qrcode(html5QrId, false);
     readerRef.current = html5Qr;
-
     try {
       await html5Qr.start(
         { facingMode: "environment" },
@@ -119,33 +117,33 @@ export const PayBlockWithQR = () => {
           const parsed = parseQrContent(decodedText);
           if (parsed?.address) {
             setDetected(parsed);
-            html5Qr.stop?.();
-            setScanning(false);
+            html5Qr
+              .stop()
+              .then(() => setScanning(false))
+              .catch(() => setScanning(false));
           } else {
-            console.warn("QR no válido:", decodedText);
+            console.warn("QR no contiene dirección válida:", decodedText);
           }
+        },
+        (errorMessage) => {
+          console.warn("Error escaneando QR:", errorMessage);
         }
       );
     } catch (err) {
-      console.error("Error al iniciar escáner:", err);
+      console.error("Error al iniciar scanner:", err);
       setScanning(false);
     }
   };
 
-  // Detener escáner
   const stopScanner = async () => {
-    try {
-      readerRef.current?.stop?.();
-      readerRef.current?.clear?.();
-    } catch (e) {
-      console.warn("Error al detener escáner:", e);
-    } finally {
+    if (readerRef.current) {
+      await readerRef.current.stop().catch(() => {});
+      await readerRef.current.clear().catch(() => {});
       readerRef.current = null;
-      setScanning(false);
     }
+    setScanning(false);
   };
 
-  // Enviar pago
   const enviarPago = async (to: string, amountHuman?: string) => {
     try {
       const res = await fetch(`/api/initiate-payment`, { method: "POST" });
@@ -193,7 +191,8 @@ export const PayBlockWithQR = () => {
 
   const handleUseDetected = async () => {
     if (!detected) return;
-    const { address: to, amount } = detected;
+    const to = detected.address;
+    const amount = detected.amount ?? undefined;
 
     const respuesta = await enviarPago(to, amount);
     const resultado = respuesta?.finalPayload;
@@ -206,7 +205,8 @@ export const PayBlockWithQR = () => {
         body: JSON.stringify({ payload: resultado }),
       });
       const json = await confirmRes.json();
-      alert(json.success ? `✅ Pago ${selectedToken} realizado con éxito` : "❌ Error al confirmar pago");
+      if (json.success) alert(`✅ Pago ${selectedToken} realizado con éxito`);
+      else alert("❌ El pago no se pudo confirmar en servidor");
     } else {
       alert("❌ El pago fue cancelado o falló");
     }
@@ -216,6 +216,7 @@ export const PayBlockWithQR = () => {
     <div className="p-4">
       <h2 className="text-xl font-bold mb-2">Enviar Token (MD, WLD, USDC)</h2>
 
+      {/* Selector de token */}
       <div className="mb-4">
         <label className="font-semibold mr-2">Token:</label>
         <select
@@ -229,13 +230,21 @@ export const PayBlockWithQR = () => {
         </select>
       </div>
 
+      {/* Escáner QR */}
       <div className="mb-3">
-        {!scanning ? (
-          <button onClick={startScanner} className="bg-green-600 text-white px-3 py-2 rounded mr-2">
+        {!scanning && (
+          <button
+            onClick={startScanner}
+            className="bg-green-600 text-white px-3 py-2 rounded mr-2"
+          >
             Iniciar escáner QR
           </button>
-        ) : (
-          <button onClick={stopScanner} className="bg-red-600 text-white px-3 py-2 rounded mr-2">
+        )}
+        {scanning && (
+          <button
+            onClick={stopScanner}
+            className="bg-red-600 text-white px-3 py-2 rounded mr-2"
+          >
             Detener escáner
           </button>
         )}
@@ -245,13 +254,23 @@ export const PayBlockWithQR = () => {
 
       {detected ? (
         <div className="border p-3 rounded">
-          <p>Dirección detectada: <code>{detected.address}</code></p>
-          <p>Monto detectado: <strong>{detected.amount ?? "No especificado"}</strong></p>
+          <p>
+            Dirección detectada: <code>{detected.address}</code>
+          </p>
+          <p>
+            Monto detectado: <strong>{detected.amount ?? "No especificado"}</strong>
+          </p>
           <div className="mt-2">
-            <button onClick={handleUseDetected} className="bg-blue-600 text-white px-3 py-2 rounded mr-2">
+            <button
+              onClick={handleUseDetected}
+              className="bg-blue-600 text-white px-3 py-2 rounded mr-2"
+            >
               Enviar {selectedToken}
             </button>
-            <button onClick={() => setDetected(null)} className="bg-gray-300 px-3 py-2 rounded">
+            <button
+              onClick={() => setDetected(null)}
+              className="bg-gray-300 px-3 py-2 rounded"
+            >
               Escanear otro
             </button>
           </div>
@@ -270,7 +289,7 @@ export const PayBlockWithQR = () => {
   );
 };
 
-// Formulario manual
+// === FORMULARIO MANUAL ===
 const ManualSendForm = ({
   onSend,
   selectedToken,
@@ -280,7 +299,6 @@ const ManualSendForm = ({
 }) => {
   const [to, setTo] = useState("");
   const [amount, setAmount] = useState("");
-
   const submit = async () => {
     if (!isAddress(to)) {
       alert("Dirección inválida");
@@ -288,7 +306,6 @@ const ManualSendForm = ({
     }
     await onSend(to, amount || undefined);
   };
-
   return (
     <div className="mt-2">
       <input
