@@ -1,4 +1,4 @@
-import { PayBlock } from "@/components/Pay";
+import { PayBlockWithQR } from "@/components/Pay";
 import { SignIn } from "@/components/SignIn";
 import { VerifyBlock } from "@/components/Verify";
 
@@ -8,7 +8,7 @@ export default function Home() {
       <div className="w-full max-w-md space-y-6 text-center">
         <SignIn />
         <VerifyBlock />
-        <PayBlock />
+        <PayBlockWithQR />
       </div>
     </main>
   );
