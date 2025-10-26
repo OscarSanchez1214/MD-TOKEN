@@ -24,8 +24,6 @@ const TOKEN_CONFIG = {
 const DEFAULT_DECIMALS = 18;
 
 // === FUNCIONES AUXILIARES ===
-
-// Convierte monto humano a unidades
 function amountToUnits(amount: string | number, decimals: number): string {
   const amtStr = typeof amount === "number" ? amount.toString() : amount;
   if (!/^\d+(\.\d+)?$/.test(amtStr)) throw new Error("Formato de monto inválido");
@@ -36,11 +34,9 @@ function amountToUnits(amount: string | number, decimals: number): string {
   const fractionPadded = fractionPart.padEnd(decimals, "0");
   const wholeBig = BigInt(wholePart);
   const fractionBig = BigInt(fractionPadded || "0");
-  const units = wholeBig * (10n ** BigInt(decimals)) + fractionBig;
-  return units.toString();
+  return (wholeBig * 10n ** BigInt(decimals) + fractionBig).toString();
 }
 
-// Intenta leer los decimales del token desde el contrato ERC20
 async function fetchTokenDecimals(tokenAddress: string): Promise<number> {
   try {
     if ((window as any).ethereum) {
@@ -59,7 +55,6 @@ async function fetchTokenDecimals(tokenAddress: string): Promise<number> {
   return DEFAULT_DECIMALS;
 }
 
-// Parsear contenido del QR
 function parseQrContent(text: string) {
   try {
     const j = JSON.parse(text);
@@ -70,9 +65,7 @@ function parseQrContent(text: string) {
     const withoutScheme = text.split(":")[1] ?? text;
     const [maybeAddress, query] = withoutScheme.split("?");
     const params = new URLSearchParams(query || "");
-    let amount = null;
-    if (params.get("amount")) amount = params.get("amount");
-    if (params.get("value")) amount = params.get("value");
+    let amount = params.get("amount") || params.get("value") || null;
     return { address: maybeAddress, amount };
   }
 
@@ -97,10 +90,17 @@ export const PayBlockWithQR = () => {
 
   useEffect(() => {
     return () => {
-      if (readerRef.current) {
-        readerRef.current.stop().catch(() => {});
-        readerRef.current.clear().catch(() => {});
-      }
+      const stopReader = async () => {
+        if (readerRef.current) {
+          try {
+            await readerRef.current.stop();
+            await readerRef.current.clear();
+          } catch (error) {
+            console.warn("Error al limpiar lector QR:", error);
+          }
+        }
+      };
+      stopReader();
     };
   }, []);
 
@@ -109,6 +109,7 @@ export const PayBlockWithQR = () => {
     setScanning(true);
     const html5Qr = new Html5Qrcode(html5QrId, false);
     readerRef.current = html5Qr;
+
     try {
       await html5Qr.start(
         { facingMode: "environment" },
@@ -137,9 +138,14 @@ export const PayBlockWithQR = () => {
 
   const stopScanner = async () => {
     if (readerRef.current) {
-      await readerRef.current.stop().catch(() => {});
-      await readerRef.current.clear().catch(() => {});
-      readerRef.current = null;
+      try {
+        await readerRef.current.stop();
+        await readerRef.current.clear();
+      } catch (e) {
+        console.warn("Error al detener escáner:", e);
+      } finally {
+        readerRef.current = null;
+      }
     }
     setScanning(false);
   };
