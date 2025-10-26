@@ -1,36 +1,21 @@
 "use client";
-import React from "react";
-import { Tokens as BaseTokens } from "@worldcoin/minikit-js";
+import React, { useState, useEffect, useRef } from "react";
+import { MiniKit, PayCommandInput, Tokens as BaseTokens } from "@worldcoin/minikit-js";
+import { BrowserProvider, Contract, isAddress } from "ethers";
+import { Html5Qrcode } from "html5-qrcode";
 
 // ✅ Extendemos el tipo original para incluir nuestros tokens personalizados
 type Tokens = BaseTokens | "MD" | "WLD" | "USDC";
 type TokenKey = "MD" | "WLD" | "USDC";
 
-const TOKEN_SYMBOL_MAP: Record<TokenKey, Tokens> = {
-  MD: "MD",
-  WLD: "WLD",
-  USDC: "USDC",
-};
-
-
-// === 🔧 EXTENSIÓN DEL TIPO TOKENS PARA INCLUIR "MD" ===
-type Tokens = BaseTokens | "MD";
-
 // === CONFIGURACIÓN DE TOKENS ===
-const TOKEN_CONFIG = {
+const TOKEN_CONFIG: Record<TokenKey, { symbol: string; address: string }> = {
   WLD: { symbol: "WLD", address: "0x2cFc85d8E48F8EAB294be644d9E25C3030863003" },
   USDC: { symbol: "USDC", address: "0x79A02482A880bCE3F13e09Da970dC34db4CD24d1" },
   MD: { symbol: "MD", address: "0x6335c1F2967A85e98cCc89dA0c87e672715284dB" },
 };
 
 const DEFAULT_DECIMALS = 18;
-
-type TokenKey = "MD" | "WLD" | "USDC";
-const TOKEN_SYMBOL_MAP: Record<TokenKey, Tokens> = {
-  MD: "MD",
-  WLD: "WLD",
-  USDC: "USDC",
-};
 
 // === FUNCIONES AUXILIARES ===
 function amountToUnits(amount: string | number, decimals: number): string {
@@ -140,7 +125,7 @@ export const PayBlockWithQR = () => {
         to,
         tokens: [
           {
-            symbol: TOKEN_SYMBOL_MAP[selectedToken],
+            symbol: tokenInfo.symbol as Tokens,
             token_address: tokenInfo.address,
             token_amount: tokenAmount,
           },
