@@ -1,145 +1,165 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { Html5Qrcode } from "html5-qrcode";
+import { useState } from "react";
 import { MiniKit } from "@worldcoin/minikit-js";
+import QRCode from "react-qr-code";
+import { motion } from "framer-motion";
 
 const TOKEN_SYMBOL_MAP: Record<string, string> = {
-  ETH: "ETH",
-  WLD: "WLD",
   USDC: "USDC",
+  WLD: "WLD",
+  ETH: "ETH",
+  MD: "MD",
 };
 
 export default function PayComponent() {
-  const [amount, setAmount] = useState("");
-  const [token, setToken] = useState("WLD");
-  const [qrValue, setQrValue] = useState("");
-  const [isScanning, setIsScanning] = useState(false);
-  const [scannedAddress, setScannedAddress] = useState("");
-  const readerRef = useRef<Html5Qrcode | null>(null);
+  const [amount, setAmount] = useState<number>(0);
+  const [token, setToken] = useState<string>("USDC");
+  const [address, setAddress] = useState<string>("");
+  const [scannedAddress, setScannedAddress] = useState<string>("");
+  const [qrData, setQrData] = useState<string>("");
+  const [status, setStatus] = useState<string>("Esperando datos...");
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const startScanner = async () => {
-    if (isScanning) return;
-
-    try {
-      const html5QrCode = new Html5Qrcode("qr-reader");
-      readerRef.current = html5QrCode;
-      setIsScanning(true);
-
-      await html5QrCode.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
-        (decodedText) => {
-          setQrValue(decodedText);
-          setScannedAddress(decodedText);
-          stopScanner();
-        },
-        (errorMessage) => {
-          console.warn("QR Scan Error:", errorMessage);
-        }
-      );
-    } catch (err) {
-      console.error("Error starting QR scanner:", err);
+  const handleGenerateQR = () => {
+    if (!address || !amount) {
+      alert("Por favor ingresa la dirección y el monto.");
+      return;
     }
+
+    const qrInfo = JSON.stringify({ address, amount, token });
+    setQrData(qrInfo);
+    setStatus("QR generado, listo para escanear.");
   };
 
-  const stopScanner = async () => {
-    if (!readerRef.current) return;
+  const handleScanQR = (data: string) => {
     try {
-      await readerRef.current.stop().catch(() => {});
-      try {
-        readerRef.current.clear();
-      } catch {}
-    } catch (err) {
-      console.error("Error stopping scanner:", err);
-    } finally {
-      setIsScanning(false);
+      const parsed = JSON.parse(data);
+      if (parsed.address) {
+        setScannedAddress(parsed.address);
+        setAmount(parsed.amount);
+        setToken(parsed.token);
+        setStatus("Datos escaneados correctamente ✅");
+      }
+    } catch {
+      alert("Error al leer el código QR.");
     }
   };
 
   const handlePayment = async () => {
     if (!scannedAddress || !amount) {
-      alert("Por favor, escanea una dirección y coloca un monto válido.");
+      alert("Escanea un QR válido o ingresa los datos del pago.");
       return;
     }
+
+    setLoading(true);
+    setStatus("Procesando pago...");
 
     try {
       const minikit = new MiniKit();
 
-      // Nueva forma de enviar tokens
-      await minikit.actions.send({
+      // ✅ Compatible con la versión 1.3.0 (usa pay)
+      await minikit.pay({
         to: scannedAddress,
         token: TOKEN_SYMBOL_MAP[token],
         amount: amount.toString(),
       });
 
-      alert(`✅ Pago de ${amount} ${token} enviado a ${scannedAddress}`);
-      setAmount("");
-      setScannedAddress("");
-    } catch (error) {
-      console.error("Error en el pago:", error);
-      alert("❌ Error al procesar el pago.");
+      setStatus(`✅ Pago de ${amount} ${token} enviado a ${scannedAddress}`);
+    } catch (err: any) {
+      console.error(err);
+      setStatus("❌ Error al procesar el pago. Ver consola.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white shadow-lg rounded-2xl p-6 text-center">
-      <h2 className="text-xl font-bold mb-4 text-gray-800">Pago con QR - World Chain</h2>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
+      <motion.div
+        className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <h2 className="text-xl font-semibold text-center mb-4 text-gray-800">
+          💸 Enviar o Recibir Tokens
+        </h2>
 
-      <div id="qr-reader" className="w-full h-64 border rounded-lg mb-4"></div>
-
-      {!isScanning ? (
-        <button
-          onClick={startScanner}
-          className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg w-full mb-3 transition"
-        >
-          Iniciar escaneo QR
-        </button>
-      ) : (
-        <button
-          onClick={stopScanner}
-          className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg w-full mb-3 transition"
-        >
-          Detener escaneo
-        </button>
-      )}
-
-      {scannedAddress && (
-        <div className="text-left mt-3 p-3 border rounded-lg bg-gray-50">
-          <p className="text-sm text-gray-700 mb-2">
-            <strong>Dirección detectada:</strong> <br />
-            <span className="break-all text-gray-900">{scannedAddress}</span>
-          </p>
-
+        {/* FORMULARIO PARA GENERAR QR */}
+        <div className="mb-4 space-y-2">
+          <input
+            type="text"
+            placeholder="Dirección destino"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            className="w-full border rounded-lg p-2 text-sm"
+          />
           <input
             type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
             placeholder="Monto"
-            className="w-full border rounded-lg px-3 py-2 mb-3 text-gray-700 focus:ring focus:ring-blue-200"
+            value={amount}
+            onChange={(e) => setAmount(parseFloat(e.target.value))}
+            className="w-full border rounded-lg p-2 text-sm"
           />
-
           <select
             value={token}
             onChange={(e) => setToken(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 mb-3 text-gray-700 focus:ring focus:ring-blue-200"
+            className="w-full border rounded-lg p-2 text-sm"
           >
-            <option value="WLD">WLD</option>
-            <option value="ETH">ETH</option>
-            <option value="USDC">USDC</option>
+            {Object.keys(TOKEN_SYMBOL_MAP).map((sym) => (
+              <option key={sym} value={sym}>
+                {sym}
+              </option>
+            ))}
           </select>
-
           <button
-            onClick={handlePayment}
-            className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg w-full transition"
+            onClick={handleGenerateQR}
+            className="bg-blue-600 hover:bg-blue-700 text-white w-full py-2 rounded-lg mt-2 transition"
           >
-            Enviar Pago
+            Generar QR
           </button>
         </div>
-      )}
+
+        {/* MOSTRAR QR */}
+        {qrData && (
+          <motion.div
+            className="flex justify-center mb-4"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+          >
+            <QRCode value={qrData} size={180} />
+          </motion.div>
+        )}
+
+        {/* ESCANEAR QR (simulado para demo) */}
+        <div className="mb-4 text-center">
+          <button
+            onClick={() => handleScanQR(qrData)}
+            className="bg-green-600 hover:bg-green-700 text-white w-full py-2 rounded-lg transition"
+          >
+            Escanear este QR (simulado)
+          </button>
+        </div>
+
+        {/* BOTÓN DE PAGO */}
+        <button
+          onClick={handlePayment}
+          disabled={loading}
+          className={`w-full py-2 rounded-lg ${
+            loading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-purple-600 hover:bg-purple-700"
+          } text-white transition`}
+        >
+          {loading ? "Procesando..." : "Pagar ahora"}
+        </button>
+
+        <p className="mt-4 text-sm text-gray-600 text-center">{status}</p>
+      </motion.div>
     </div>
   );
 }
 
-// 🔁 Alias opcional para compatibilidad con importaciones antiguas
+// ✅ Alias opcional para compatibilidad con importaciones antiguas
 export const PayBlockWithQR = PayComponent;
