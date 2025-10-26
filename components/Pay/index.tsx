@@ -79,14 +79,12 @@ function parseQrContent(text: string) {
   return null;
 }
 
-// === TIPO DE TOKENS ===
-type ExtendedTokens = "WLD" | "USDC" | "MD" | string;
-
 // === COMPONENTE PRINCIPAL ===
 export const PayBlockWithQR = () => {
+  type TokenKey = "MD" | "WLD" | "USDC";
+  const [selectedToken, setSelectedToken] = useState<TokenKey>("MD");
   const [scanning, setScanning] = useState(false);
   const [detected, setDetected] = useState<{ address: string; amount?: string } | null>(null);
-  const [selectedToken, setSelectedToken] = useState<ExtendedTokens>("MD");
 
   const readerRef = useRef<Html5Qrcode | null>(null);
   const html5QrId = "html5qr-reader";
@@ -176,7 +174,7 @@ export const PayBlockWithQR = () => {
         to,
         tokens: [
           {
-            symbol: selectedToken,
+            symbol: tokenInfo.symbol,
             token_address: tokenInfo.address,
             token_amount: tokenAmount,
           },
@@ -230,7 +228,7 @@ export const PayBlockWithQR = () => {
         <label className="font-semibold mr-2">Token:</label>
         <select
           value={selectedToken}
-          onChange={(e) => setSelectedToken(e.target.value as ExtendedTokens)}
+          onChange={(e) => setSelectedToken(e.target.value as TokenKey)}
           className="border p-2 rounded"
         >
           <option value="MD">MD</option>
@@ -304,7 +302,7 @@ const ManualSendForm = ({
   selectedToken,
 }: {
   onSend: (to: string, amount?: string) => Promise<any>;
-  selectedToken: ExtendedTokens;
+  selectedToken: "MD" | "WLD" | "USDC";
 }) => {
   const [to, setTo] = useState("");
   const [amount, setAmount] = useState("");
