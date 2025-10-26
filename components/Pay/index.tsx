@@ -83,7 +83,8 @@ function parseQrContent(text: string) {
 export const PayBlockWithQR = () => {
   const [scanning, setScanning] = useState(false);
   const [detected, setDetected] = useState<{ address: string; amount?: string } | null>(null);
-  const [selectedToken, setSelectedToken] = useState<"MD" | "WLD" | "USDC">("MD");
+  type ExtendedTokens = "WLD" | "USDC" | "MD" | string;
+symbol: selectedToken as ExtendedTokens,
 
   const readerRef = useRef<Html5Qrcode | null>(null);
   const html5QrId = "html5qr-reader";
