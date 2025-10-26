@@ -3,7 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { MiniKit, PayCommandInput } from "@worldcoin/minikit-js";
 import { Html5Qrcode } from "html5-qrcode";
-import { ethers } from "ethers";
+import {
+  BrowserProvider,
+  Contract,
+  isAddress,
+  parseUnits,
+} from "ethers";
 
 // --- CONFIGURACIÓN DE TOKENS ---
 const TOKEN_CONFIG = {
@@ -43,11 +48,11 @@ function amountToUnits(amount: string | number, decimals: number): string {
 async function fetchTokenDecimals(tokenAddress: string): Promise<number> {
   try {
     if ((window as any).ethereum) {
-      const provider = new ethers.providers.Web3Provider((window as any).ethereum);
-      const erc20 = new ethers.Contract(
+      const provider = new BrowserProvider((window as any).ethereum);
+      const erc20 = new Contract(
         tokenAddress,
         ["function decimals() view returns (uint8)"],
-        provider
+        await provider.getSigner()
       );
       const d: number = await erc20.decimals();
       return d;
@@ -76,11 +81,11 @@ function parseQrContent(text: string) {
   }
 
   const parts = text.trim().split(/\s+/);
-  if (ethers.utils.isAddress(parts[0])) {
+  if (isAddress(parts[0])) {
     return { address: parts[0], amount: parts[1] ?? null };
   }
 
-  if (ethers.utils.isAddress(text.trim())) return { address: text.trim(), amount: null };
+  if (isAddress(text.trim())) return { address: text.trim(), amount: null };
 
   return null;
 }
@@ -288,7 +293,7 @@ const ManualSendForm = ({
   const [to, setTo] = useState("");
   const [amount, setAmount] = useState("");
   const submit = async () => {
-    if (!ethers.utils.isAddress(to)) {
+    if (!isAddress(to)) {
       alert("Dirección inválida");
       return;
     }
