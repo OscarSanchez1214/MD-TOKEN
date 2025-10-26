@@ -8,7 +8,7 @@ export default function Home() {
       <div className="w-full max-w-md space-y-6 text-center">
         <SignIn />
         <VerifyBlock />
-        <PayBlockWithQR />
+        <PayComponent />
       </div>
     </main>
   );
