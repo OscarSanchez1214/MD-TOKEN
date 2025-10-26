@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { MiniKit } from "@worldcoin/minikit-js";
 import { ethers } from "ethers";
 
-// ✅ Mapa de tokens actualizado con tus contratos
+// ✅ Mapa de tokens con tus contratos reales
 const TOKEN_SYMBOL_MAP: Record<string, string> = {
   MD: "0x6335c1F2967A85e98cCc89dA0c87e672715284dB",
   WLD: "0x2cFc85d8E48F8EAB294be644d9E25C3030863003",
@@ -39,14 +39,14 @@ export default function Pay() {
   const handlePayment = async () => {
     try {
       if (!scannedAddress) {
-        alert("Por favor escanea una dirección válida antes de pagar.");
+        alert("Por favor ingresa una dirección válida antes de pagar.");
         return;
       }
 
       const minikit = new MiniKit();
 
-      // ✅ Compatible con la versión 1.3.0: usa actions.pay()
-      await minikit.actions.pay({
+      // ✅ En la versión 1.3.0 se usa directamente .pay()
+      await minikit.pay({
         to: scannedAddress,
         token: TOKEN_SYMBOL_MAP[token],
         amount: amount.toString(),
