@@ -55,17 +55,8 @@ export default function BlogPage() {
         </div>
       </div>
 
-      {/* Enlaces adicionales */}
+      {/* Enlaces adicionales (botón de visitar eliminado) */}
       <div className="mt-10 flex flex-col gap-4 items-center">
-        <a
-          href="https://edicionesmd.com/publicaciones/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700"
-        >
-          Visita nuestro blog
-        </a>
-
         <Link href="/">
           <span className="text-blue-600 hover:underline">← Volver al inicio</span>
         </Link>
@@ -73,5 +64,7 @@ export default function BlogPage() {
     </div>
   );
 }
+
+
 
 
