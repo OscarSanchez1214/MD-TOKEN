@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { PayBlockWithQR } from "@/components/Pay";
+import PayComponent from "@/components/Pay";
 import recomendaciones from "@/data/recomendaciones.json";
 
 const hoy = new Date().toISOString().split("T")[0];
@@ -43,7 +43,7 @@ export default function BlogPage() {
 
         {/* Componente QR + envío */}
         <div className="flex justify-center">
-          <PayBlockWithQR />
+          <PayComponent />
         </div>
 
         {/* Dirección destino visible (opcional) */}
@@ -64,6 +64,7 @@ export default function BlogPage() {
     </div>
   );
 }
+
 
 
 
