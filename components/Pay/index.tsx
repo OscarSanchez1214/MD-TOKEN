@@ -7,23 +7,13 @@ import { BrowserProvider, Contract, isAddress } from "ethers";
 
 // === CONFIGURACIÓN DE TOKENS ===
 const TOKEN_CONFIG = {
-  WLD: {
-    symbol: "WLD",
-    address: "0x2cFc85d8E48F8EAB294be644d9E25C3030863003",
-  },
-  USDC: {
-    symbol: "USDC",
-    address: "0x79A02482A880bCE3F13e09Da970dC34db4CD24d1",
-  },
-  MD: {
-    symbol: "MD",
-    address: "0x6335c1F2967A85e98cCc89dA0c87e672715284dB",
-  },
+  WLD: { symbol: "WLD", address: "0x2cFc85d8E48F8EAB294be644d9E25C3030863003" },
+  USDC: { symbol: "USDC", address: "0x79A02482A880bCE3F13e09Da970dC34db4CD24d1" },
+  MD: { symbol: "MD", address: "0x6335c1F2967A85e98cCc89dA0c87e672715284dB" },
 };
 
 const DEFAULT_DECIMALS = 18;
 
-// Mapeo TokenKey a Tokens de Worldcoin
 type TokenKey = "MD" | "WLD" | "USDC";
 const TOKEN_SYMBOL_MAP: Record<TokenKey, Tokens> = {
   MD: "MD",
@@ -34,11 +24,7 @@ const TOKEN_SYMBOL_MAP: Record<TokenKey, Tokens> = {
 // === FUNCIONES AUXILIARES ===
 function amountToUnits(amount: string | number, decimals: number): string {
   const amtStr = typeof amount === "number" ? amount.toString() : amount;
-  if (!/^\d+(\.\d+)?$/.test(amtStr)) throw new Error("Formato de monto inválido");
   const [wholePart, fractionPart = ""] = amtStr.split(".");
-  if (fractionPart.length > decimals) {
-    throw new Error(`Más decimales de los permitidos: ${decimals}`);
-  }
   const fractionPadded = fractionPart.padEnd(decimals, "0");
   const wholeBig = BigInt(wholePart);
   const fractionBig = BigInt(fractionPadded || "0");
@@ -49,13 +35,8 @@ async function fetchTokenDecimals(tokenAddress: string): Promise<number> {
   try {
     if ((window as any).ethereum) {
       const provider = new BrowserProvider((window as any).ethereum);
-      const erc20 = new Contract(
-        tokenAddress,
-        ["function decimals() view returns (uint8)"],
-        await provider.getSigner()
-      );
-      const d: number = await erc20.decimals();
-      return d;
+      const erc20 = new Contract(tokenAddress, ["function decimals() view returns (uint8)"], await provider.getSigner());
+      return await erc20.decimals();
     }
   } catch (e) {
     console.warn("No se pudo leer decimals desde provider:", e);
@@ -67,7 +48,7 @@ function parseQrContent(text: string) {
   try {
     const j = JSON.parse(text);
     if (j.address) return { address: j.address, amount: j.amount?.toString() ?? null };
-  } catch (e) {}
+  } catch {}
 
   if (text.startsWith("ethereum:") || text.startsWith("wc:") || text.startsWith("md:")) {
     const withoutScheme = text.split(":")[1] ?? text;
@@ -78,12 +59,8 @@ function parseQrContent(text: string) {
   }
 
   const parts = text.trim().split(/\s+/);
-  if (isAddress(parts[0])) {
-    return { address: parts[0], amount: parts[1] ?? null };
-  }
-
+  if (isAddress(parts[0])) return { address: parts[0], amount: parts[1] ?? null };
   if (isAddress(text.trim())) return { address: text.trim(), amount: null };
-
   return null;
 }
 
@@ -98,17 +75,10 @@ export const PayBlockWithQR = () => {
 
   useEffect(() => {
     return () => {
-      const stopReader = async () => {
-        if (readerRef.current) {
-          try {
-            await readerRef.current.stop();
-            await readerRef.current.clear();
-          } catch (error) {
-            console.warn("Error al limpiar lector QR:", error);
-          }
-        }
-      };
-      stopReader();
+      if (readerRef.current) {
+        readerRef.current.stop().catch(() => {});
+        readerRef.current.clear().catch(() => {});
+      }
     };
   }, []);
 
@@ -118,42 +88,24 @@ export const PayBlockWithQR = () => {
     const html5Qr = new Html5Qrcode(html5QrId, false);
     readerRef.current = html5Qr;
 
-    try {
-      await html5Qr.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
-        (decodedText) => {
-          const parsed = parseQrContent(decodedText);
-          if (parsed?.address) {
-            setDetected(parsed);
-            html5Qr
-              .stop()
-              .then(() => setScanning(false))
-              .catch(() => setScanning(false));
-          } else {
-            console.warn("QR no contiene dirección válida:", decodedText);
-          }
-        },
-        (errorMessage) => {
-          console.warn("Error escaneando QR:", errorMessage);
+    await html5Qr.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: 250 },
+      (decodedText) => {
+        const parsed = parseQrContent(decodedText);
+        if (parsed?.address) {
+          setDetected(parsed);
+          html5Qr.stop().then(() => setScanning(false)).catch(() => setScanning(false));
         }
-      );
-    } catch (err) {
-      console.error("Error al iniciar scanner:", err);
-      setScanning(false);
-    }
+      }
+    );
   };
 
   const stopScanner = async () => {
     if (readerRef.current) {
-      try {
-        await readerRef.current.stop();
-        await readerRef.current.clear();
-      } catch (e) {
-        console.warn("Error al detener escáner:", e);
-      } finally {
-        readerRef.current = null;
-      }
+      await readerRef.current.stop().catch(() => {});
+      await readerRef.current.clear().catch(() => {});
+      readerRef.current = null;
     }
     setScanning(false);
   };
@@ -162,16 +114,12 @@ export const PayBlockWithQR = () => {
     try {
       const res = await fetch(`/api/initiate-payment`, { method: "POST" });
       const { id } = await res.json();
-
       const tokenInfo = TOKEN_CONFIG[selectedToken];
       const decimals = await fetchTokenDecimals(tokenInfo.address);
 
       if (!amountHuman) {
         amountHuman = prompt(`Ingresa el monto en ${selectedToken}`) || undefined;
-        if (!amountHuman) {
-          alert("Monto no ingresado, cancelando.");
-          return null;
-        }
+        if (!amountHuman) return null;
       }
 
       const tokenAmount = amountToUnits(amountHuman, decimals);
@@ -181,7 +129,7 @@ export const PayBlockWithQR = () => {
         to,
         tokens: [
           {
-            symbol: TOKEN_SYMBOL_MAP[selectedToken], // fix aplicado
+            symbol: TOKEN_SYMBOL_MAP[selectedToken],
             token_address: tokenInfo.address,
             token_amount: tokenAmount,
           },
@@ -194,10 +142,9 @@ export const PayBlockWithQR = () => {
         return null;
       }
 
-      const response = await MiniKit.commandsAsync.pay(payload);
-      return response;
+      return await MiniKit.commandsAsync.pay(payload);
     } catch (e) {
-      console.error("Error enviando pago:", e);
+      console.error(e);
       alert("Error al intentar enviar el pago.");
       return null;
     }
@@ -205,10 +152,7 @@ export const PayBlockWithQR = () => {
 
   const handleUseDetected = async () => {
     if (!detected) return;
-    const to = detected.address;
-    const amount = detected.amount ?? undefined;
-
-    const respuesta = await enviarPago(to, amount);
+    const respuesta = await enviarPago(detected.address, detected.amount ?? undefined);
     const resultado = respuesta?.finalPayload;
     if (!resultado) return;
 
@@ -219,8 +163,7 @@ export const PayBlockWithQR = () => {
         body: JSON.stringify({ payload: resultado }),
       });
       const json = await confirmRes.json();
-      if (json.success) alert(`✅ Pago ${selectedToken} realizado con éxito`);
-      else alert("❌ El pago no se pudo confirmar en servidor");
+      alert(json.success ? `✅ Pago ${selectedToken} realizado con éxito` : "❌ El pago no se pudo confirmar en servidor");
     } else {
       alert("❌ El pago fue cancelado o falló");
     }
@@ -230,7 +173,6 @@ export const PayBlockWithQR = () => {
     <div className="p-4">
       <h2 className="text-xl font-bold mb-2">Enviar Token (MD, WLD, USDC)</h2>
 
-      {/* Selector de token */}
       <div className="mb-4">
         <label className="font-semibold mr-2">Token:</label>
         <select
@@ -244,21 +186,14 @@ export const PayBlockWithQR = () => {
         </select>
       </div>
 
-      {/* Escáner QR */}
       <div className="mb-3">
         {!scanning && (
-          <button
-            onClick={startScanner}
-            className="bg-green-600 text-white px-3 py-2 rounded mr-2"
-          >
+          <button onClick={startScanner} className="bg-green-600 text-white px-3 py-2 rounded mr-2">
             Iniciar escáner QR
           </button>
         )}
         {scanning && (
-          <button
-            onClick={stopScanner}
-            className="bg-red-600 text-white px-3 py-2 rounded mr-2"
-          >
+          <button onClick={stopScanner} className="bg-red-600 text-white px-3 py-2 rounded mr-2">
             Detener escáner
           </button>
         )}
@@ -268,23 +203,13 @@ export const PayBlockWithQR = () => {
 
       {detected ? (
         <div className="border p-3 rounded">
-          <p>
-            Dirección detectada: <code>{detected.address}</code>
-          </p>
-          <p>
-            Monto detectado: <strong>{detected.amount ?? "No especificado"}</strong>
-          </p>
+          <p>Dirección detectada: <code>{detected.address}</code></p>
+          <p>Monto detectado: <strong>{detected.amount ?? "No especificado"}</strong></p>
           <div className="mt-2">
-            <button
-              onClick={handleUseDetected}
-              className="bg-blue-600 text-white px-3 py-2 rounded mr-2"
-            >
+            <button onClick={handleUseDetected} className="bg-blue-600 text-white px-3 py-2 rounded mr-2">
               Enviar {selectedToken}
             </button>
-            <button
-              onClick={() => setDetected(null)}
-              className="bg-gray-300 px-3 py-2 rounded"
-            >
+            <button onClick={() => setDetected(null)} className="bg-gray-300 px-3 py-2 rounded">
               Escanear otro
             </button>
           </div>
@@ -295,15 +220,53 @@ export const PayBlockWithQR = () => {
 
       <hr className="my-3" />
 
-      <div>
-        <p className="text-sm">También puedes ingresar manualmente:</p>
-        <ManualSendForm onSend={enviarPago} selectedToken={selectedToken} />
-      </div>
+      <ManualSendForm onSend={enviarPago} selectedToken={selectedToken} />
     </div>
   );
 };
 
 // === FORMULARIO MANUAL ===
-const ManualSendForm = ({
-  onSend,
- 
+type ManualSendProps = {
+  onSend: (to: string, amount?: string) => Promise<any>;
+  selectedToken: TokenKey;
+};
+
+const ManualSendForm = ({ onSend, selectedToken }: ManualSendProps) => {
+  const [to, setTo] = useState("");
+  const [amount, setAmount] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!to) return alert("Ingresa una dirección válida");
+    await onSend(to, amount || undefined);
+    setTo("");
+    setAmount("");
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="border p-3 rounded">
+      <div className="mb-2">
+        <label className="font-semibold mr-2">Dirección:</label>
+        <input
+          type="text"
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
+          className="border p-1 rounded w-full"
+        />
+      </div>
+      <div className="mb-2">
+        <label className="font-semibold mr-2">Monto:</label>
+        <input
+          type="text"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder={`En ${selectedToken}`}
+          className="border p-1 rounded w-full"
+        />
+      </div>
+      <button type="submit" className="bg-blue-600 text-white px-3 py-2 rounded">
+        Enviar {selectedToken}
+      </button>
+    </form>
+  );
+};
