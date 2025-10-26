@@ -6,19 +6,12 @@ import { Html5Qrcode } from "html5-qrcode";
 import { BrowserProvider, Contract, isAddress } from "ethers";
 
 // === CONFIGURACIÓN DE TOKENS ===
-const TOKEN_CONFIG = {
-  WLD: {
-    symbol: "WLD",
-    address: "0x2cFc85d8E48F8EAB294be644d9E25C3030863003",
-  },
-  USDC: {
-    symbol: "USDC",
-    address: "0x79A02482A880bCE3F13e09Da970dC34db4CD24d1",
-  },
-  MD: {
-    symbol: "MD",
-    address: "0x6335c1F2967A85e98cCc89dA0c87e672715284dB",
-  },
+type TokenKey = "MD" | "WLD" | "USDC";
+
+const TOKEN_CONFIG: Record<TokenKey, { symbol: TokenKey; address: string }> = {
+  WLD: { symbol: "WLD", address: "0x2cFc85d8E48F8EAB294be644d9E25C3030863003" },
+  USDC: { symbol: "USDC", address: "0x79A02482A880bCE3F13e09Da970dC34db4CD24d1" },
+  MD: { symbol: "MD", address: "0x6335c1F2967A85e98cCc89dA0c87e672715284dB" },
 };
 
 const DEFAULT_DECIMALS = 18;
@@ -81,10 +74,9 @@ function parseQrContent(text: string) {
 
 // === COMPONENTE PRINCIPAL ===
 export const PayBlockWithQR = () => {
-  type TokenKey = "MD" | "WLD" | "USDC";
-  const [selectedToken, setSelectedToken] = useState<TokenKey>("MD");
   const [scanning, setScanning] = useState(false);
   const [detected, setDetected] = useState<{ address: string; amount?: string } | null>(null);
+  const [selectedToken, setSelectedToken] = useState<TokenKey>("MD");
 
   const readerRef = useRef<Html5Qrcode | null>(null);
   const html5QrId = "html5qr-reader";
@@ -174,7 +166,7 @@ export const PayBlockWithQR = () => {
         to,
         tokens: [
           {
-            symbol: tokenInfo.symbol,
+            symbol: tokenInfo.symbol as TokenKey,
             token_address: tokenInfo.address,
             token_amount: tokenAmount,
           },
@@ -302,7 +294,7 @@ const ManualSendForm = ({
   selectedToken,
 }: {
   onSend: (to: string, amount?: string) => Promise<any>;
-  selectedToken: "MD" | "WLD" | "USDC";
+  selectedToken: TokenKey;
 }) => {
   const [to, setTo] = useState("");
   const [amount, setAmount] = useState("");
