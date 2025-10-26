@@ -1,165 +1,128 @@
 "use client";
 
-import { useState } from "react";
-import { MiniKit } from "@worldcoin/minikit-js";
+import React, { useState } from "react";
 import QRCode from "react-qr-code";
 import { motion } from "framer-motion";
+import { MiniKit } from "@worldcoin/minikit-js";
+import { ethers } from "ethers";
 
+// ✅ Mapa de tokens actualizado con tus contratos
 const TOKEN_SYMBOL_MAP: Record<string, string> = {
-  USDC: "USDC",
-  WLD: "WLD",
-  ETH: "ETH",
-  MD: "MD",
+  MD: "0x6335c1F2967A85e98cCc89dA0c87e672715284dB",
+  WLD: "0x2cFc85d8E48F8EAB294be644d9E25C3030863003",
+  USDC: "0x79A02482A880bCE3F13e09Da970dC34db4CD24d1",
 };
 
-export default function PayComponent() {
+export default function Pay() {
   const [amount, setAmount] = useState<number>(0);
-  const [token, setToken] = useState<string>("USDC");
-  const [address, setAddress] = useState<string>("");
+  const [token, setToken] = useState<string>("MD");
+  const [qrValue, setQrValue] = useState<string>("");
   const [scannedAddress, setScannedAddress] = useState<string>("");
-  const [qrData, setQrData] = useState<string>("");
-  const [status, setStatus] = useState<string>("Esperando datos...");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [status, setStatus] = useState<string>("Esperando pago...");
 
   const handleGenerateQR = () => {
-    if (!address || !amount) {
-      alert("Por favor ingresa la dirección y el monto.");
+    if (!amount || amount <= 0) {
+      alert("Por favor ingresa un monto válido.");
       return;
     }
 
-    const qrInfo = JSON.stringify({ address, amount, token });
-    setQrData(qrInfo);
-    setStatus("QR generado, listo para escanear.");
-  };
+    const qrData = JSON.stringify({
+      to: scannedAddress || "0x0000000000000000000000000000000000000000",
+      token,
+      amount,
+    });
 
-  const handleScanQR = (data: string) => {
-    try {
-      const parsed = JSON.parse(data);
-      if (parsed.address) {
-        setScannedAddress(parsed.address);
-        setAmount(parsed.amount);
-        setToken(parsed.token);
-        setStatus("Datos escaneados correctamente ✅");
-      }
-    } catch {
-      alert("Error al leer el código QR.");
-    }
+    setQrValue(qrData);
+    setStatus("QR generado, listo para escanear con World App.");
   };
 
   const handlePayment = async () => {
-    if (!scannedAddress || !amount) {
-      alert("Escanea un QR válido o ingresa los datos del pago.");
-      return;
-    }
-
-    setLoading(true);
-    setStatus("Procesando pago...");
-
     try {
+      if (!scannedAddress) {
+        alert("Por favor escanea una dirección válida antes de pagar.");
+        return;
+      }
+
       const minikit = new MiniKit();
 
-      // ✅ Compatible con la versión 1.3.0 (usa pay)
-      await minikit.pay({
+      // ✅ Compatible con la versión 1.3.0: usa actions.pay()
+      await minikit.actions.pay({
         to: scannedAddress,
         token: TOKEN_SYMBOL_MAP[token],
         amount: amount.toString(),
+        description: `Pago en ${token} desde Mundo Didáctico`,
       });
 
-      setStatus(`✅ Pago de ${amount} ${token} enviado a ${scannedAddress}`);
-    } catch (err: any) {
-      console.error(err);
-      setStatus("❌ Error al procesar el pago. Ver consola.");
-    } finally {
-      setLoading(false);
+      setStatus("✅ Pago enviado con éxito");
+    } catch (error: any) {
+      console.error("Error al realizar el pago:", error);
+      setStatus("❌ Error al realizar el pago");
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-white p-6">
       <motion.div
-        className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md"
-        initial={{ opacity: 0, y: 20 }}
+        className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md"
+        initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.5 }}
       >
-        <h2 className="text-xl font-semibold text-center mb-4 text-gray-800">
-          💸 Enviar o Recibir Tokens
-        </h2>
+        <h1 className="text-2xl font-bold text-center text-blue-700 mb-6">
+          💠 Mundo Didáctico - Pagos con World ID
+        </h1>
 
-        {/* FORMULARIO PARA GENERAR QR */}
-        <div className="mb-4 space-y-2">
-          <input
-            type="text"
-            placeholder="Dirección destino"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            className="w-full border rounded-lg p-2 text-sm"
-          />
+        <div className="space-y-4">
           <input
             type="number"
             placeholder="Monto"
             value={amount}
-            onChange={(e) => setAmount(parseFloat(e.target.value))}
-            className="w-full border rounded-lg p-2 text-sm"
+            onChange={(e) => setAmount(Number(e.target.value))}
+            className="w-full border border-gray-300 rounded-lg p-3"
           />
+
           <select
             value={token}
             onChange={(e) => setToken(e.target.value)}
-            className="w-full border rounded-lg p-2 text-sm"
+            className="w-full border border-gray-300 rounded-lg p-3"
           >
-            {Object.keys(TOKEN_SYMBOL_MAP).map((sym) => (
-              <option key={sym} value={sym}>
-                {sym}
-              </option>
-            ))}
+            <option value="MD">MD</option>
+            <option value="WLD">WLD</option>
+            <option value="USDC">USDC</option>
           </select>
+
+          <input
+            type="text"
+            placeholder="Dirección del destinatario"
+            value={scannedAddress}
+            onChange={(e) => setScannedAddress(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg p-3"
+          />
+
           <button
             onClick={handleGenerateQR}
-            className="bg-blue-600 hover:bg-blue-700 text-white w-full py-2 rounded-lg mt-2 transition"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition"
           >
             Generar QR
           </button>
-        </div>
 
-        {/* MOSTRAR QR */}
-        {qrData && (
-          <motion.div
-            className="flex justify-center mb-4"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-          >
-            <QRCode value={qrData} size={180} />
-          </motion.div>
-        )}
+          {qrValue && (
+            <div className="flex flex-col items-center mt-6">
+              <QRCode value={qrValue} size={180} />
+              <p className="mt-2 text-gray-500 text-sm">Escanea con World App</p>
+            </div>
+          )}
 
-        {/* ESCANEAR QR (simulado para demo) */}
-        <div className="mb-4 text-center">
           <button
-            onClick={() => handleScanQR(qrData)}
-            className="bg-green-600 hover:bg-green-700 text-white w-full py-2 rounded-lg transition"
+            onClick={handlePayment}
+            className="w-full mt-4 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
           >
-            Escanear este QR (simulado)
+            Enviar Pago
           </button>
+
+          <p className="text-center text-gray-700 mt-4 font-medium">{status}</p>
         </div>
-
-        {/* BOTÓN DE PAGO */}
-        <button
-          onClick={handlePayment}
-          disabled={loading}
-          className={`w-full py-2 rounded-lg ${
-            loading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-purple-600 hover:bg-purple-700"
-          } text-white transition`}
-        >
-          {loading ? "Procesando..." : "Pagar ahora"}
-        </button>
-
-        <p className="mt-4 text-sm text-gray-600 text-center">{status}</p>
       </motion.div>
     </div>
   );
 }
-
-// ✅ Alias opcional para compatibilidad con importaciones antiguas
-export const PayBlockWithQR = PayComponent;
