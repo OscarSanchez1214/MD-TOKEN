@@ -1,91 +1,93 @@
 "use client";
 
-import {
-  MiniKit,
-  tokenToDecimals,
-  Tokens,
-  PayCommandInput,
-} from "@worldcoin/minikit-js";
+import Image from "next/image";
+import PayComponent from "@/components/Pay";
+import { SignIn } from "@/components/SignIn";
+import recomendaciones from "@/data/recomendaciones.json";
 
-const enviarPago = async () => {
-  try {
-    const res = await fetch(`/api/initiate-payment`, {
-      method: "POST",
-    });
+// Dirección oficial de recepción de donaciones
+const RECEIVER_ADDRESS = "0x1bd597c5296b6a25f72ed557d5b85bff41186c28";
+const hoy = new Date().toISOString().split("T")[0];
+const recomendacionDelDia = recomendaciones.find((r) => r.fecha === hoy);
 
-    const { id } = await res.json();
-    console.log("ID de pago:", id);
-
-    const payload: PayCommandInput = {
-      reference: id,
-      to: "0x1bd597c5296b6a25f72ed557d5b85bff41186c28", // Dirección de prueba
-      tokens: [
-        {
-          symbol: Tokens.WLD,
-          token_amount: tokenToDecimals(0.5, Tokens.WLD).toString(),
-        },
-        {
-          symbol: Tokens.USDCE,
-          token_amount: tokenToDecimals(0.1, Tokens.USDCE).toString(),
-        },
-      ],
-      description: "Este es un pago de prueba",
-    };
-
-    if (MiniKit.isInstalled()) {
-      return await MiniKit.commandsAsync.pay(payload);
-    }
-
-    console.warn("MiniKit no está instalado");
-    return null;
-  } catch (error: unknown) {
-    console.error("Error al enviar el pago:", error);
-    return null;
-  }
-};
-
-const manejarPago = async () => {
-  if (!MiniKit.isInstalled()) {
-    alert("Abre esta MiniApp desde World App para realizar el pago.");
-    return;
-  }
-
-  const respuestaPago = await enviarPago();
-  const resultado = respuestaPago?.finalPayload;
-
-  if (!resultado) return;
-
-  if (resultado.status === "success") {
-    const res = await fetch(`/api/confirm-payment`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ payload: resultado }),
-    });
-
-    const confirmacion = await res.json();
-
-    if (confirmacion.success) {
-      alert("✅ ¡Pago realizado con éxito!");
-      console.log("Pago exitoso");
-    } else {
-      alert("❌ El pago no se pudo confirmar.");
-      console.log("Fallo en la confirmación");
-    }
-  } else {
-    alert("❌ El pago fue cancelado o falló.");
-  }
-};
-
-export const PayBlock = () => {
+export default function Home() {
   return (
-    <div className="flex flex-col items-center mt-6">
-      <h2 className="text-xl font-bold mb-2">Realizar Pago</h2>
-      <button
-        onClick={manejarPago}
-        className="bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        Enviar Pago
-      </button>
-    </div>
+    <main
+      className="min-h-screen flex flex-col items-center justify-start bg-gradient-to-b from-blue-50 to-white
+                 px-4 py-8 text-gray-800 relative"
+      style={{
+        backgroundImage: "url('/fondo-md.jpg')", // coloca aquí tu imagen en /public/
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* Logo principal */}
+      <div className="mt-8 mb-6 flex flex-col items-center">
+        <Image
+          src="/logo-md.png" // agrega este logo en la carpeta /public/
+          alt="Logo MD"
+          width={90}
+          height={90}
+          className="rounded-full shadow-md"
+        />
+        <h1 className="mt-4 text-2xl font-semibold text-[#003A70]">
+          Educación Emocional y Financiera
+        </h1>
+      </div>
+
+      {/* Sección de acceso o autenticación */}
+      <div className="w-full max-w-md bg-white/90 rounded-2xl shadow-lg p-6 mb-8 text-center">
+        <SignIn />
+
+        <div className="border-t border-gray-200 my-4" />
+
+        {/* Bloque de recomendación */}
+        <h2 className="text-xl font-semibold text-[#003A70] mb-2">
+          Recomendación del Día 💡
+        </h2>
+        {recomendacionDelDia ? (
+          <article className="bg-gray-50 p-4 rounded-xl shadow-sm mb-4">
+            <h3 className="font-semibold text-[#003A70] mb-1">
+              {recomendacionDelDia.titulo}
+            </h3>
+            <p className="text-sm text-gray-700 leading-relaxed">
+              {recomendacionDelDia.contenido}
+            </p>
+          </article>
+        ) : (
+          <p className="text-gray-500 text-sm mb-4">
+            No hay recomendación disponible para hoy.
+          </p>
+        )}
+
+        {/* Bloque de donaciones */}
+        <div className="border-t border-gray-200 mt-4 pt-4">
+          <h3 className="text-lg font-semibold text-[#003A70] mb-3">
+            Enviar Donación 💙
+          </h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Agradecemos tu apoyo. Puedes donar en <strong>WLD</strong> o{" "}
+            <strong>USDC</strong> directamente.
+          </p>
+
+          <PayComponent />
+
+          <div className="mt-4 text-xs text-gray-500 break-all">
+            Dirección oficial:{" "}
+            <code className="bg-gray-100 px-2 py-1 rounded">
+              {RECEIVER_ADDRESS}
+            </code>
+          </div>
+        </div>
+      </div>
+
+      {/* Información complementaria */}
+      <footer className="text-center text-gray-500 text-sm mt-auto pb-4">
+        Tokens soportados: <br />
+        💠 MD – 0x6335c1F2967A85e98cCc89dA0c87e672715284dB <br />
+        🌐 WLD – 0x2cFc85d8E48F8EAB294be644d9E25C3030863003 <br />
+        💵 USDC – 0x79A02482A880bCE3F13e09Da970dC34db4CD24d1
+      </footer>
+    </main>
   );
-};
+}
