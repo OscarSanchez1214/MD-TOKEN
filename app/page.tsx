@@ -19,20 +19,7 @@ export default function Home() {
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
-    >
-      {/* Logo principal */}
-      <div className="mt-8 mb-6 flex flex-col items-center">
-        <Image
-          src="/logo-md.png" // agrega este logo en la carpeta /public/
-          alt="Logo MD"
-          width={90}
-          height={90}
-          className="rounded-full shadow-md"
-        />
-        <h1 className="mt-4 text-2xl font-semibold text-[#003A70]">
-         Home
-        </h1>
-      </div>
+        
 
       {/* Sección de acceso o autenticación */}
       <div className="w-full max-w-md bg-white/90 rounded-2xl shadow-lg p-6 mb-8 text-center">
