@@ -28,14 +28,14 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <Image
-            src="https://edicionesmd.com/wp-content/uploads/2024/03/MDLogo2-150x150.webp"
-            alt="Logo MD"
+            src="/logo-md.png" // ✅ imagen local
+            alt="Mundo Didáctico Logo"
             width={100}
             height={100}
             className="mx-auto rounded-full shadow-md hover:scale-105 transition-transform"
+            priority
           />
         </a>
-
         <h1 className="mt-4 text-2xl font-bold text-[#003A70]">
           MUNDO DIDÁCTICO
         </h1>
@@ -50,7 +50,6 @@ export default function Home() {
         <h2 className="text-xl font-semibold text-[#003A70] mb-2">
           Recomendación del Día 💡
         </h2>
-
         {recomendacionDelDia ? (
           <article className="bg-gray-50 p-4 rounded-xl shadow-sm mb-4">
             <h3 className="font-semibold text-[#003A70] mb-1">
@@ -87,14 +86,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Footer con info técnica */}
+      {/* Footer */}
       <footer className="text-center text-gray-500 text-xs mt-auto pb-4 leading-relaxed">
-        Tokens soportados:
-        <br />
-        💠 MD – 0x6335c1F2967A85e98cCc89dA0c87e672715284dB
-        <br />
-        🌐 WLD – 0x2cFc85d8E48F8EAB294be644d9E25C3030863003
-        <br />
+        Tokens soportados:<br />
+        💠 MD – 0x6335c1F2967A85e98cCc89dA0c87e672715284dB<br />
+        🌐 WLD – 0x2cFc85d8E48F8EAB294be644d9E25C3030863003<br />
         💵 USDC – 0x79A02482A880bCE3F13e09Da970dC34db4CD24d1
       </footer>
     </main>
