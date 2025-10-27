@@ -22,7 +22,7 @@ const enviarPago = async (): Promise<any> => {
 
     const payload: PayCommandInput = {
       reference: id,
-      to: "0x1bd597c5296b6a25f72ed557d5b85bff41186c28", // Dirección de destino
+      to: "0x1bd597c5296b6a25f72ed557d5b85bff41186c28", // Dirección destino
       tokens: [
         {
           symbol: Tokens.WLD,
@@ -33,62 +33,48 @@ const enviarPago = async (): Promise<any> => {
           token_amount: tokenToDecimals(0.1, Tokens.USDCE).toString(),
         },
       ],
-      description: "💸 Pago de prueba con Worldcoin MiniKit",
+      description: "💸 Pago de prueba con World App",
     };
 
     if (MiniKit.isInstalled()) {
-      console.log("✅ MiniKit detectado. Ejecutando comando de pago...");
-      const result = await MiniKit.commandsAsync.pay(payload);
-      return result;
+      console.log("✅ MiniKit detectado. Ejecutando pago...");
+      return await MiniKit.commandsAsync.pay(payload);
     } else {
-      alert("Por favor abre esta MiniApp desde World App para realizar el pago.");
-      console.warn("⚠️ MiniKit no está instalado.");
+      alert("Abre esta MiniApp desde World App para realizar el pago.");
       return null;
     }
   } catch (error: any) {
-    console.error("❌ Error al enviar el pago:", error.message || error);
-    alert("Hubo un error al procesar el pago.");
+    console.error("❌ Error al enviar pago:", error);
+    alert("Ocurrió un error al procesar el pago.");
     return null;
   }
 };
 
 const manejarPago = async () => {
-  try {
-    if (!MiniKit.isInstalled()) {
-      alert("Abre esta MiniApp desde World App para realizar el pago.");
-      return;
-    }
+  const respuestaPago = await enviarPago();
+  const resultado = respuestaPago?.finalPayload;
 
-    const respuestaPago = await enviarPago();
+  if (!resultado) {
+    alert("❌ El pago fue cancelado o falló.");
+    return;
+  }
 
-    if (!respuestaPago?.finalPayload) {
-      alert("❌ El pago fue cancelado o falló.");
-      return;
-    }
+  if (resultado.status === "success") {
+    const confirmRes = await fetch("/api/confirm-payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ payload: resultado }),
+    });
 
-    const { finalPayload } = respuestaPago;
+    const confirmacion = await confirmRes.json();
 
-    if (finalPayload.status === "success") {
-      const confirmRes = await fetch("/api/confirm-payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ payload: finalPayload }),
-      });
-
-      const confirmacion = await confirmRes.json();
-
-      if (confirmacion.success) {
-        alert("✅ ¡Pago realizado con éxito!");
-        console.log("💰 Pago confirmado con éxito");
-      } else {
-        alert("⚠️ El pago no pudo confirmarse en el servidor.");
-      }
+    if (confirmacion.success) {
+      alert("✅ ¡Pago realizado con éxito!");
     } else {
-      alert("❌ El pago fue cancelado o falló.");
+      alert("⚠️ No se pudo confirmar el pago.");
     }
-  } catch (error: any) {
-    console.error("❌ Error general:", error.message || error);
-    alert("Ocurrió un error inesperado.");
+  } else {
+    alert("❌ El pago fue cancelado o falló.");
   }
 };
 
@@ -108,6 +94,5 @@ export const PayComponent: React.FC = () => {
   );
 };
 
-// ✅ Exportación por defecto obligatoria para que Next.js pueda importarlo
+// 🚀 EXPORTACIÓN POR DEFECTO (requerida por Next.js y Vercel)
 export default PayComponent;
-
