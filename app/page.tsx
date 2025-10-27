@@ -13,17 +13,17 @@ export default function Home() {
   return (
     <main
       className="min-h-screen flex flex-col items-center justify-start 
-                 bg-gradient-to-b from-blue-50 to-white px-4 py-10 text-gray-800 relative"
+                 bg-gradient-to-b from-blue-50 to-white px-4 py-8 text-gray-800 relative"
       style={{
-        backgroundImage: "url('/fondo-md.jpg')", // asegúrate de tener la imagen en /public/
+        backgroundImage: "url('/fondo-md.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      {/* Logo y encabezado principal */}
+      {/* Logo y encabezado */}
       <div className="mt-6 mb-8 text-center">
         <Image
-          src="/logo-md.png"
+          src="/logo.png" // asegúrate que esté en /public/logo.png
           alt="Logo MD"
           width={100}
           height={100}
@@ -32,14 +32,13 @@ export default function Home() {
         <h1 className="mt-4 text-2xl font-bold text-[#003A70]">
           MUNDO DIDÁCTICO
         </h1>
-        <p className="text-gray-700 text-sm">
+        <p className="text-gray-600 text-sm mt-1">
           Educación Emocional y Financiera
         </p>
       </div>
 
-      {/* Contenedor principal */}
-      <div className="w-full max-w-md bg-white/90 rounded-2xl shadow-lg p-6 text-center">
-
+      {/* Tarjeta principal */}
+      <div className="w-full max-w-md bg-white/90 rounded-2xl shadow-lg p-6 mb-8 text-center backdrop-blur-sm">
         {/* Bloque de recomendación */}
         <h2 className="text-xl font-semibold text-[#003A70] mb-2">
           Recomendación del Día 💡
@@ -59,14 +58,14 @@ export default function Home() {
           </p>
         )}
 
-        {/* Bloque de donaciones */}
-        <div className="border-t border-gray-200 mt-6 pt-4">
+        {/* Bloque de donación */}
+        <div className="border-t border-gray-200 mt-4 pt-4">
           <h3 className="text-lg font-semibold text-[#003A70] mb-3">
             Enviar Donación 💙
           </h3>
           <p className="text-sm text-gray-600 mb-4">
-            Apoya nuestros contenidos donando en <strong>WLD</strong> o{" "}
-            <strong>USDC</strong>.
+            Agradecemos tu apoyo. Puedes donar en{" "}
+            <strong>MD</strong>, <strong>WLD</strong> o <strong>USDC</strong>.
           </p>
 
           <PayComponent />
@@ -80,11 +79,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Información complementaria */}
-      <footer className="text-center text-gray-500 text-sm mt-auto pb-4">
-        Tokens soportados: <br />
-        💠 MD – 0x6335c1F2967A85e98cCc89dA0c87e672715284dB <br />
-        🌐 WLD – 0x2cFc85d8E48F8EAB294be644d9E25C3030863003 <br />
+      {/* Footer con info técnica */}
+      <footer className="text-center text-gray-500 text-xs mt-auto pb-4 leading-relaxed">
+        Tokens soportados:<br />
+        💠 MD – 0x6335c1F2967A85e98cCc89dA0c87e672715284dB<br />
+        🌐 WLD – 0x2cFc85d8E48F8EAB294be644d9E25C3030863003<br />
         💵 USDC – 0x79A02482A880bCE3F13e09Da970dC34db4CD24d1
       </footer>
     </main>
