@@ -31,7 +31,7 @@ export default function Home() {
           className="rounded-full shadow-md"
         />
         <h1 className="mt-4 text-2xl font-semibold text-[#003A70]">
-          Educación Emocional y Financiera
+         Home
         </h1>
       </div>
 
