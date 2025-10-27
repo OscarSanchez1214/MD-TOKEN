@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import PayComponent from "@/components/Pay";
 import { SignIn } from "@/components/SignIn";
 import recomendaciones from "@/data/recomendaciones.json";
