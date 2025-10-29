@@ -28,7 +28,7 @@ export default function Home() {
           rel="noopener noreferrer"
         >
           <Image
-            src="/logo-md.png" // ✅ imagen local
+            src="/logo-md.png"
             alt="Mundo Didáctico Logo"
             width={100}
             height={100}
@@ -50,14 +50,32 @@ export default function Home() {
         <h2 className="text-xl font-semibold text-[#003A70] mb-2">
           Recomendación del Día 💡
         </h2>
+
         {recomendacionDelDia ? (
           <article className="bg-gray-50 p-4 rounded-xl shadow-sm mb-4">
             <h3 className="font-semibold text-[#003A70] mb-1">
               {recomendacionDelDia.titulo}
             </h3>
-            <p className="text-sm text-gray-700 leading-relaxed">
+            <p className="text-sm text-gray-700 leading-relaxed mb-3">
               {recomendacionDelDia.contenido}
             </p>
+
+            {/* 🔹 Video de YouTube si existe */}
+            {recomendacionDelDia.video ? (
+              <div className="overflow-hidden rounded-xl shadow-sm">
+                <iframe
+                  className="w-full aspect-video rounded-xl"
+                  src={recomendacionDelDia.video}
+                  title={recomendacionDelDia.titulo}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            ) : (
+              <p className="text-xs text-gray-400 mt-2">
+                🎬 Próximamente video relacionado
+              </p>
+            )}
           </article>
         ) : (
           <p className="text-gray-500 text-sm mb-4">
