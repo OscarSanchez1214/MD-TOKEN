@@ -12,22 +12,19 @@ export async function POST(req: NextRequest) {
     const cookieStore = cookies();
     const reference = cookieStore.get("payment-nonce")?.value;
 
-    console.log("📦 Reference guardada:", reference);
-    console.log("📤 Payload recibido:", payload);
+    console.log("📦 [confirm-payment] Reference guardada:", reference);
+    console.log("📤 [confirm-payment] Payload recibido:", payload);
 
-    // Si no existe la referencia, error
     if (!reference) {
-      console.warn("⚠️ No se encontró la referencia en las cookies");
-      return NextResponse.json({ success: false, error: "No reference found" });
+      console.warn("⚠️ [confirm-payment] No se encontró la referencia en cookies");
+      return NextResponse.json({ success: false, error: "No reference" });
     }
 
-    // Verificar coincidencia
     if (payload.reference !== reference) {
-      console.warn("❌ La referencia del payload no coincide con la generada");
+      console.warn("❌ [confirm-payment] La referencia no coincide");
       return NextResponse.json({ success: false, error: "Reference mismatch" });
     }
 
-    // Consultar el estado real de la transacción
     const response = await fetch(
       `https://developer.worldcoin.org/api/v2/minikit/transaction/${payload.transaction_id}?app_id=${process.env.APP_ID}`,
       {
@@ -39,23 +36,22 @@ export async function POST(req: NextRequest) {
     );
 
     if (!response.ok) {
-      console.error("❌ Error al consultar la API de Worldcoin");
+      console.error("❌ [confirm-payment] Error al consultar Worldcoin API");
       return NextResponse.json({ success: false, error: "Worldcoin API error" });
     }
 
     const transaction = await response.json();
-    console.log("💾 Transacción consultada:", transaction);
+    console.log("💾 [confirm-payment] Transacción consultada:", transaction);
 
-    // Confirmar éxito si todo coincide y no falló
-    if (transaction.reference === reference && transaction.status !== "failed") {
-      console.log("✅ Pago confirmado exitosamente");
+    if (transaction.reference === reference && transaction.status === "mined") {
+      console.log("✅ [confirm-payment] Pago confirmado exitosamente");
       return NextResponse.json({ success: true });
     }
 
-    console.warn("⚠️ La transacción no fue exitosa:", transaction.status);
-    return NextResponse.json({ success: false, error: "Transaction failed" });
+    console.warn("⚠️ [confirm-payment] Transacción pendiente o fallida:", transaction.status);
+    return NextResponse.json({ success: false, error: transaction.status });
   } catch (error) {
-    console.error("💥 Error en confirm-payment:", error);
+    console.error("💥 [confirm-payment] Error general:", error);
     return NextResponse.json({ success: false, error: "Server error" });
   }
 }
