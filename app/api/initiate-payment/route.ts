@@ -6,10 +6,12 @@ export async function POST(req: NextRequest) {
   try {
     const uuid = randomUUID().replace(/-/g, "");
 
-    cookies().set({
+    // ✅ Guardamos el nonce temporalmente en cookies (10 minutos)
+    const cookieStore = cookies();
+    cookieStore.set({
       name: "payment-nonce",
       value: uuid,
-      httpOnly: false, // ✅ Debe ser false para que viaje al hacer fetch
+      httpOnly: false, // ⚠️ debe ser false si lo necesitas en cliente
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
@@ -21,6 +23,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ id: uuid });
   } catch (error) {
     console.error("❌ [initiate-payment] Error:", error);
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error interno del servidor" },
+      { status: 500 }
+    );
   }
 }
