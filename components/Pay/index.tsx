@@ -51,27 +51,35 @@ const enviarPago = async (): Promise<any> => {
 };
 
 const manejarPago = async () => {
-  const respuestaPago = await enviarPago();
-  const resultado = respuestaPago?.finalPayload;
+  try {
+    const respuestaPago = await enviarPago();
+    const resultado = respuestaPago?.finalPayload;
 
-  if (!resultado) {
-    alert("❌ El pago fue cancelado o falló.");
-    return;
-  }
+    if (!resultado) {
+      alert("❌ El pago fue cancelado o falló.");
+      return;
+    }
 
-  if (resultado.status === "success") {
-    const confirmRes = await fetch("/api/confirm-payment", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ payload: resultado }),
-    });
+    if (resultado.status === "success") {
+      const confirmRes = await fetch("/api/confirm-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ payload: resultado }),
+      });
 
-    const confirmacion = await confirmRes.json();
+      const confirmacion = await confirmRes.json();
 
-    if (confirmacion.success) {
-      alert("✅ ¡Pago realizado con éxito!");
-     } else {
-    alert("❌ El pago fue cancelado o falló.");
+      if (confirmacion.success) {
+        alert("✅ ¡Pago realizado con éxito!");
+      } else {
+        alert("❌ Error al confirmar el pago en el servidor.");
+      }
+    } else {
+      alert("❌ El pago no se completó correctamente.");
+    }
+  } catch (error) {
+    console.error("❌ Error al manejar el pago:", error);
+    alert("Ocurrió un error al procesar el pago.");
   }
 };
 
