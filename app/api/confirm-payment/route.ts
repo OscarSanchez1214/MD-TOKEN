@@ -7,22 +7,27 @@ interface IRequestPayload {
 }
 
 export async function POST(req: NextRequest) {
-  const { payload } = (await req.json()) as IRequestPayload;
+  try {
+    const { payload } = (await req.json()) as IRequestPayload;
+    const cookieStore = cookies();
+    const reference = cookieStore.get("payment-nonce")?.value;
 
-  // IMPORTANT: Here we should fetch the reference you created in /initiate-payment to ensure the transaction we are verifying is the same one we initiated
-  //   const reference = getReferenceFromDB();
-  const cookieStore = cookies();
+    console.log("📦 Reference guardada:", reference);
+    console.log("📤 Payload recibido:", payload);
 
-  const reference = cookieStore.get("payment-nonce")?.value;
+    // Si no existe la referencia, error
+    if (!reference) {
+      console.warn("⚠️ No se encontró la referencia en las cookies");
+      return NextResponse.json({ success: false, error: "No reference found" });
+    }
 
-  console.log(reference);
+    // Verificar coincidencia
+    if (payload.reference !== reference) {
+      console.warn("❌ La referencia del payload no coincide con la generada");
+      return NextResponse.json({ success: false, error: "Reference mismatch" });
+    }
 
-  if (!reference) {
-    return NextResponse.json({ success: false });
-  }
-  console.log(payload);
-  // 1. Check that the transaction we received from the mini app is the same one we sent
-  if (payload.reference === reference) {
+    // Consultar el estado real de la transacción
     const response = await fetch(
       `https://developer.worldcoin.org/api/v2/minikit/transaction/${payload.transaction_id}?app_id=${process.env.APP_ID}`,
       {
@@ -32,13 +37,25 @@ export async function POST(req: NextRequest) {
         },
       }
     );
-    const transaction = await response.json();
-    // 2. Here we optimistically confirm the transaction.
-    // Otherwise, you can poll until the status == mined
-    if (transaction.reference == reference && transaction.status != "failed") {
-      return NextResponse.json({ success: true });
-    } else {
-      return NextResponse.json({ success: false });
+
+    if (!response.ok) {
+      console.error("❌ Error al consultar la API de Worldcoin");
+      return NextResponse.json({ success: false, error: "Worldcoin API error" });
     }
+
+    const transaction = await response.json();
+    console.log("💾 Transacción consultada:", transaction);
+
+    // Confirmar éxito si todo coincide y no falló
+    if (transaction.reference === reference && transaction.status !== "failed") {
+      console.log("✅ Pago confirmado exitosamente");
+      return NextResponse.json({ success: true });
+    }
+
+    console.warn("⚠️ La transacción no fue exitosa:", transaction.status);
+    return NextResponse.json({ success: false, error: "Transaction failed" });
+  } catch (error) {
+    console.error("💥 Error en confirm-payment:", error);
+    return NextResponse.json({ success: false, error: "Server error" });
   }
 }
