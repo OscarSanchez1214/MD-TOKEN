@@ -70,10 +70,7 @@ const manejarPago = async () => {
 
     if (confirmacion.success) {
       alert("✅ ¡Pago realizado con éxito!");
-    } else {
-      alert("⚠️ No se pudo confirmar el pago.");
-    }
-  } else {
+     } else {
     alert("❌ El pago fue cancelado o falló.");
   }
 };
@@ -88,7 +85,7 @@ export const PayComponent: React.FC = () => {
         onClick={manejarPago}
         className="bg-[#013A72] hover:bg-[#0154A0] text-white font-semibold px-6 py-2 rounded-xl shadow-md transition-transform hover:scale-105"
       >
-        Enviar Pago
+        Apoyar el Canal
       </button>
     </div>
   );
