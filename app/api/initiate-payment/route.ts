@@ -1,17 +1,23 @@
+// /app/api/initiate-payment/route.ts
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { randomUUID } from "crypto";
 
 export async function POST(req: NextRequest) {
-  const uuid = crypto.randomUUID().replace(/-/g, "");
+  const uuid = randomUUID().replace(/-/g, "");
 
-  // TODO: Store the ID field in your database so you can verify the payment later
+  // Guardar cookie accesible al cliente (para que viaje con el fetch)
   cookies().set({
     name: "payment-nonce",
     value: uuid,
-    httpOnly: true,
+    httpOnly: false, // 🔑 debe ser false para que el cliente la envíe luego
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 600, // 10 minutos
   });
 
-  console.log(uuid);
+  console.log("🪙 Cookie 'payment-nonce' guardada:", uuid);
 
   return NextResponse.json({ id: uuid });
 }
