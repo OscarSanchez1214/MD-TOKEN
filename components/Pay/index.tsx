@@ -6,28 +6,30 @@ import {
   tokenToDecimals,
   Tokens,
   PayCommandInput,
+  MiniAppPaymentSuccessPayload,
 } from "@worldcoin/minikit-js";
 
 export const PayComponent: React.FC = () => {
   const [estado, setEstado] = useState<"idle" | "enviando" | "exito" | "error">("idle");
   const [mensaje, setMensaje] = useState("");
 
-  const enviarPago = async (): Promise<any> => {
+  /** 🧾 Paso 1: Crear referencia de pago y ejecutar MiniKit */
+  const enviarPago = async (): Promise<MiniAppPaymentSuccessPayload | null> => {
     try {
       const res = await fetch("/api/initiate-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // ✅ importante para mantener la cookie
+        credentials: "include", // ✅ mantiene la cookie de referencia
       });
 
       if (!res.ok) throw new Error("Error al crear la referencia de pago.");
-
       const { id } = await res.json();
-      console.log("🪙 ID de pago generado:", id);
+
+      console.log("🪙 [MiniKit] ID de pago generado:", id);
 
       const payload: PayCommandInput = {
         reference: id,
-        to: "0x1bd597c5296b6a25f72ed557d5b85bff41186c28",
+        to: "0x1bd597c5296b6a25f72ed557d5b85bff41186c28", // dirección de destino
         tokens: [
           {
             symbol: Tokens.WLD,
@@ -41,67 +43,70 @@ export const PayComponent: React.FC = () => {
         description: "💸 Pago de prueba con World App",
       };
 
-      if (MiniKit.isInstalled()) {
-        console.log("✅ MiniKit detectado. Ejecutando pago...");
-        return await MiniKit.commandsAsync.pay(payload);
-      } else {
+      // 🧩 Verificar si MiniKit está disponible
+      if (!MiniKit.isInstalled()) {
         setMensaje("⚠️ Abre esta MiniApp desde World App para realizar el pago.");
         setEstado("error");
         return null;
       }
-    } catch (error: any) {
-      console.error("❌ Error al enviar pago:", error);
-      setMensaje("Ocurrió un error al procesar el pago.");
+
+      console.log("✅ [MiniKit] Ejecutando pago...");
+      const resultado = await MiniKit.commandsAsync.pay(payload);
+
+      console.log("🎯 [MiniKit] Resultado completo:", resultado);
+
+      // El payload válido viene en result.finalPayload
+      return resultado?.finalPayload ?? null;
+    } catch (error) {
+      console.error("❌ [MiniKit] Error al enviar pago:", error);
+      setMensaje("Ocurrió un error al iniciar el pago.");
       setEstado("error");
       return null;
     }
   };
 
+  /** ⚙️ Paso 2: Confirmar pago en backend */
   const manejarPago = async () => {
     setEstado("enviando");
     setMensaje("Procesando pago...");
 
     try {
-      const respuestaPago = await enviarPago();
-      const resultado = respuestaPago?.finalPayload;
+      const finalPayload = await enviarPago();
 
-      console.log("🎯 Resultado del pago:", resultado);
-
-      if (!resultado) {
-        setMensaje("❌ El pago fue cancelado o falló.");
+      if (!finalPayload) {
+        setMensaje("❌ El pago fue cancelado o no se completó.");
         setEstado("error");
         return;
       }
 
-      if (resultado.status === "success") {
-        const confirmRes = await fetch("/api/confirm-payment", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include", // ✅ para enviar cookie al backend
-          body: JSON.stringify({ payload: resultado }),
-        });
+      console.log("📦 [Front] Payload final recibido:", finalPayload);
 
-        const confirmacion = await confirmRes.json();
-        console.log("📦 Respuesta del servidor confirm-payment:", confirmacion);
+      // ✅ Enviar al backend para confirmar la transacción
+      const confirmRes = await fetch("/api/confirm-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ payload: finalPayload }),
+      });
 
-        if (confirmacion.success) {
-          setMensaje("✅ ¡Pago realizado con éxito!");
-          setEstado("exito");
-        } else {
-          setMensaje("❌ Error al confirmar el pago en el servidor.");
-          setEstado("error");
-        }
+      const confirmacion = await confirmRes.json();
+      console.log("🧾 [Front] Respuesta confirm-payment:", confirmacion);
+
+      if (confirmacion.success) {
+        setMensaje("✅ ¡Pago confirmado exitosamente!");
+        setEstado("exito");
       } else {
-        setMensaje("❌ El pago no se completó correctamente.");
+        setMensaje(`❌ Error al confirmar el pago: ${confirmacion.error || "desconocido"}`);
         setEstado("error");
       }
     } catch (error) {
-      console.error("❌ Error al manejar el pago:", error);
-      setMensaje("Ocurrió un error al procesar el pago.");
+      console.error("💥 [Front] Error general al manejar pago:", error);
+      setMensaje("Ocurrió un error inesperado al procesar el pago.");
       setEstado("error");
     }
   };
 
+  /** 🧠 Interfaz de usuario */
   return (
     <div className="flex flex-col items-center justify-center mt-6 space-y-4">
       <h2 className="text-xl font-bold text-[#003A70]">
