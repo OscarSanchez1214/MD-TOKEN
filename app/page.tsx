@@ -85,10 +85,10 @@ export default function Home() {
 
         {/* Bloque de donación */}
         <div className="border-t border-gray-200 mt-4 pt-4">
-          <h3 className="text-lg font-semibold text-[#003A70] mb-3">
+          <h4 className="text-lg font-semibold text-[#003A70] mb-3">
            Cada día puedes recibir una recomendación financiera acompañada de un video para aprender a manejar mejor tu dinero, 
             fortalecer tus hábitos de ahorro e impulsar tu inteligencia financiera. 💡💰📈�
-          </h3>
+          </h4>
           <p className="text-sm text-gray-600 mb-4">
             Agradecemos tu apoyo. Puedes donar en{" "}
             <strong>MD</strong>, <strong>WLD</strong> o <strong>USDC</strong>.
