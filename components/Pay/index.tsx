@@ -90,7 +90,7 @@ export const PayComponent: React.FC = () => {
           setMensaje("✅ ¡Pago realizado con éxito!");
           setEstado("exito");
         } else {
-          setMensaje("✅ ¡Pago realizado con éxito!");
+          setMensaje("✅ ¡Pago realizado con éxito! 👍🏻 ¡Gracias por tu apoyo! 😊🙏💖 ");
           setEstado("exito");
         }
       } else {
