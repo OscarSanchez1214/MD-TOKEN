@@ -18,7 +18,7 @@ export const PayComponent: React.FC = () => {
       const res = await fetch("/api/initiate-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // ✅ mantiene cookie para confirmación
+        credentials: "include",
       });
 
       if (!res.ok) throw new Error("Error al crear la referencia de pago.");
@@ -90,7 +90,7 @@ export const PayComponent: React.FC = () => {
           setMensaje("✅ ¡Pago realizado con éxito!");
           setEstado("exito");
         } else {
-          setMensaje("✅ ¡Pago realizado con éxito!");
+          setMensaje("❌ Error al confirmar el pago en el servidor.");
           setEstado("error");
         }
       } else {
@@ -104,8 +104,18 @@ export const PayComponent: React.FC = () => {
     }
   };
 
+  // 💅 Color de fondo dinámico según estado
+  const fondo =
+    estado === "exito"
+      ? "bg-green-100"
+      : estado === "error"
+      ? "bg-red-100"
+      : estado === "enviando"
+      ? "bg-blue-50"
+      : "bg-white";
+
   return (
-    <div className="flex flex-col items-center justify-center mt-6 space-y-4">
+    <div className={`flex flex-col items-center justify-center mt-6 space-y-4 min-h-[250px] rounded-2xl shadow-md p-6 transition-all duration-500 ${fondo}`}>
       <h2 className="text-xl font-bold text-[#003A70]">
         Realizar Pago con World App
       </h2>
@@ -126,10 +136,10 @@ export const PayComponent: React.FC = () => {
         <div
           className={`mt-3 px-4 py-2 rounded-lg text-sm font-medium text-center ${
             estado === "exito"
-              ? "bg-green-100 text-green-700"
+              ? "text-green-700"
               : estado === "error"
-              ? "bg-red-100 text-red-700"
-              : "bg-blue-100 text-blue-700"
+              ? "text-red-700"
+              : "text-blue-700"
           }`}
         >
           {mensaje}
