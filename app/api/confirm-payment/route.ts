@@ -7,25 +7,22 @@ interface IRequestPayload {
 }
 
 export async function POST(req: NextRequest) {
-  try {
-    const { payload } = (await req.json()) as IRequestPayload;
-    const cookieStore = cookies();
-    const reference = cookieStore.get("payment-nonce")?.value;
+  const { payload } = (await req.json()) as IRequestPayload;
 
-    console.log("📦 [confirm-payment] Reference guardada:", reference);
-    console.log("📤 [confirm-payment] Payload recibido:", payload);
+  // IMPORTANT: Here we should fetch the reference you created in /initiate-payment to ensure the transaction we are verifying is the same one we initiated
+  //   const reference = getReferenceFromDB();
+  const cookieStore = cookies();
 
-    if (!reference) {
-      console.warn("⚠️ [confirm-payment] No se encontró la referencia en cookies");
-      return NextResponse.json({ success: false, error: "No reference" });
-    }
+  const reference = cookieStore.get("payment-nonce")?.value;
 
-    if (payload.reference !== reference) {
-      console.warn("❌ [confirm-payment] La referencia no coincide");
-      return NextResponse.json({ success: false, error: "Reference mismatch" });
-    }
+  console.log(reference);
 
-    // Consultar transacción en la API de Worldcoin
+  if (!reference) {
+    return NextResponse.json({ success: false });
+  }
+  console.log(payload);
+  // 1. Check that the transaction we received from the mini app is the same one we sent
+  if (payload.reference === reference) {
     const response = await fetch(
       `https://developer.worldcoin.org/api/v2/minikit/transaction/${payload.transaction_id}?app_id=${process.env.APP_ID}`,
       {
@@ -35,24 +32,13 @@ export async function POST(req: NextRequest) {
         },
       }
     );
-
-    if (!response.ok) {
-      console.error("❌ [confirm-payment] Error al consultar Worldcoin API");
-      return NextResponse.json({ success: false, error: "Worldcoin API error" });
-    }
-
     const transaction = await response.json();
-    console.log("💾 [confirm-payment] Transacción consultada:", transaction);
-
-    if (transaction.reference === reference && transaction.status !== "failed") {
-      console.log("✅ [confirm-payment] Pago confirmado correctamente");
+    // 2. Here we optimistically confirm the transaction.
+    // Otherwise, you can poll until the status == mined
+    if (transaction.reference == reference && transaction.status != "failed") {
       return NextResponse.json({ success: true });
+    } else {
+      return NextResponse.json({ success: false });
     }
-
-    console.warn("⚠️ [confirm-payment] Transacción pendiente o fallida:", transaction.status);
-    return NextResponse.json({ success: false, error: transaction.status });
-  } catch (error) {
-    console.error("💥 [confirm-payment] Error general:", error);
-    return NextResponse.json({ success: false, error: "Server error" });
   }
 }
