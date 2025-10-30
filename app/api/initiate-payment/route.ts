@@ -1,28 +1,27 @@
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     const uuid = randomUUID().replace(/-/g, "");
 
-    // ✅ Guardamos el nonce temporalmente en cookies (10 minutos)
-    const cookieStore = cookies();
-    cookieStore.set({
+    // Guardar cookie temporal (10 minutos)
+    cookies().set({
       name: "payment-nonce",
       value: uuid,
-      httpOnly: false, // ⚠️ debe ser false si lo necesitas en cliente
+      httpOnly: false, // ⚠️ Debe ser false para que el frontend pueda enviarla
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 600, // 10 min
+      maxAge: 600,
     });
 
-    console.log("🪙 [initiate-payment] Cookie 'payment-nonce' guardada:", uuid);
+    console.log("🪙 [initiate-payment] Reference generada y guardada:", uuid);
 
     return NextResponse.json({ id: uuid });
   } catch (error) {
-    console.error("❌ [initiate-payment] Error:", error);
+    console.error("💥 [initiate-payment] Error interno:", error);
     return NextResponse.json(
       { error: "Error interno del servidor" },
       { status: 500 }
