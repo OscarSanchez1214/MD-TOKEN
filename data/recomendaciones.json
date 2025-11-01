@@ -1,961 +1,1269 @@
 [
   {
     "id": 1,
-    "fecha": "2025-10-29",
+    "fecha": "2025-11-01",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 2,
-    "fecha": "2025-10-30",
+    "fecha": "2025-11-02",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 3,
-    "fecha": "2025-10-31",
+    "fecha": "2025-11-03",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 4,
-    "fecha": "2025-11-01",
+    "fecha": "2025-11-04",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 5,
-    "fecha": "2025-11-02",
+    "fecha": "2025-11-05",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 6,
-    "fecha": "2025-11-03",
+    "fecha": "2025-11-06",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 7,
-    "fecha": "2025-11-04",
+    "fecha": "2025-11-07",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 8,
-    "fecha": "2025-11-05",
+    "fecha": "2025-11-08",
     "titulo": "Aprende sobre interés compuesto",
     "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 9,
-    "fecha": "2025-11-06",
+    "fecha": "2025-11-09",
     "titulo": "Evita compras impulsivas",
     "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 10,
-    "fecha": "2025-11-07",
+    "fecha": "2025-11-10",
     "titulo": "Evalúa tus suscripciones mensuales",
     "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 11,
-    "fecha": "2025-11-08",
+    "fecha": "2025-11-11",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 12,
-    "fecha": "2025-11-09",
+    "fecha": "2025-11-12",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 13,
-    "fecha": "2025-11-10",
+    "fecha": "2025-11-13",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 14,
-    "fecha": "2025-11-11",
+    "fecha": "2025-11-14",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 15,
-    "fecha": "2025-11-12",
+    "fecha": "2025-11-15",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 16,
-    "fecha": "2025-11-13",
+    "fecha": "2025-11-16",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 17,
-    "fecha": "2025-11-14",
+    "fecha": "2025-11-17",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 18,
-    "fecha": "2025-11-15",
+    "fecha": "2025-11-18",
     "titulo": "Aprende sobre interés compuesto",
     "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 19,
-    "fecha": "2025-11-16",
+    "fecha": "2025-11-19",
     "titulo": "Evita compras impulsivas",
     "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 20,
-    "fecha": "2025-11-17",
+    "fecha": "2025-11-20",
     "titulo": "Evalúa tus suscripciones mensuales",
     "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 21,
-    "fecha": "2025-11-18",
+    "fecha": "2025-11-21",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 22,
-    "fecha": "2025-11-19",
+    "fecha": "2025-11-22",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 23,
-    "fecha": "2025-11-20",
+    "fecha": "2025-11-23",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 24,
-    "fecha": "2025-11-21",
+    "fecha": "2025-11-24",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 25,
-    "fecha": "2025-11-22",
+    "fecha": "2025-11-25",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 26,
-    "fecha": "2025-11-23",
+    "fecha": "2025-11-26",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 27,
-    "fecha": "2025-11-24",
+    "fecha": "2025-11-27",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 28,
-    "fecha": "2025-11-25",
+    "fecha": "2025-11-28",
     "titulo": "Aprende sobre interés compuesto",
     "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 29,
-    "fecha": "2025-11-26",
+    "fecha": "2025-11-29",
     "titulo": "Evita compras impulsivas",
     "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 30,
-    "fecha": "2025-11-27",
+    "fecha": "2025-11-30",
     "titulo": "Evalúa tus suscripciones mensuales",
     "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 31,
-    "fecha": "2025-11-28",
+    "fecha": "2025-12-01",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 32,
-    "fecha": "2025-11-29",
+    "fecha": "2025-12-02",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 33,
-    "fecha": "2025-11-30",
+    "fecha": "2025-12-03",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 34,
-    "fecha": "2025-12-01",
+    "fecha": "2025-12-04",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 35,
-    "fecha": "2025-12-02",
+    "fecha": "2025-12-05",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 36,
-    "fecha": "2025-12-03",
+    "fecha": "2025-12-06",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 37,
-    "fecha": "2025-12-04",
+    "fecha": "2025-12-07",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 38,
-    "fecha": "2025-12-05",
+    "fecha": "2025-12-08",
     "titulo": "Aprende sobre interés compuesto",
     "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 39,
-    "fecha": "2025-12-06",
+    "fecha": "2025-12-09",
     "titulo": "Evita compras impulsivas",
     "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 40,
-    "fecha": "2025-12-07",
+    "fecha": "2025-12-10",
     "titulo": "Evalúa tus suscripciones mensuales",
     "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 41,
-    "fecha": "2025-12-08",
+    "fecha": "2025-12-11",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 42,
-    "fecha": "2025-12-09",
+    "fecha": "2025-12-12",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 43,
-    "fecha": "2025-12-10",
+    "fecha": "2025-12-13",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 44,
-    "fecha": "2025-12-11",
+    "fecha": "2025-12-14",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 45,
-    "fecha": "2025-12-12",
+    "fecha": "2025-12-15",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 46,
-    "fecha": "2025-12-13",
+    "fecha": "2025-12-16",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 47,
-    "fecha": "2025-12-14",
+    "fecha": "2025-12-17",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 48,
-    "fecha": "2025-12-15",
+    "fecha": "2025-12-18",
     "titulo": "Aprende sobre interés compuesto",
     "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 49,
-    "fecha": "2025-12-16",
+    "fecha": "2025-12-19",
     "titulo": "Evita compras impulsivas",
     "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 50,
-    "fecha": "2025-12-17",
+    "fecha": "2025-12-20",
     "titulo": "Evalúa tus suscripciones mensuales",
     "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 51,
-    "fecha": "2025-12-18",
+    "fecha": "2025-12-21",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 52,
-    "fecha": "2025-12-19",
+    "fecha": "2025-12-22",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 53,
-    "fecha": "2025-12-20",
+    "fecha": "2025-12-23",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 54,
-    "fecha": "2025-12-21",
+    "fecha": "2025-12-24",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 55,
-    "fecha": "2025-12-22",
+    "fecha": "2025-12-25",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 56,
-    "fecha": "2025-12-23",
+    "fecha": "2025-12-26",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 57,
-    "fecha": "2025-12-24",
+    "fecha": "2025-12-27",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 58,
-    "fecha": "2025-12-25",
+    "fecha": "2025-12-28",
     "titulo": "Aprende sobre interés compuesto",
     "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 59,
-    "fecha": "2025-12-26",
+    "fecha": "2025-12-29",
     "titulo": "Evita compras impulsivas",
     "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 60,
-    "fecha": "2025-12-27",
+    "fecha": "2025-12-30",
     "titulo": "Evalúa tus suscripciones mensuales",
     "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 61,
-    "fecha": "2025-12-28",
+    "fecha": "2025-12-31",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 62,
-    "fecha": "2025-12-29",
+    "fecha": "2026-01-01",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 63,
-    "fecha": "2025-12-30",
+    "fecha": "2026-01-02",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 64,
-    "fecha": "2025-12-31",
+    "fecha": "2026-01-03",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 65,
-    "fecha": "2026-01-01",
+    "fecha": "2026-01-04",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 66,
-    "fecha": "2026-01-02",
+    "fecha": "2026-01-05",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 67,
-    "fecha": "2026-01-03",
+    "fecha": "2026-01-06",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 68,
-    "fecha": "2026-01-04",
+    "fecha": "2026-01-07",
     "titulo": "Aprende sobre interés compuesto",
     "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 69,
-    "fecha": "2026-01-05",
+    "fecha": "2026-01-08",
     "titulo": "Evita compras impulsivas",
     "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 70,
-    "fecha": "2026-01-06",
+    "fecha": "2026-01-09",
     "titulo": "Evalúa tus suscripciones mensuales",
     "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 71,
-    "fecha": "2026-01-07",
+    "fecha": "2026-01-10",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 72,
-    "fecha": "2026-01-08",
+    "fecha": "2026-01-11",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 73,
-    "fecha": "2026-01-09",
+    "fecha": "2026-01-12",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 74,
-    "fecha": "2026-01-10",
+    "fecha": "2026-01-13",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 75,
-    "fecha": "2026-01-11",
+    "fecha": "2026-01-14",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 76,
-    "fecha": "2026-01-12",
+    "fecha": "2026-01-15",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 77,
-    "fecha": "2026-01-13",
+    "fecha": "2026-01-16",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 78,
-    "fecha": "2026-01-14",
+    "fecha": "2026-01-17",
     "titulo": "Aprende sobre interés compuesto",
     "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 79,
-    "fecha": "2026-01-15",
+    "fecha": "2026-01-18",
     "titulo": "Evita compras impulsivas",
     "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 80,
-    "fecha": "2026-01-16",
+    "fecha": "2026-01-19",
     "titulo": "Evalúa tus suscripciones mensuales",
     "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 81,
-    "fecha": "2026-01-17",
+    "fecha": "2026-01-20",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 82,
-    "fecha": "2026-01-18",
+    "fecha": "2026-01-21",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 83,
-    "fecha": "2026-01-19",
+    "fecha": "2026-01-22",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 84,
-    "fecha": "2026-01-20",
+    "fecha": "2026-01-23",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 85,
-    "fecha": "2026-01-21",
+    "fecha": "2026-01-24",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 86,
-    "fecha": "2026-01-22",
+    "fecha": "2026-01-25",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 87,
-    "fecha": "2026-01-23",
+    "fecha": "2026-01-26",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 88,
-    "fecha": "2026-01-24",
+    "fecha": "2026-01-27",
     "titulo": "Aprende sobre interés compuesto",
     "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 89,
-    "fecha": "2026-01-25",
+    "fecha": "2026-01-28",
     "titulo": "Evita compras impulsivas",
     "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 90,
-    "fecha": "2026-01-26",
+    "fecha": "2026-01-29",
     "titulo": "Evalúa tus suscripciones mensuales",
     "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 91,
-    "fecha": "2026-01-27",
+    "fecha": "2026-01-30",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 92,
-    "fecha": "2026-01-28",
+    "fecha": "2026-01-31",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 93,
-    "fecha": "2026-01-29",
+    "fecha": "2026-02-01",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 94,
-    "fecha": "2026-01-30",
+    "fecha": "2026-02-02",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 95,
-    "fecha": "2026-01-31",
+    "fecha": "2026-02-03",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 96,
-    "fecha": "2026-02-01",
+    "fecha": "2026-02-04",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 97,
-    "fecha": "2026-02-02",
+    "fecha": "2026-02-05",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 98,
-    "fecha": "2026-02-03",
+    "fecha": "2026-02-06",
     "titulo": "Aprende sobre interés compuesto",
     "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 99,
-    "fecha": "2026-02-04",
+    "fecha": "2026-02-07",
     "titulo": "Evita compras impulsivas",
     "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 100,
-    "fecha": "2026-02-05",
+    "fecha": "2026-02-08",
     "titulo": "Evalúa tus suscripciones mensuales",
     "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 101,
-    "fecha": "2026-02-06",
+    "fecha": "2026-02-09",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 102,
-    "fecha": "2026-02-07",
+    "fecha": "2026-02-10",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 103,
-    "fecha": "2026-02-08",
+    "fecha": "2026-02-11",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 104,
-    "fecha": "2026-02-09",
+    "fecha": "2026-02-12",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 105,
-    "fecha": "2026-02-10",
+    "fecha": "2026-02-13",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 106,
-    "fecha": "2026-02-11",
+    "fecha": "2026-02-14",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 107,
-    "fecha": "2026-02-12",
+    "fecha": "2026-02-15",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 108,
-    "fecha": "2026-02-13",
+    "fecha": "2026-02-16",
     "titulo": "Aprende sobre interés compuesto",
     "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 109,
-    "fecha": "2026-02-14",
+    "fecha": "2026-02-17",
     "titulo": "Evita compras impulsivas",
     "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 110,
-    "fecha": "2026-02-15",
+    "fecha": "2026-02-18",
     "titulo": "Evalúa tus suscripciones mensuales",
     "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 111,
-    "fecha": "2026-02-16",
+    "fecha": "2026-02-19",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 112,
-    "fecha": "2026-02-17",
+    "fecha": "2026-02-20",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 113,
-    "fecha": "2026-02-18",
+    "fecha": "2026-02-21",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 114,
-    "fecha": "2026-02-19",
+    "fecha": "2026-02-22",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 115,
-    "fecha": "2026-02-20",
+    "fecha": "2026-02-23",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 116,
-    "fecha": "2026-02-21",
+    "fecha": "2026-02-24",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 117,
-    "fecha": "2026-02-22",
+    "fecha": "2026-02-25",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 118,
-    "fecha": "2026-02-23",
+    "fecha": "2026-02-26",
     "titulo": "Aprende sobre interés compuesto",
     "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 119,
-    "fecha": "2026-02-24",
+    "fecha": "2026-02-27",
     "titulo": "Evita compras impulsivas",
     "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 120,
-    "fecha": "2026-02-25",
+    "fecha": "2026-02-28",
     "titulo": "Evalúa tus suscripciones mensuales",
     "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 121,
-    "fecha": "2026-02-26",
+    "fecha": "2026-03-01",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 122,
-    "fecha": "2026-02-27",
+    "fecha": "2026-03-02",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 123,
-    "fecha": "2026-02-28",
+    "fecha": "2026-03-03",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 124,
-    "fecha": "2026-03-01",
+    "fecha": "2026-03-04",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 125,
-    "fecha": "2026-03-02",
+    "fecha": "2026-03-05",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 126,
-    "fecha": "2026-03-03",
+    "fecha": "2026-03-06",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 127,
-    "fecha": "2026-03-04",
+    "fecha": "2026-03-07",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 128,
-    "fecha": "2026-03-05",
+    "fecha": "2026-03-08",
     "titulo": "Aprende sobre interés compuesto",
     "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 129,
-    "fecha": "2026-03-06",
+    "fecha": "2026-03-09",
     "titulo": "Evita compras impulsivas",
     "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 130,
-    "fecha": "2026-03-07",
+    "fecha": "2026-03-10",
     "titulo": "Evalúa tus suscripciones mensuales",
     "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 131,
-    "fecha": "2026-03-08",
+    "fecha": "2026-03-11",
     "titulo": "Construye un fondo de emergencia sólido",
     "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 132,
-    "fecha": "2026-03-09",
+    "fecha": "2026-03-12",
     "titulo": "Aprende a presupuestar tus ingresos",
     "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 133,
-    "fecha": "2026-03-10",
+    "fecha": "2026-03-13",
     "titulo": "Ahorra antes de gastar",
     "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 134,
-    "fecha": "2026-03-11",
+    "fecha": "2026-03-14",
     "titulo": "Invierte para vencer la inflación",
     "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 135,
-    "fecha": "2026-03-12",
+    "fecha": "2026-03-15",
     "titulo": "Diversifica tus inversiones",
     "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   },
   {
     "id": 136,
-    "fecha": "2026-03-13",
+    "fecha": "2026-03-16",
     "titulo": "Reduce tus deudas con estrategia",
     "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
   },
   {
     "id": 137,
-    "fecha": "2026-03-14",
+    "fecha": "2026-03-17",
     "titulo": "Define metas financieras claras",
     "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
-    "video": "https://www.youtube.com/embed/yOBPehbLXqs?si=pQh4opbqEzsi9S75"
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 138,
+    "fecha": "2026-03-18",
+    "titulo": "Aprende sobre interés compuesto",
+    "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 139,
+    "fecha": "2026-03-19",
+    "titulo": "Evita compras impulsivas",
+    "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 140,
+    "fecha": "2026-03-20",
+    "titulo": "Evalúa tus suscripciones mensuales",
+    "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 141,
+    "fecha": "2026-03-21",
+    "titulo": "Construye un fondo de emergencia sólido",
+    "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 142,
+    "fecha": "2026-03-22",
+    "titulo": "Aprende a presupuestar tus ingresos",
+    "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 143,
+    "fecha": "2026-03-23",
+    "titulo": "Ahorra antes de gastar",
+    "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 144,
+    "fecha": "2026-03-24",
+    "titulo": "Invierte para vencer la inflación",
+    "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 145,
+    "fecha": "2026-03-25",
+    "titulo": "Diversifica tus inversiones",
+    "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 146,
+    "fecha": "2026-03-26",
+    "titulo": "Reduce tus deudas con estrategia",
+    "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 147,
+    "fecha": "2026-03-27",
+    "titulo": "Define metas financieras claras",
+    "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 148,
+    "fecha": "2026-03-28",
+    "titulo": "Aprende sobre interés compuesto",
+    "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 149,
+    "fecha": "2026-03-29",
+    "titulo": "Evita compras impulsivas",
+    "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 150,
+    "fecha": "2026-03-30",
+    "titulo": "Evalúa tus suscripciones mensuales",
+    "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 151,
+    "fecha": "2026-03-31",
+    "titulo": "Construye un fondo de emergencia sólido",
+    "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 152,
+    "fecha": "2026-04-01",
+    "titulo": "Aprende a presupuestar tus ingresos",
+    "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 153,
+    "fecha": "2026-04-02",
+    "titulo": "Ahorra antes de gastar",
+    "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 154,
+    "fecha": "2026-04-03",
+    "titulo": "Invierte para vencer la inflación",
+    "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 155,
+    "fecha": "2026-04-04",
+    "titulo": "Diversifica tus inversiones",
+    "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 156,
+    "fecha": "2026-04-05",
+    "titulo": "Reduce tus deudas con estrategia",
+    "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 157,
+    "fecha": "2026-04-06",
+    "titulo": "Define metas financieras claras",
+    "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 158,
+    "fecha": "2026-04-07",
+    "titulo": "Aprende sobre interés compuesto",
+    "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 159,
+    "fecha": "2026-04-08",
+    "titulo": "Evita compras impulsivas",
+    "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 160,
+    "fecha": "2026-04-09",
+    "titulo": "Evalúa tus suscripciones mensuales",
+    "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 161,
+    "fecha": "2026-04-10",
+    "titulo": "Construye un fondo de emergencia sólido",
+    "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 162,
+    "fecha": "2026-04-11",
+    "titulo": "Aprende a presupuestar tus ingresos",
+    "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 163,
+    "fecha": "2026-04-12",
+    "titulo": "Ahorra antes de gastar",
+    "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 164,
+    "fecha": "2026-04-13",
+    "titulo": "Invierte para vencer la inflación",
+    "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 165,
+    "fecha": "2026-04-14",
+    "titulo": "Diversifica tus inversiones",
+    "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 166,
+    "fecha": "2026-04-15",
+    "titulo": "Reduce tus deudas con estrategia",
+    "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 167,
+    "fecha": "2026-04-16",
+    "titulo": "Define metas financieras claras",
+    "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 168,
+    "fecha": "2026-04-17",
+    "titulo": "Aprende sobre interés compuesto",
+    "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 169,
+    "fecha": "2026-04-18",
+    "titulo": "Evita compras impulsivas",
+    "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 170,
+    "fecha": "2026-04-19",
+    "titulo": "Evalúa tus suscripciones mensuales",
+    "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 171,
+    "fecha": "2026-04-20",
+    "titulo": "Construye un fondo de emergencia sólido",
+    "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 172,
+    "fecha": "2026-04-21",
+    "titulo": "Aprende a presupuestar tus ingresos",
+    "contenido": "Controla tus gastos con un presupuesto mensual que te permita ahorrar y gastar inteligentemente.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 173,
+    "fecha": "2026-04-22",
+    "titulo": "Ahorra antes de gastar",
+    "contenido": "Aparta primero un porcentaje de tus ingresos antes de pagar tus gastos o deudas.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 174,
+    "fecha": "2026-04-23",
+    "titulo": "Invierte para vencer la inflación",
+    "contenido": "El dinero guardado pierde valor. Busca inversiones que generen rendimiento real positivo.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 175,
+    "fecha": "2026-04-24",
+    "titulo": "Diversifica tus inversiones",
+    "contenido": "Distribuye tus recursos en diferentes activos para minimizar riesgos.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 176,
+    "fecha": "2026-04-25",
+    "titulo": "Reduce tus deudas con estrategia",
+    "contenido": "Paga primero las deudas con mayor interés y evita endeudarte en gastos innecesarios.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 177,
+    "fecha": "2026-04-26",
+    "titulo": "Define metas financieras claras",
+    "contenido": "Establece objetivos medibles y alcanzables para orientar tus decisiones económicas.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 178,
+    "fecha": "2026-04-27",
+    "titulo": "Aprende sobre interés compuesto",
+    "contenido": "El interés compuesto multiplica tus ganancias si mantienes tus inversiones a largo plazo.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 179,
+    "fecha": "2026-04-28",
+    "titulo": "Evita compras impulsivas",
+    "contenido": "Espera 24 horas antes de realizar compras grandes. Así evitarás decisiones emocionales.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
+  },
+  {
+    "id": 180,
+    "fecha": "2026-04-29",
+    "titulo": "Evalúa tus suscripciones mensuales",
+    "contenido": "Cancela servicios que no utilizas y redirige ese dinero al ahorro o inversión.",
+    "video": "https://www.youtube.com/embed/BElMKDrwRX4"
+  },
+  {
+    "id": 181,
+    "fecha": "2026-04-30",
+    "titulo": "Construye un fondo de emergencia sólido",
+    "contenido": "Destina de tres a seis meses de tus gastos básicos en una cuenta separada para protegerte ante imprevistos.",
+    "video": "https://www.youtube.com/embed/B35T1SIwsV8"
   }
 ]
