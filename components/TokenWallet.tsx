@@ -1,163 +1,178 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MY_TOKEN_ADDRESS, getTokenDetails, sendMyToken } from "@/lib/token";
 import { MiniKit } from "@worldcoin/minikit-js";
+import { MY_TOKEN_ADDRESS, getTokenDetails, sendMyToken } from "@/lib/token";
 
-interface Props {
-  userWalletAddress?: `0x${string}`; // Opcional: Si no viene, se detecta automáticamente con MiniKit
-}
-
-export default function TokenWallet({ userWalletAddress: initialAddress }: Props) {
-  const [walletAddress, setWalletAddress] = useState<`0x${string}` | undefined>(initialAddress);
+export default function TokenWallet() {
+  // Estados para la lectura de datos
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [balance, setBalance] = useState<string>("0");
-  const [symbol, setSymbol] = useState<string>("MD");
   const [decimals, setDecimals] = useState<number>(18);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [symbol, setSymbol] = useState<string>("MD");
 
-  // Estado del formulario de envío
+  // Estados para el formulario de envío
   const [recipient, setRecipient] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
-  const [txStatus, setTxStatus] = useState<string>("");
-  const [sending, setSending] = useState<boolean>(false);
+  const [isSending, setIsSending] = useState<boolean>(false);
+  const [txHash, setTxHash] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Obtener dirección del usuario mediante MiniKit si no se pasó como prop
+  // Inicialización: Detectar si estamos en World App y cargar datos
   useEffect(() => {
-    if (initialAddress) {
-      setWalletAddress(initialAddress);
-    } else if (typeof window !== "undefined" && MiniKit.isInstalled()) {
-      const address = MiniKit.user?.walletAddress as `0x${string}` | undefined;
-      if (address) setWalletAddress(address);
+    if (typeof window !== "undefined" && MiniKit.isInstalled()) {
+      const address = MiniKit.walletAddress;
+      
+      if (address) {
+        setWalletAddress(address);
+        fetchBalance(address as `0x${string}`);
+      }
     }
-  }, [initialAddress]);
+  }, []);
 
-  // Cargar datos del token al tener dirección
-  const fetchBalance = async () => {
-    if (!walletAddress) return;
-    setLoading(true);
-    try {
-      const data = await getTokenDetails(walletAddress);
-      setBalance(data.balance);
-      setSymbol(data.symbol);
-      setDecimals(data.decimals);
-    } catch (err) {
-      console.error("Error al consultar balance:", err);
-    } finally {
-      setLoading(false);
-    }
+  // Función para leer el saldo
+  const fetchBalance = async (address: `0x${string}`) => {
+    const details = await getTokenDetails(address);
+    setBalance(details.balance);
+    setDecimals(details.decimals);
+    setSymbol(details.symbol);
   };
 
-  useEffect(() => {
-    if (walletAddress) {
-      fetchBalance();
-    } else {
-      setLoading(false);
+  // Función para manejar el envío de tokens
+  const handleSend = async () => {
+    if (!recipient || !amount) {
+      setErrorMsg("Por favor, ingresa una dirección y un monto.");
+      return;
     }
-  }, [walletAddress]);
 
-  // Manejar el envío
-  const handleSend = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSending(true);
-    setTxStatus("Solicitando confirmación en World App...");
+    setErrorMsg(null);
+    setTxHash(null);
+    setIsSending(true);
 
     try {
-      const txHash = await sendMyToken(recipient, amount, decimals);
-      setTxStatus(`¡Envío exitoso! Tx: ${txHash.slice(0, 10)}...`);
-      setAmount("");
+      const hash = await sendMyToken(recipient, amount, decimals);
+      setTxHash(hash);
+      
+      // Limpiar formulario y actualizar saldo después de 5 segundos
       setRecipient("");
-      fetchBalance(); // Actualiza el balance tras enviar
-    } catch (err: any) {
-      setTxStatus(`Error: ${err.message || "No se pudo realizar el envío"}`);
+      setAmount("");
+      if (walletAddress) {
+        setTimeout(() => fetchBalance(walletAddress as `0x${string}`), 5000);
+      }
+    } catch (error: any) {
+      console.error("Error al enviar:", error);
+      setErrorMsg(error.message || "La transacción fue rechazada o falló.");
     } finally {
-      setSending(false);
+      setIsSending(false);
     }
   };
 
   return (
-    <div className="w-full mt-6 pt-6 border-t border-gray-200 text-left">
-      <h3 className="text-lg font-bold text-[#003A70] mb-4 text-center">
+    <div className="max-w-md mx-auto p-4 bg-white rounded-xl shadow-md border border-gray-100 font-sans">
+      <h1 className="text-xl font-bold text-center text-blue-900 mb-6 flex items-center justify-center gap-2">
         💼 Billetera Token {symbol}
-      </h3>
+      </h1>
 
-      {/* Tarjeta de Balance */}
-      <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-4 text-center shadow-sm">
-        <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">
+      {/* SECCIÓN 1: BALANCE */}
+      <div className="bg-blue-50 rounded-lg p-6 mb-6 text-center shadow-sm">
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
           Tu Balance Actual
-        </span>
-        <h4 className="text-2xl font-extrabold text-[#003A70] my-1">
-          {loading ? "Cargando..." : `${balance} ${symbol}`}
-        </h4>
+        </p>
+        <p className="text-4xl font-bold text-blue-900 mb-2">
+          {balance} {symbol}
+        </p>
         <p className="text-[10px] text-gray-400 break-all">
           Contrato: {MY_TOKEN_ADDRESS}
         </p>
       </div>
 
-      {/* Formulario de Envío */}
-      <form onSubmit={handleSend} className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4 shadow-sm">
-        <h4 className="text-sm font-semibold text-[#003A70] mb-3">
+      {/* SECCIÓN 2: ENVIAR TOKENS */}
+      <div className="mb-6 p-4 border border-gray-200 rounded-lg shadow-sm">
+        <h2 className="text-sm font-bold text-blue-900 mb-4">
           Enviar {symbol} a otra dirección
-        </h4>
-
-        <div className="mb-3">
-          <label className="block text-xs font-medium text-gray-600 mb-1">
-            Dirección Destino (World Chain)
-          </label>
-          <input
-            type="text"
-            placeholder="0x..."
-            value={recipient}
-            onChange={(e) => setRecipient(e.target.value)}
-            required
-            className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003A70] bg-white"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-xs font-medium text-gray-600 mb-1">
-            Monto a transferir
-          </label>
-          <input
-            type="number"
-            step="any"
-            placeholder="0.0"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            required
-            className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#003A70] bg-white"
-          />
+        </h2>
+        
+        <div className="space-y-3 mb-4">
+          <div>
+            <label className="block text-xs text-gray-600 mb-1">
+              Dirección Destino (World Chain)
+            </label>
+            <input
+              type="text"
+              value={recipient}
+              onChange={(e) => setRecipient(e.target.value)}
+              placeholder="0x..."
+              className="w-full text-sm p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none text-black"
+            />
+          </div>
+          <div>
+            <label className="block text-xs text-gray-600 mb-1">
+              Monto a transferir
+            </label>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Ej. 500"
+              min="0"
+              className="w-full text-sm p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 outline-none text-black"
+            />
+          </div>
         </div>
 
         <button
-          type="submit"
-          disabled={sending}
-          className="w-full py-2.5 px-4 bg-[#003A70] hover:bg-[#002850] text-white text-xs font-bold rounded-lg transition-colors shadow-sm disabled:opacity-50"
+          onClick={handleSend}
+          disabled={isSending || !walletAddress}
+          className={`w-full py-2 px-4 rounded font-semibold text-white transition-colors duration-200 ${
+            isSending || !walletAddress
+              ? "bg-slate-400 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700 shadow-md"
+          }`}
         >
-          {sending ? "Procesando en World App..." : `Enviar ${symbol}`}
+          {isSending ? "Procesando en World App..." : `Enviar ${symbol}`}
         </button>
 
-        {txStatus && (
-          <p
-            className={`text-xs mt-3 text-center font-medium ${
-              txStatus.startsWith("Error") ? "text-red-500" : "text-green-600"
-            }`}
-          >
-            {txStatus}
+        {isSending && (
+          <p className="text-xs text-green-600 font-semibold text-center mt-3 animate-pulse">
+            Solicitando confirmación en World App...
           </p>
         )}
-      </form>
 
-      {/* Sección para Recibir */}
-      <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center shadow-sm">
-        <h4 className="text-sm font-semibold text-[#003A70] mb-1">
-          Recibir {symbol}
-        </h4>
-        <p className="text-xs text-gray-500 mb-2">
-          Tu dirección en World Chain:
-        </p>
-        <div className="bg-white p-2 rounded-lg border border-dashed border-gray-300 text-[11px] font-mono break-all text-gray-700">
-          {walletAddress || "Abre la app desde World App para ver tu dirección"}
-        </div>
+        {errorMsg && (
+          <p className="text-xs text-red-500 text-center mt-3 font-medium">
+            {errorMsg}
+          </p>
+        )}
+
+        {txHash && (
+          <div className="mt-3 p-2 bg-green-50 rounded border border-green-200 text-center">
+            <p className="text-xs text-green-700 font-bold">¡Envío Exitoso!</p>
+            <a 
+              href={`https://worldchain-mainnet.explorer.alchemy.com/tx/${txHash}`} 
+              target="_blank" 
+              rel="noreferrer"
+              className="text-[10px] text-blue-500 underline break-all"
+            >
+              Ver transacción
+            </a>
+          </div>
+        )}
+      </div>
+
+      {/* SECCIÓN 3: RECIBIR TOKENS */}
+      <div className="p-4 border border-gray-200 rounded-lg shadow-sm text-center">
+        <h2 className="text-sm font-bold text-blue-900 mb-2">Recibir {symbol}</h2>
+        <p className="text-xs text-gray-500 mb-3">Tu dirección en World Chain:</p>
+        
+        {walletAddress ? (
+          <div className="bg-gray-50 p-2 rounded border border-gray-200 flex flex-col items-center">
+            <p className="text-xs text-gray-800 break-all font-mono">{walletAddress}</p>
+          </div>
+        ) : (
+          <p className="text-xs text-gray-400 p-2 bg-gray-50 rounded border border-gray-200 border-dashed">
+            Abre la app desde World App para ver tu dirección
+          </p>
+        )}
       </div>
     </div>
   );
