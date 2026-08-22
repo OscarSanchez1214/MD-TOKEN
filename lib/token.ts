@@ -61,8 +61,9 @@ export async function getTokenDetails(userAddress: `0x${string}`) {
       })
     ])
 
-    const formattedBalance = formatUnits(rawBalance, decimals)
-    return { balance: formattedBalance, decimals, symbol }
+    // Se fuerza el tipado a bigint y number para que Next.js/Vercel no bloquee el build
+    const formattedBalance = formatUnits(rawBalance as bigint, Number(decimals))
+    return { balance: formattedBalance, decimals: Number(decimals), symbol: String(symbol) }
   } catch (error) {
     console.error('Error leyendo contrato ERC-20:', error)
     return { balance: '0', decimals: 18, symbol: 'MD' }
@@ -77,7 +78,8 @@ export async function sendMyToken(recipientAddress: string, amount: string, deci
 
   const amountInWei = parseUnits(amount, decimals)
 
-  const { finalPayload } = await MiniKit.commands.sendTransaction({
+  // Usamos commandsAsync y forzamos el tipado de respuesta para evitar errores de TypeScript en Vercel
+  const response = await (MiniKit as any).commandsAsync.sendTransaction({
     transaction: [
       {
         address: MY_TOKEN_ADDRESS,
@@ -99,9 +101,11 @@ export async function sendMyToken(recipientAddress: string, amount: string, deci
     ]
   })
 
-  if (finalPayload.status === 'error') {
+  const finalPayload = response?.finalPayload
+
+  if (!finalPayload || finalPayload.status === 'error') {
     throw new Error('Transacción cancelada o fallida')
   }
 
-  return finalPayload.transactionHash
+  return finalPayload.transactionHash as string
 }
