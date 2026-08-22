@@ -1,106 +1,121 @@
-"use client";
+import { createPublicClient, http, formatUnits, parseUnits, type Address } from 'viem'
+import { MiniKit } from '@worldcoin/minikit-js'
 
-import { useEffect, useState } from "react";
-import { getTokenDetails, sendMyToken, MY_TOKEN_ADDRESS } from "@/lib/token";
-import { MiniKit } from "@worldcoin/minikit-js";
+export const WORLD_CHAIN_ID = 480
+export const MY_TOKEN_ADDRESS = (process.env.NEXT_PUBLIC_TOKEN_ADDRESS ||
+  '0x6335c1F2967A85e98cCc89dA0c87e672715284dB') as Address
 
-export default function TokenWallet() {
-  const [balance, setBalance] = useState<string>("0");
-  const [symbol, setSymbol] = useState<string>("MD");
-  const [decimals, setDecimals] = useState<number>(18);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [recipient, setRecipient] = useState<string>("");
-  const [amount, setAmount] = useState<string>("");
-  const [txStatus, setTxStatus] = useState<string>("");
+const RPC =
+  process.env.NEXT_PUBLIC_WORLDCHAIN_RPC ||
+  'https://worldchain-mainnet.g.alchemy.com/public'
 
-  useEffect(() => {
-    async function loadWalletData() {
-      try {
-        const walletAddress = MiniKit.walletAddress;
-        if (!walletAddress) return;
+const client = createPublicClient({
+  chain: {
+    id: WORLD_CHAIN_ID,
+    name: 'World Chain',
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    rpcUrls: { default: { http: [RPC] } }
+  },
+  transport: http(RPC)
+})
 
-        const details = await getTokenDetails(walletAddress as `0x${string}`);
-        setBalance(details.balance);
-        setSymbol(details.symbol);
-        setDecimals(details.decimals);
-      } catch (error) {
-        console.error("Error al cargar los detalles del token:", error);
-      } finally {
-        setLoading(false);
+const erc20Abi = [
+  {
+    type: 'function',
+    name: 'balanceOf',
+    stateMutability: 'view',
+    inputs: [{ name: 'account', type: 'address' }],
+    outputs: [{ name: '', type: 'uint256' }]
+  },
+  {
+    type: 'function',
+    name: 'decimals',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ name: '', type: 'uint8' }]
+  },
+  {
+    type: 'function',
+    name: 'symbol',
+    stateMutability: 'view',
+    inputs: [],
+    outputs: [{ name: '', type: 'string' }]
+  },
+  {
+    type: 'function',
+    name: 'transfer',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'to', type: 'address' },
+      { name: 'amount', type: 'uint256' }
+    ],
+    outputs: [{ name: '', type: 'bool' }]
+  }
+] as const
+
+export async function getTokenDetails(wallet: Address) {
+  const [rawBalance, decimals, symbol] = await Promise.all([
+    client.readContract({
+      address: MY_TOKEN_ADDRESS,
+      abi: erc20Abi,
+      functionName: 'balanceOf',
+      args: [wallet]
+    }),
+    client.readContract({
+      address: MY_TOKEN_ADDRESS,
+      abi: erc20Abi,
+      functionName: 'decimals'
+    }),
+    client.readContract({
+      address: MY_TOKEN_ADDRESS,
+      abi: erc20Abi,
+      functionName: 'symbol'
+    })
+  ])
+
+  return {
+    balance: formatUnits(rawBalance, decimals),
+    symbol,
+    decimals
+  }
+}
+
+export async function sendMyToken(
+  recipient: Address,
+  amount: string,
+  decimals: number
+): Promise<string> {
+  if (!/^0x[a-fA-F0-9]{40}$/.test(recipient)) {
+    throw new Error('La dirección destino no es válida.')
+  }
+
+  if (!amount || Number(amount) <= 0) {
+    throw new Error('El monto debe ser mayor que cero.')
+  }
+
+  if (!MiniKit.isInstalled()) {
+    throw new Error('Abre esta aplicación dentro de World App para enviar tokens.')
+  }
+
+  const parsedAmount = parseUnits(amount, decimals)
+
+  const response = await (MiniKit as any).sendTransaction({
+    chainId: WORLD_CHAIN_ID,
+    transactions: [
+      {
+        address: MY_TOKEN_ADDRESS,
+        abi: erc20Abi,
+        functionName: 'transfer',
+        args: [recipient, parsedAmount]
       }
-    }
+    ]
+  })
 
-    loadWalletData();
-  }, []);
+  const finalPayload = response?.finalPayload || response?.data
 
-  async function handleSend() {
-    try {
-      setTxStatus("Enviando transacción...");
-      const resultHash = await sendMyToken(
-        recipient as `0x${string}`,
-        amount,
-        decimals
-      );
-      setTxStatus(`¡Éxito! UserOpHash: ${resultHash.slice(0, 10)}...`);
-    } catch (error: any) {
-      console.error(error);
-      setTxStatus(`Error: ${error.message || "No se pudo completar el envío"}`);
-    }
+  if (!finalPayload || finalPayload.status === 'error') {
+    throw new Error('La transacción fue rechazada o falló en World App.')
   }
 
-  if (loading) {
-    return <p className="text-xs text-gray-500 text-center">Cargando saldo de tu billetera...</p>;
-  }
-
-  return (
-    <div className="w-full bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-4 text-left">
-      <div className="flex justify-between items-center bg-white p-3 rounded-lg shadow-sm">
-        <div>
-          <p className="text-[11px] text-gray-500 uppercase font-semibold">Tu Saldo</p>
-          <p className="text-lg font-bold text-[#013A72]">
-            {balance} <span className="text-sm">{symbol}</span>
-          </p>
-        </div>
-        <div className="text-right">
-          <span className="inline-block bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-1 rounded">
-            World Chain
-          </span>
-        </div>
-      </div>
-
-      {/* Formulario de envío de tokens */}
-      <div className="space-y-2 pt-2 border-t border-gray-200">
-        <p className="text-xs font-semibold text-gray-700">Enviar Tokens MD</p>
-        
-        <input
-          type="text"
-          placeholder="Dirección destino (0x...)"
-          value={recipient}
-          onChange={(e) => setRecipient(e.target.value)}
-          className="w-full text-xs p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#013A72]"
-        />
-
-        <input
-          type="number"
-          placeholder="Cantidad a enviar"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          className="w-full text-xs p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#013A72]"
-        />
-
-        <button
-          onClick={handleSend}
-          className="w-full py-2.5 bg-emerald-600 text-white text-xs font-bold rounded-lg hover:bg-emerald-700 transition-colors shadow-sm"
-        >
-          Transferir Tokens 💸
-        </button>
-
-        {txStatus && (
-          <p className="text-[11px] text-blue-700 font-medium bg-blue-50 p-2 rounded border border-blue-100 break-all">
-            {txStatus}
-          </p>
-        )}
-      </div>
-    </div>
-  );
+  return finalPayload.userOpHash || 'Transacción enviada correctamente'
 }
