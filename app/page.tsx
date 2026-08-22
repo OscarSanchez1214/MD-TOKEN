@@ -47,6 +47,7 @@ export default function Home() {
 
       {/* Tarjeta principal */}
       <div className="w-full max-w-md bg-white/90 rounded-2xl shadow-lg p-6 mb-8 text-center backdrop-blur-sm">
+        
         {/* Bloque de recomendación */}
         <h2 className="text-xl font-semibold text-[#003A70] mb-2">
           Recomendación del Día 💡
@@ -61,7 +62,7 @@ export default function Home() {
               {recomendacionDelDia.contenido}
             </p>
 
-            {/* 🔹 Video de YouTube si existe */}
+            {/* Video de YouTube si existe */}
             {recomendacionDelDia.video ? (
               <div className="overflow-hidden rounded-xl shadow-sm">
                 <iframe
@@ -84,38 +85,39 @@ export default function Home() {
           </p>
         )}
 
-        {/* Bloque de donación */}
-        <div className="border-t border-gray-200 mt-4 pt-4">
-          <h4 className="text-sm font-semibold text-[#003A70] mb-3">
+        {/* Bloque de donación y pagos */}
+        <div className="border-t border-gray-200 mt-4 pt-4 space-y-4">
+          <h4 className="text-sm font-semibold text-[#003A70]">
             Cada día puedes recibir una recomendación financiera acompañada de un video para aprender a manejar mejor tu dinero, 
             fortalecer tus hábitos de inversión e impulsar tu inteligencia financiera. 💡💰📈
           </h4>
-          <p className="text-sm text-gray-600 mb-4">
+          
+          <p className="text-sm text-gray-600">
             Agradecemos tu apoyo. Puedes donar en{" "}
             <strong>MD</strong>, <strong>WLD</strong> o <strong>USDC</strong>.
           </p>
 
-          {/* Componente original de pagos (Intacto) */}
+          {/* Componente de pagos */}
           <PayComponent />
 
-          <div className="mt-4 text-xs text-gray-500 break-all">
+          <div className="text-xs text-gray-500 break-all">
             Dirección oficial:{" "}
             <code className="bg-gray-100 px-2 py-1 rounded">
               {RECEIVER_ADDRESS}
             </code>
           </div>
 
-          {/* Módulo de Billetera Token MD (Lectura y Envíos a direcciones externas) */}
-          <TokenWallet />
+          {/* Módulo de Billetera Token MD (Lectura y Envíos autónomos) */}
+          <div className="mt-6 pt-4 border-t border-gray-200">
+            <TokenWallet />
+          </div>
+          
         </div>
       </div>
 
       {/* Footer */}
       <footer className="text-center text-gray-500 text-xs mt-auto pb-4 leading-relaxed">
-        Tokens soportados:<br />
-        💠 MD – 0x6335c1F2967A85e98cCc89dA0c87e672715284dB<br />
-        🌐 WLD – 0x2cFc85d8E48F8EAB294be644d9E25C3030863003<br />
-        💵 USDC – 0x79A02482A880bCE3F13e09Da970dC34db4CD24d1
+        {/* Espacio para pie de página si se requiere */}
       </footer>
     </main>
   );
