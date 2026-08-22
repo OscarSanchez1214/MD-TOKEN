@@ -19,7 +19,6 @@ export default function WorldLogin() {
     setAuthStatus("1. Solicitando nonce al servidor...");
 
     try {
-      // 1. Solicitamos el nonce al backend
       const response = await fetch("/api/nonce");
       if (!response.ok) {
         throw new Error(`Fallo al obtener nonce (Status: ${response.status})`);
@@ -34,8 +33,8 @@ export default function WorldLogin() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // 2. Ejecutamos walletAuth
-      const result: any = await (MiniKit as any).walletAuth(input);
+      // CORRECCIÓN: Llamamos al comando a través de MiniKit.commands
+      const result: any = await (MiniKit.commands as any).walletAuth(input);
 
       if (!result || result.executedWith === "fallback") {
         setAuthStatus("Autenticación cancelada o no soportada.");
@@ -48,7 +47,6 @@ export default function WorldLogin() {
       if (payload && (payload.status === "success" || payload.signature)) {
         setAuthStatus("3. Verificando firma en el servidor...");
 
-        // 3. Verificamos la firma en el backend
         const verifyResponse = await fetch("/api/complete-siwe", {
           method: "POST",
           headers: {
