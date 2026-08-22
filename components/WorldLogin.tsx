@@ -16,12 +16,17 @@ export default function WorldLogin() {
     }
 
     setLoading(true);
-    setAuthStatus("Solicitando sesión...");
+    setAuthStatus("1. Solicitando nonce al servidor...");
 
     try {
       // 1. Solicitamos el nonce al backend
       const response = await fetch("/api/nonce");
+      if (!response.ok) {
+        throw new Error(`Fallo al obtener nonce (Status: ${response.status})`);
+      }
       const { nonce } = await response.json();
+
+      setAuthStatus("2. Abriendo ventana de firma en World App...");
 
       const input = {
         nonce,
@@ -29,7 +34,7 @@ export default function WorldLogin() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // 2. Ejecutamos walletAuth usando casting de tipos para evitar el error de compilación
+      // 2. Ejecutamos walletAuth
       const result: any = await (MiniKit as any).walletAuth(input);
 
       if (!result || result.executedWith === "fallback") {
@@ -38,10 +43,11 @@ export default function WorldLogin() {
         return;
       }
 
-      // Soportamos ambas estructuras de respuesta del SDK
       const payload = result.finalPayload || result.data;
 
       if (payload && (payload.status === "success" || payload.signature)) {
+        setAuthStatus("3. Verificando firma en el servidor...");
+
         // 3. Verificamos la firma en el backend
         const verifyResponse = await fetch("/api/complete-siwe", {
           method: "POST",
@@ -60,14 +66,14 @@ export default function WorldLogin() {
           setWalletAddress(verifyData.address);
           setAuthStatus("¡Autenticación exitosa!");
         } else {
-          setAuthStatus("Error de verificación en el servidor.");
+          setAuthStatus(`Error del servidor: ${verifyData.error || "Firma inválida"}`);
         }
       } else {
-        setAuthStatus("El usuario rechazó la firma.");
+        setAuthStatus("El usuario rechazó la firma o no se completó.");
       }
-    } catch (error) {
-      console.error(error);
-      setAuthStatus("Error al procesar la autenticación.");
+    } catch (error: any) {
+      console.error("Error detallado en autenticación:", error);
+      setAuthStatus(`Error técnico: ${error.message || JSON.stringify(error)}`);
     } finally {
       setLoading(false);
     }
@@ -85,10 +91,14 @@ export default function WorldLogin() {
             disabled={loading}
             className="w-full py-3 bg-[#013A72] text-white text-sm font-bold rounded-xl hover:bg-[#0154A0] disabled:bg-gray-300 transition-colors shadow-md"
           >
-            {loading ? "Procesando en World App..." : "Iniciar Sesión (Sign-In) 🚀"}
+            {loading ? "Procesando..." : "Iniciar Sesión (Sign-In) 🚀"}
           </button>
+          
           {authStatus && (
-            <p className="text-xs text-blue-600 font-medium">{authStatus}</p>
+            <div className="bg-amber-50 border border-amber-200 text-amber-900 text-xs p-3 rounded-xl mt-2 text-left break-all shadow-sm">
+              <span className="font-bold block mb-1">Estado del proceso:</span>
+              {authStatus}
+            </div>
           )}
         </div>
       ) : (
@@ -96,7 +106,6 @@ export default function WorldLogin() {
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs py-2 px-3 rounded-lg text-center font-medium">
             ✓ Sesión iniciada: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
           </div>
-          {/* Mostramos el módulo completo de la billetera MD una vez autenticado */}
           <TokenWallet />
         </div>
       )}
