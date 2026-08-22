@@ -29,8 +29,8 @@ export default function WorldLogin() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // 2. Ejecutamos el comando de autenticación de MiniKit con tipado flexible
-      const result: any = await MiniKit.walletAuth(input);
+      // 2. Ejecutamos walletAuth usando casting de tipos para evitar el error de compilación
+      const result: any = await (MiniKit as any).walletAuth(input);
 
       if (!result || result.executedWith === "fallback") {
         setAuthStatus("Autenticación cancelada o no soportada.");
@@ -38,7 +38,10 @@ export default function WorldLogin() {
         return;
       }
 
-      if (result.finalPayload?.status === "success") {
+      // Soportamos ambas estructuras de respuesta del SDK
+      const payload = result.finalPayload || result.data;
+
+      if (payload && (payload.status === "success" || payload.signature)) {
         // 3. Verificamos la firma en el backend
         const verifyResponse = await fetch("/api/complete-siwe", {
           method: "POST",
@@ -46,7 +49,7 @@ export default function WorldLogin() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            payload: result.finalPayload,
+            payload,
             nonce,
           }),
         });
