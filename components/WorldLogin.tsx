@@ -1,67 +1,71 @@
 "use client";
 
-import { MiniKit, ResponseEvent } from "@worldcoin/minikit-js";
-import { useEffect, useState } from "react";
+import { MiniKit } from "@worldcoin/minikit-js";
+import type { CommandResultByVia, MiniKitWalletAuthOptions, WalletAuthResult } from "@worldcoin/minikit-js/commands";
+import { useState } from "react";
 import TokenWallet from "@/components/TokenWallet";
 
 export default function WorldLogin() {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [authStatus, setAuthStatus] = useState("");
 
-  useEffect(() => {
-    if (!MiniKit.isInstalled()) {
-      console.log("La Mini App no está ejecutándose dentro de World App");
-      return;
-    }
-
-    // Comprobar si ya existe una sesión activa previa en MiniKit
-    if (MiniKit.walletAddress) {
-      setWalletAddress(MiniKit.walletAddress);
-    }
-
-    const handleResponse = (response: any) => {
-      console.log("Respuesta de World Wallet Auth:", response);
-
-      if (response.detail && response.detail.status === "success") {
-        const address = MiniKit.walletAddress;
-        if (address) {
-          setWalletAddress(address);
-        }
-      }
-    };
-
-    MiniKit.subscribe(ResponseEvent.MiniAppWalletAuth, handleResponse);
-
-    return () => {
-      MiniKit.unsubscribe(ResponseEvent.MiniAppWalletAuth);
-    };
-  }, []);
-
-  async function iniciarSesionWorld() {
+  async function signInWithWallet() {
     if (!MiniKit.isInstalled()) {
       alert("Por favor, abre esta Mini App directamente desde World App.");
       return;
     }
 
     setLoading(true);
+    setAuthStatus("Solicitando sesión...");
 
     try {
-      const res = await MiniKit.commandsAsync.walletAuth({
-        nonce: crypto.randomUUID(),
-        requestId: "mundo-didactico-login",
-        statement: "Inicia sesión en Mundo Didáctico para gestionar tus tokens MD y educación financiera.",
-      });
+      // 1. Solicitamos el nonce al backend
+      const response = await fetch("/api/nonce");
+      const { nonce } = await response.json();
 
-      console.log("Resultado Wallet Auth:", res);
+      const input = {
+        nonce,
+        statement: "Firma para confirmar la propiedad de la billetera y autenticarte en MUNDO DIDACTICO.",
+        expirationTime: new Date(Date.now() + 1000 * 60 * 60),
+      } satisfies MiniKitWalletAuthOptions;
 
-      if (res?.finalPayload?.status === "success") {
-        const address = MiniKit.walletAddress;
-        if (address) {
-          setWalletAddress(address);
+      // 2. Ejecutamos el comando de autenticación de MiniKit
+      const result: CommandResultByVia<WalletAuthResult> = await MiniKit.walletAuth(input);
+
+      if (result.executedWith === "fallback") {
+        setAuthStatus("Autenticación cancelada o no soportada.");
+        setLoading(false);
+        return;
+      }
+
+      if (result.finalPayload?.status === "success") {
+        // 3. Verificamos la firma en el backend
+        const verifyResponse = await fetch("/api/complete-siwe", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            payload: result.finalPayload,
+            nonce,
+          }),
+        });
+
+        const verifyData = await verifyResponse.json();
+
+        if (verifyData.isValid && verifyData.address) {
+          setWalletAddress(verifyData.address);
+          setAuthStatus("¡Autenticación exitosa!");
+        } else {
+          setAuthStatus("Error de verificación en el servidor.");
         }
+      } else {
+        setAuthStatus("El usuario rechazó la firma.");
       }
     } catch (error) {
-      console.error("Error en autenticación World:", error);
+      console.error(error);
+      setAuthStatus("Error al procesar la autenticación.");
     } finally {
       setLoading(false);
     }
@@ -72,22 +76,25 @@ export default function WorldLogin() {
       {!walletAddress ? (
         <div className="text-center w-full space-y-3">
           <p className="text-xs text-gray-600">
-            Conecta tu cuenta para ver tu saldo y operar en World Chain.
+            Inicia sesión para firmar con tu billetera de World Chain.
           </p>
           <button
-            onClick={iniciarSesionWorld}
+            onClick={signInWithWallet}
             disabled={loading}
             className="w-full py-3 bg-[#013A72] text-white text-sm font-bold rounded-xl hover:bg-[#0154A0] disabled:bg-gray-300 transition-colors shadow-md"
           >
-            {loading ? "Conectando con World App..." : "Abrir mi billetera 🚀"}
+            {loading ? "Procesando en World App..." : "Iniciar Sesión (Sign-In) 🚀"}
           </button>
+          {authStatus && (
+            <p className="text-xs text-blue-600 font-medium">{authStatus}</p>
+          )}
         </div>
       ) : (
         <div className="w-full space-y-4">
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs py-2 px-3 rounded-lg text-center font-medium">
-            ✓ Billetera conectada a World App
+            ✓ Sesión iniciada: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
           </div>
-          {/* Mostramos la billetera y funciones de Token MD */}
+          {/* Mostramos el módulo completo de la billetera MD una vez autenticado */}
           <TokenWallet />
         </div>
       )}
