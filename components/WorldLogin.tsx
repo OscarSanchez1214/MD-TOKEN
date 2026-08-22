@@ -1,7 +1,6 @@
 "use client";
 
 import { MiniKit } from "@worldcoin/minikit-js";
-import type { CommandResultByVia, MiniKitWalletAuthOptions, WalletAuthResult } from "@worldcoin/minikit-js/commands";
 import { useState } from "react";
 import TokenWallet from "@/components/TokenWallet";
 
@@ -28,12 +27,12 @@ export default function WorldLogin() {
         nonce,
         statement: "Firma para confirmar la propiedad de la billetera y autenticarte en MUNDO DIDACTICO.",
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
-      } satisfies MiniKitWalletAuthOptions;
+      };
 
-      // 2. Ejecutamos el comando de autenticación de MiniKit
-      const result: CommandResultByVia<WalletAuthResult> = await MiniKit.walletAuth(input);
+      // 2. Ejecutamos el comando de autenticación de MiniKit con tipado flexible
+      const result: any = await MiniKit.walletAuth(input);
 
-      if (result.executedWith === "fallback") {
+      if (!result || result.executedWith === "fallback") {
         setAuthStatus("Autenticación cancelada o no soportada.");
         setLoading(false);
         return;
