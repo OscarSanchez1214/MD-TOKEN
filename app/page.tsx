@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import PayComponent from "@/components/Pay";
+import TokenWallet from "@/components/TokenWallet";
 import recomendaciones from "@/data/recomendaciones.json";
 
 // Dirección oficial de recepción de donaciones
@@ -85,15 +86,16 @@ export default function Home() {
 
         {/* Bloque de donación */}
         <div className="border-t border-gray-200 mt-4 pt-4">
-         <h4 className="text-sm font-semibold text-[#003A70] mb-3">
-  Cada día puedes recibir una recomendación financiera acompañada de un video para aprender a manejar mejor tu dinero, 
-  fortalecer tus hábitos de inversión e impulsar tu inteligencia financiera. 💡💰📈
-</h4>
+          <h4 className="text-sm font-semibold text-[#003A70] mb-3">
+            Cada día puedes recibir una recomendación financiera acompañada de un video para aprender a manejar mejor tu dinero, 
+            fortalecer tus hábitos de inversión e impulsar tu inteligencia financiera. 💡💰📈
+          </h4>
           <p className="text-sm text-gray-600 mb-4">
             Agradecemos tu apoyo. Puedes donar en{" "}
             <strong>MD</strong>, <strong>WLD</strong> o <strong>USDC</strong>.
           </p>
 
+          {/* Componente original de pagos (Intacto) */}
           <PayComponent />
 
           <div className="mt-4 text-xs text-gray-500 break-all">
@@ -102,6 +104,9 @@ export default function Home() {
               {RECEIVER_ADDRESS}
             </code>
           </div>
+
+          {/* Módulo de Billetera Token MD (Lectura y Envíos a direcciones externas) */}
+          <TokenWallet />
         </div>
       </div>
 
