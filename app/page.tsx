@@ -63,18 +63,37 @@ export default function Home() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // Llamada segura casteando MiniKit como any
-      const result = await (MiniKit as any).walletAuth(authOptions);
+      const minikitAny = MiniKit as any;
+      let result: any = null;
+
+      // Búsqueda inteligente y segura del método de autenticación en cualquier versión de MiniKit
+      if (typeof minikitAny.walletAuth === "function") {
+        result = await minikitAny.walletAuth(authOptions);
+      } else if (minikitAny.commands && typeof minikitAny.commands.walletAuth === "function") {
+        result = await minikitAny.commands.walletAuth(authOptions);
+      } else if (minikitAny.commandsAsync && typeof minikitAny.commandsAsync.walletAuth === "function") {
+        result = await minikitAny.commandsAsync.walletAuth(authOptions);
+      } else if (minikitAny.commands && typeof minikitAny.commands.call === "function") {
+        result = await minikitAny.commands.call("walletAuth", authOptions);
+      } else {
+        const activeWallet = minikitAny.user?.walletAddress;
+        if (activeWallet) {
+          setWalletAddress(activeWallet);
+          setIsAuthenticating(false);
+          return;
+        }
+        throw new Error("walletAuth no está disponible en este entorno.");
+      }
 
       if (result && result.executedWith !== "fallback" && result.data) {
-        const address = result.data.address || (MiniKit.user as any)?.walletAddress;
+        const address = result.data.address || minikitAny.user?.walletAddress;
         if (address) {
           setWalletAddress(address);
         } else {
           setErrorMsg("No se recibió respuesta de la billetera.");
         }
       } else {
-        const sessionWallet = (MiniKit.user as any)?.walletAddress;
+        const sessionWallet = minikitAny.user?.walletAddress;
         if (sessionWallet) {
           setWalletAddress(sessionWallet);
         } else {
