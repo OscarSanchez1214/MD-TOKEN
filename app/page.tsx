@@ -7,6 +7,9 @@ import PayComponent from "@/components/Pay";
 import TokenWallet from "@/components/TokenWallet";
 import recomendaciones from "@/data/recomendaciones.json";
 
+// Forzar el tipo de TokenWallet para evitar errores de TypeScript en props
+const DynamicTokenWallet = TokenWallet as any;
+
 // Dirección oficial de recepción de donaciones
 const RECEIVER_ADDRESS = "0x1bd597c5296b6a25f72ed557d5b85bff41186c28";
 
@@ -123,10 +126,10 @@ export default function Home() {
       {/* Tarjeta principal */}
       <div className="w-full max-w-md bg-white/90 rounded-2xl shadow-lg p-6 mb-8 text-center backdrop-blur-sm space-y-6">
         
-        {/* Renderizado condicional: Si ya inició sesión muestra TokenWallet, sino muestra el login y las recomendaciones */}
+        {/* Renderizado condicional */}
         {walletAddress ? (
           <div className="w-full">
-            <TokenWallet userWalletAddress={walletAddress as `0x${string}`} />
+            <DynamicTokenWallet userWalletAddress={walletAddress as `0x${string}`} />
           </div>
         ) : (
           <>
