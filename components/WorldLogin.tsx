@@ -31,8 +31,8 @@ export default function WorldLogin() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // CORRECCIÓN VERCEL: Usamos (MiniKit.commands as any) para superar el chequeo estricto de tipos
-      const result: any = await (MiniKit.commands as any).walletAuth(input);
+      // CORRECCIÓN: walletAuth está en la raíz de MiniKit, no en .commands
+      const result: any = await (MiniKit as any).walletAuth(input);
 
       if (!result || result.executedWith === "fallback") {
         setAuthStatus("Error: Ejecutado fuera de World App.");
