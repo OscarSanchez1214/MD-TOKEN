@@ -2,71 +2,82 @@
 
 import { MiniKit } from "@worldcoin/minikit-js";
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // Importamos el enrutador de Next.js
+import { useRouter } from "next/navigation";
 
 export default function WorldLogin() {
-  const router = useRouter(); // Inicializamos el enrutador
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [authStatus, setAuthStatus] = useState("");
 
   async function signInWithWallet() {
     if (!MiniKit.isInstalled()) {
-      alert("Por favor, abre esta Mini App directamente desde World App.");
+      alert("Por favor, abre esta Mini App en World App.");
       return;
     }
 
     setLoading(true);
-    setAuthStatus("Solicitando acceso...");
+    setAuthStatus("1. Solicitando acceso...");
 
     try {
       const response = await fetch("/api/nonce");
       if (!response.ok) throw new Error("Fallo al obtener nonce");
       const { nonce } = await response.json();
 
-      setAuthStatus("Abriendo ventana de firma...");
+      setAuthStatus("2. Abriendo ventana de firma...");
 
       const input = {
         nonce,
         statement: "Firma para confirmar la propiedad de la billetera y autenticarte en MUNDO DIDACTICO.",
+        expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      const result: any = await (MiniKit.commands as any).walletAuth(input);
+      // USANDO LA API OFICIAL DE LA DOCUMENTACIÓN
+      // (Si Vercel se queja del tipo, usa: const result: any = await (MiniKit as any).walletAuth(input); )
+      const result: any = await MiniKit.walletAuth(input);
 
-      if (!result || result.executedWith === "fallback") {
-        setAuthStatus("Autenticación cancelada.");
+      if (result.executedWith === "fallback") {
+        setAuthStatus("Error: Ejecutado fuera de World App.");
         setLoading(false);
         return;
       }
 
-      const payload = result.finalPayload || result.data;
+      // Si el usuario presiona cancelar explícitamente
+      if (result.data?.status === "error") {
+        setAuthStatus("El usuario rechazó la firma.");
+        setLoading(false);
+        return;
+      }
 
-      if (payload && (payload.status === "success" || payload.signature)) {
-        setAuthStatus("Verificando firma...");
+      // Verificamos si la data contiene la firma (signature)
+      if (result.data && result.data.signature) {
+        setAuthStatus("3. Verificando firma en el servidor...");
 
         const verifyResponse = await fetch("/api/complete-siwe", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ payload, nonce }),
+          body: JSON.stringify({
+            payload: result.data,
+            nonce,
+          }),
         });
 
         const verifyData = await verifyResponse.json();
 
-        if (verifyData.isValid && verifyData.address) {
-          setAuthStatus("¡Autenticación exitosa! Entrando...");
+        if (verifyData.isValid) {
+          setAuthStatus("¡Autenticación exitosa! Redirigiendo...");
           
-          // ¡MAGIA AQUÍ! Redirigimos a la página del dashboard tras 1 segundo
           setTimeout(() => {
-            router.push("/dashboard"); 
+            router.push("/dashboard");
           }, 1000);
-
         } else {
-          setAuthStatus("Firma inválida");
+          setAuthStatus(`Firma inválida: ${verifyData.error || "Error desconocido"}`);
         }
       } else {
-        setAuthStatus("El usuario rechazó la firma.");
+        // En caso de que World App bloquee la URL, veremos la respuesta exacta aquí
+        setAuthStatus("Fallo la firma. Respuesta: " + JSON.stringify(result.data));
       }
     } catch (error: any) {
-      setAuthStatus("Error técnico al conectar.");
+      setAuthStatus(`Error técnico: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -89,7 +100,7 @@ export default function WorldLogin() {
         </button>
         
         {authStatus && (
-          <div className="text-xs font-medium text-blue-600 mt-2 bg-blue-50 p-2 rounded-lg">
+          <div className="text-xs font-medium text-blue-800 mt-2 bg-blue-50 p-3 rounded-lg break-all">
             {authStatus}
           </div>
         )}
