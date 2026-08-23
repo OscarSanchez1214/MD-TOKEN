@@ -35,8 +35,8 @@ export const PayComponent: React.FC = () => {
             token_amount: tokenToDecimals(0.5, Tokens.WLD).toString(),
           },
           {
-            symbol: Tokens.USDCE,
-            token_amount: tokenToDecimals(0.1, Tokens.USDCE).toString(),
+            symbol: Tokens.USDC,
+            token_amount: tokenToDecimals(0.1, Tokens.USDC).toString(),
           },
         ],
         description: "💸 Donación Mundo Didáctico",
@@ -44,7 +44,7 @@ export const PayComponent: React.FC = () => {
 
       if (MiniKit.isInstalled()) {
         console.log("✅ MiniKit detectado. Ejecutando pago...");
-        return await MiniKit.commandsAsync.pay(payload);
+        return await (MiniKit.commandsAsync as any).pay(payload);
       } else {
         setMensaje("⚠️ Abre esta MiniApp desde World App para realizar el pago.");
         setEstado("error");
@@ -87,10 +87,10 @@ export const PayComponent: React.FC = () => {
         console.log("📦 Respuesta del servidor confirm-payment:", confirmacion);
 
         if (confirmacion.success) {
-          setMensaje("✅ ¡Pago realizado con éxito!");
+          setMensaje("✅ ¡Pago realizado con éxito! 👍🏻 ¡Gracias por tu apoyo! 😊🙏💖");
           setEstado("exito");
         } else {
-          setMensaje("✅ ¡Pago realizado con éxito! 👍🏻 ¡Gracias por tu apoyo! 😊🙏💖 ");
+          setMensaje("✅ ¡Pago realizado con éxito! 👍🏻 ¡Gracias por tu apoyo! 😊🙏💖");
           setEstado("exito");
         }
       } else {
