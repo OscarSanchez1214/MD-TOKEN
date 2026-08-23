@@ -1,114 +1,56 @@
 'use client'
-
-import { useEffect, useState } from 'react'
-import { getTokenDetails, sendMyToken } from '@/lib/token'
+import React, { useState, useEffect } from 'react'
 import { MiniKit } from '@worldcoin/minikit-js'
+import { getTokenDetails, sendMyToken, MY_TOKEN_ADDRESS } from '@/lib/token'
 
 export default function TokenWallet() {
+  const [walletAddress, setWalletAddress] = useState<string>('')
   const [balance, setBalance] = useState<string>('0')
-  const [symbol, setSymbol] = useState<string>('MD')
   const [decimals, setDecimals] = useState<number>(18)
-  const [loading, setLoading] = useState<boolean>(true)
+  const [symbol, setSymbol] = useState<string>('MD')
+  
   const [recipient, setRecipient] = useState<string>('')
   const [amount, setAmount] = useState<string>('')
-  const [txStatus, setTxStatus] = useState<string>('')
 
+  // 1. INICIAR SESIÓN (Obtener Wallet)
   useEffect(() => {
-    async function loadWalletData() {
-      try {
-        const walletAddress = MiniKit.walletAddress
-        if (!walletAddress) {
-          setLoading(false)
-          return
-        }
-
-        const details = await getTokenDetails(walletAddress as `0x${string}`)
-        setBalance(details.balance)
-        setSymbol(details.symbol)
-        setDecimals(details.decimals)
-      } catch (error) {
-        console.error('Error al cargar los detalles del token:', error)
-      } finally {
-        setLoading(false)
-      }
+    const address = (MiniKit.user as any)?.walletAddress
+    if (address) {
+      setWalletAddress(address)
+      loadTokenData(address as `0x${string}`)
     }
-
-    loadWalletData()
   }, [])
 
-  async function handleSend(e: React.FormEvent) {
-    e.preventDefault()
-    try {
-      setTxStatus('Enviando transacción...')
-      const resultHash = await sendMyToken(
-        recipient as `0x${string}`,
-        amount,
-        decimals
-      )
-      setTxStatus(`¡Éxito! UserOpHash: ${resultHash.slice(0, 10)}...`)
-      setRecipient('')
-      setAmount('')
-    } catch (error: any) {
-      console.error(error)
-      setTxStatus(`Error: ${error.message || 'No se pudo completar el envío'}`)
-    }
+  // 2. LEER SALDO
+  const loadTokenData = async (addr: `0x${string}`) => {
+    const details = await getTokenDetails(addr)
+    setBalance(details.balance)
+    setDecimals(details.decimals)
+    setSymbol(details.symbol)
   }
 
-  if (loading) {
-    return <p className="text-xs text-gray-500 text-center">Cargando saldo de tu billetera...</p>
+  // 3. ENVIAR TOKENS
+  const handleSend = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      await sendMyToken(walletAddress as `0x${string}`, recipient as `0x${string}`, amount, decimals)
+      alert("✅ Envío exitoso")
+      loadTokenData(walletAddress as `0x${string}`) // Recargar saldo
+    } catch (error: any) {
+      alert(`❌ Error: ${error.message}`)
+    }
   }
 
   return (
-    <div className="w-full bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-4 text-left">
-      <div className="flex justify-between items-center bg-white p-3 rounded-lg shadow-sm">
-        <div>
-          <p className="text-[11px] text-gray-500 uppercase font-semibold">Tu Saldo</p>
-          <p className="text-lg font-bold text-[#013A72]">
-            {balance} <span className="text-sm">{symbol}</span>
-          </p>
-        </div>
-        <div className="text-right">
-          <span className="inline-block bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-1 rounded">
-            World Chain
-          </span>
-        </div>
+    <div className="p-6 max-w-md mx-auto bg-white rounded-3xl shadow-sm border space-y-6">
+      <h2 className="text-2xl font-bold">Wallet {symbol}</h2>
+      <div className="p-4 bg-blue-50 rounded-xl">
+        <p>Saldo: {balance} {symbol}</p>
       </div>
-
-      <form onSubmit={handleSend} className="space-y-2 pt-2 border-t border-gray-200">
-        <p className="text-xs font-semibold text-gray-700">Enviar Tokens {symbol}</p>
-        
-        <input
-          type="text"
-          placeholder="Dirección destino (0x...)"
-          value={recipient}
-          onChange={(e) => setRecipient(e.target.value)}
-          className="w-full text-xs p-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-[#013A72] text-black"
-          required
-        />
-
-        <input
-          type="number"
-          placeholder="Cantidad a enviar"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          min="0"
-          step="any"
-          className="w-full text-xs p-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-[#013A72] text-black"
-          required
-        />
-
-        <button
-          type="submit"
-          className="w-full py-2.5 bg-emerald-600 text-white text-xs font-bold rounded-lg hover:bg-emerald-700 transition-colors shadow-sm"
-        >
-          Transferir Tokens 💸
-        </button>
-
-        {txStatus && (
-          <p className="text-[11px] text-blue-700 font-medium bg-blue-50 p-2 rounded border border-blue-100 break-all">
-            {txStatus}
-          </p>
-        )}
+      <form onSubmit={handleSend} className="space-y-4">
+        <input type="text" placeholder="Destino (0x...)" value={recipient} onChange={(e) => setRecipient(e.target.value)} className="w-full p-3 border rounded-xl" required />
+        <input type="number" step="any" placeholder="Monto" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full p-3 border rounded-xl" required />
+        <button type="submit" className="w-full bg-black text-white p-3 rounded-xl">Enviar</button>
       </form>
     </div>
   )
