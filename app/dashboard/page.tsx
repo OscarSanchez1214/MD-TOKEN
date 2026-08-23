@@ -6,7 +6,7 @@ import Image from "next/image";
 import { MiniKit } from "@worldcoin/minikit-js";
 import TokenWallet from "@/components/TokenWallet";
 
-// Importación dinámica segura para evitar problemas de tipos estrictos
+// Importación dinámica segura
 const DynamicTokenWallet = TokenWallet as any;
 
 export default function Dashboard() {
@@ -16,7 +16,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      // 1. Verificamos que MiniKit esté instalado
       if (!MiniKit.isInstalled()) {
         try {
           MiniKit.install();
@@ -25,26 +24,29 @@ export default function Dashboard() {
         }
       }
 
-      // 2. Buscamos la billetera activa en la sesión
-      const existingAddress = (MiniKit.user as any)?.walletAddress || (MiniKit as any).walletAddress;
+      // Buscamos la billetera activa
+      const existingAddress = 
+        (MiniKit.user as any)?.walletAddress || 
+        (MiniKit as any).walletAddress ||
+        (MiniKit as any).user?.address;
       
       if (existingAddress) {
         setWalletAddress(existingAddress);
       } else {
-        // Si no hay sesión, regresamos al usuario al inicio (Home)
-        router.push("/");
+        // MODO PRUEBA: Si no hay wallet detectada, asignamos una de prueba o simulada 
+        // para que puedas ver el TokenWallet y probar los botones sin que te devuelva al inicio.
+        // (Luego puedes cambiar esto cuando estés 100% dentro de la World App).
+        setWalletAddress("0x1bd597c5296b6a25f72ed557d5b85bff41186c28");
       }
       setIsChecking(false);
     }
-  }, [router]);
+  }, []);
 
   const handleLogout = () => {
-    // Al cerrar sesión, limpiamos el estado visual y volvems al inicio
     setWalletAddress(null);
     router.push("/");
   };
 
-  // Pantalla de carga mientras verifica la sesión
   if (isChecking) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-blue-50">
@@ -54,11 +56,6 @@ export default function Dashboard() {
         </div>
       </div>
     );
-  }
-
-  // Si terminó de checar y no hay wallet, retorna null (el router.push hará su trabajo)
-  if (!walletAddress) {
-    return null;
   }
 
   return (
@@ -85,7 +82,7 @@ export default function Dashboard() {
             <div>
               <h1 className="font-bold text-[#003A70] text-sm">Dashboard MD</h1>
               <p className="text-[10px] text-gray-500 font-mono truncate w-24">
-                {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
+                {walletAddress ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` : "Sin wallet"}
               </p>
             </div>
           </div>
@@ -100,11 +97,14 @@ export default function Dashboard() {
 
         {/* Contenedor Principal de la Billetera */}
         <div className="w-full bg-white/95 rounded-3xl shadow-lg p-5 mb-6 backdrop-blur-sm">
-          <div className="pb-3 mb-3 border-b border-gray-100">
+          <div className="pb-3 mb-3 border-b border-gray-100 flex justify-between items-center">
             <span className="text-xs font-bold text-gray-700">Mi Billetera (World Chain)</span>
+            <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">Conectado</span>
           </div>
           
-          <DynamicTokenWallet userWalletAddress={walletAddress as `0x${string}`} />
+          {walletAddress && (
+            <DynamicTokenWallet userWalletAddress={walletAddress as `0x${string}`} />
+          )}
         </div>
 
       </div>
