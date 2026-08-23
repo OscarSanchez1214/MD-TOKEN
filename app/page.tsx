@@ -63,7 +63,7 @@ export default function Home() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // Casteo seguro para evitar errores de compilación en TypeScript / Vercel
+      // AQUÍ ESTÁ LA CLAVE: Usamos (MiniKit as any) para que TypeScript no arroje error
       const result = await (MiniKit as any).walletAuth(authOptions);
 
       if (result && result.executedWith !== "fallback" && result.data) {
