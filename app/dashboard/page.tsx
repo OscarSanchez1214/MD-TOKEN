@@ -1,725 +1,117 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import Link from 'next/link' // <-- 1. Importamos Link de Next.js
-import {
-  MY_TOKEN_ADDRESS,
-  getTokenDetails,
-  sendMyToken,
-} from '@/lib/token'
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { MiniKit } from "@worldcoin/minikit-js";
+import TokenWallet from "@/components/TokenWallet";
 
-interface Props {
-  userWalletAddress: `0x${string}`
-}
+// Importación dinámica segura para evitar problemas de tipos estrictos
+const DynamicTokenWallet = TokenWallet as any;
 
-type ModalType = 'send' | 'receive' | null
-
-export default function TokenWallet({
-  userWalletAddress,
-}: Props) {
-  const [balance, setBalance] = useState('0')
-  const [symbol, setSymbol] = useState('MD')
-  const [decimals, setDecimals] = useState(18)
-
-  const [loading, setLoading] = useState(true)
-  const [refreshing, setRefreshing] = useState(false)
-
-  const [recipient, setRecipient] = useState('')
-  const [amount, setAmount] = useState('')
-
-  const [modal, setModal] = useState<ModalType>(null)
-
-  const [sending, setSending] = useState(false)
-  const [status, setStatus] = useState('')
-  const [statusType, setStatusType] =
-    useState<'success' | 'error' | 'info'>('info')
-
-  const [copied, setCopied] = useState(false)
-
-  // --------------------------------------------------
-  // CARGAR BALANCE
-  // --------------------------------------------------
-
-  async function loadBalance() {
-    try {
-      setRefreshing(true)
-
-      const data = await getTokenDetails(
-        userWalletAddress
-      )
-
-      setBalance(data.balance)
-      setSymbol(data.symbol)
-      setDecimals(data.decimals)
-    } catch (error) {
-      console.error('Error consultando balance:', error)
-
-      setStatus(
-        'No fue posible consultar el balance del Token MD.'
-      )
-
-      setStatusType('error')
-    } finally {
-      setLoading(false)
-      setRefreshing(false)
-    }
-  }
+export default function Dashboard() {
+  const router = useRouter();
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
-    if (userWalletAddress) {
-      loadBalance()
-    }
-  }, [userWalletAddress])
+    if (typeof window !== "undefined") {
+      // 1. Verificamos que MiniKit esté instalado
+      if (!MiniKit.isInstalled()) {
+        try {
+          MiniKit.install();
+        } catch (e) {
+          console.error("Error al inicializar MiniKit:", e);
+        }
+      }
 
-  // --------------------------------------------------
-  // COPIAR DIRECCIÓN
-  // --------------------------------------------------
-
-  async function copyAddress() {
-    try {
-      await navigator.clipboard.writeText(
-        userWalletAddress
-      )
-
-      setCopied(true)
-
-      setTimeout(() => {
-        setCopied(false)
-      }, 2000)
-    } catch {
-      setStatus(
-        'No fue posible copiar la dirección.'
-      )
-
-      setStatusType('error')
-    }
-  }
-
-  // --------------------------------------------------
-  // COMPARTIR
-  // --------------------------------------------------
-
-  async function shareAddress() {
-    const shareData = {
-      title: 'Mi Wallet MD',
-      text: `Mi dirección para recibir Token MD:\n\n${userWalletAddress}`,
-    }
-
-    try {
-      if (
-        typeof navigator !== 'undefined' &&
-        navigator.share
-      ) {
-        await navigator.share(shareData)
+      // 2. Buscamos la billetera activa en la sesión
+      const existingAddress = (MiniKit.user as any)?.walletAddress || (MiniKit as any).walletAddress;
+      
+      if (existingAddress) {
+        setWalletAddress(existingAddress);
       } else {
-        await copyAddress()
-
-        setStatus(
-          'Dirección copiada para compartir.'
-        )
-
-        setStatusType('success')
+        // Si no hay sesión, regresamos al usuario al inicio (Home)
+        router.push("/");
       }
-    } catch (error) {
-      console.log('Compartir cancelado:', error)
+      setIsChecking(false);
     }
+  }, [router]);
+
+  const handleLogout = () => {
+    // Al cerrar sesión, limpiamos el estado visual y volvems al inicio
+    setWalletAddress(null);
+    router.push("/");
+  };
+
+  // Pantalla de carga mientras verifica la sesión
+  if (isChecking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-blue-50">
+        <div className="flex flex-col items-center gap-3">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#003A70]"></div>
+          <p className="text-[#003A70] font-semibold text-sm">Cargando tu billetera...</p>
+        </div>
+      </div>
+    );
   }
 
-  // --------------------------------------------------
-  // VALIDAR DIRECCIÓN
-  // --------------------------------------------------
-
-  function isValidAddress(address: string) {
-    return /^0x[a-fA-F0-9]{40}$/.test(address)
+  // Si terminó de checar y no hay wallet, retorna null (el router.push hará su trabajo)
+  if (!walletAddress) {
+    return null;
   }
-
-  // --------------------------------------------------
-  // ABRIR ENVÍO
-  // --------------------------------------------------
-
-  function openSend() {
-    setStatus('')
-    setAmount('')
-    setRecipient('')
-    setModal('send')
-  }
-
-  // --------------------------------------------------
-  // ABRIR RECEPCIÓN
-  // --------------------------------------------------
-
-  function openReceive() {
-    setStatus('')
-    setModal('receive')
-  }
-
-  // --------------------------------------------------
-  // CONFIRMAR ENVÍO
-  // --------------------------------------------------
-
-  async function confirmSend() {
-    setStatus('')
-
-    if (!isValidAddress(recipient)) {
-      setStatus(
-        'La dirección de destino no es válida.'
-      )
-
-      setStatusType('error')
-      return
-    }
-
-    if (!amount || Number(amount) <= 0) {
-      setStatus(
-        'Introduce un monto mayor que cero.'
-      )
-
-      setStatusType('error')
-      return
-    }
-
-    const numericAmount = Number(amount)
-    const numericBalance = Number(balance)
-
-    if (numericAmount > numericBalance) {
-      setStatus(
-        'No tienes suficiente saldo disponible.'
-      )
-
-      setStatusType('error')
-      return
-    }
-
-    setSending(true)
-
-    setStatus(
-      'Solicitando confirmación en World App...'
-    )
-
-    setStatusType('info')
-
-    try {
-      const txHash = await sendMyToken(
-        recipient as `0x${string}`,
-        amount,
-        decimals
-      )
-
-      setStatus(
-        `Transacción enviada correctamente.\n${txHash}`
-      )
-
-      setStatusType('success')
-
-      setAmount('')
-      setRecipient('')
-
-      await loadBalance()
-
-      setTimeout(() => {
-        setModal(null)
-      }, 2500)
-    } catch (error: any) {
-      console.error(error)
-
-      setStatus(
-        error?.message ||
-          'La transacción fue rechazada.'
-      )
-
-      setStatusType('error')
-    } finally {
-      setSending(false)
-    }
-  }
-
-  // --------------------------------------------------
-  // FORMATEAR BALANCE
-  // --------------------------------------------------
-
-  function formatBalance(value: string) {
-    const number = Number(value)
-
-    if (!Number.isFinite(number)) {
-      return value
-    }
-
-    return new Intl.NumberFormat(
-      'es-CO',
-      {
-        maximumFractionDigits: 4,
-      }
-    ).format(number)
-  }
-
-  // --------------------------------------------------
-  // DIRECCIÓN CORTA
-  // --------------------------------------------------
-
-  function shortAddress(address: string) {
-    if (!address) return ''
-
-    return `${address.slice(
-      0,
-      8
-    )}...${address.slice(-6)}`
-  }
-
-  // --------------------------------------------------
-  // UI
-  // --------------------------------------------------
 
   return (
-    <>
-      <div className="md-wallet">
-
-        {/* HEADER */}
-
-        <header className="wallet-header">
-          {/* 2. Envolvemos el logo y título con <Link> */}
-          <Link 
-            href="/dashboard" 
-            style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '12px', 
-              textDecoration: 'none', 
-              color: 'inherit',
-              cursor: 'pointer'
-            }}
-          >
-            <div className="wallet-logo">
-              MD
-            </div>
-
+    <main
+      className="min-h-screen flex flex-col items-center bg-gradient-to-b from-blue-50 to-white px-4 py-6 text-gray-800 relative"
+      style={{
+        backgroundImage: "url('/fondo-md.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div className="w-full flex flex-col items-center flex-1 max-w-sm">
+        
+        {/* Cabecera del Dashboard */}
+        <div className="w-full flex justify-between items-center bg-white/95 backdrop-blur-sm px-4 py-3 rounded-2xl shadow-sm mb-6 border border-gray-100">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo-md.png"
+              alt="Mundo Didáctico"
+              width={40}
+              height={40}
+              className="rounded-full shadow-sm"
+            />
             <div>
-              <h1>Wallet MD</h1>
-
-              <span>
-                World Chain
-              </span>
+              <h1 className="font-bold text-[#003A70] text-sm">Dashboard MD</h1>
+              <p className="text-[10px] text-gray-500 font-mono truncate w-24">
+                {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
+              </p>
             </div>
-          </Link>
-
-          <button
-            className="header-refresh"
-            onClick={loadBalance}
-            disabled={refreshing}
-            aria-label="Actualizar balance"
+          </div>
+          
+          <button 
+            onClick={handleLogout}
+            className="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-100 transition font-medium"
           >
-            {refreshing ? '...' : '↻'}
+            Salir
           </button>
-        </header>
+        </div>
 
-        {/* BALANCE */}
-
-        <section className="balance-card">
-
-          <div className="balance-top">
-            <span>
-              SALDO TOTAL
-            </span>
-
-            <span className="network">
-              ● WORLD CHAIN
-            </span>
+        {/* Contenedor Principal de la Billetera */}
+        <div className="w-full bg-white/95 rounded-3xl shadow-lg p-5 mb-6 backdrop-blur-sm">
+          <div className="pb-3 mb-3 border-b border-gray-100">
+            <span className="text-xs font-bold text-gray-700">Mi Billetera (World Chain)</span>
           </div>
-
-          <div className="balance-number">
-            {loading
-              ? '...'
-              : formatBalance(balance)}
-          </div>
-
-          <div className="balance-symbol">
-            {symbol}
-          </div>
-
-          <div className="wallet-address-small">
-            {shortAddress(userWalletAddress)}
-          </div>
-
-        </section>
-
-        {/* ACCIONES PRINCIPALES */}
-
-        <section className="quick-actions">
-
-          <button
-            className="action-button send-action"
-            onClick={openSend}
-          >
-            <span className="action-icon">
-              ↑
-            </span>
-
-            <span>
-              Enviar
-            </span>
-          </button>
-
-          <button
-            className="action-button receive-action"
-            onClick={openReceive}
-          >
-            <span className="action-icon">
-              ↓
-            </span>
-
-            <span>
-              Recibir
-            </span>
-          </button>
-
-        </section>
-
-        {/* ACTIVIDAD */}
-
-        <section className="activity-card">
-
-          <div className="section-title">
-            <h2>
-              Actividad
-            </h2>
-
-            <span>
-              Token {symbol}
-            </span>
-          </div>
-
-          <div className="empty-activity">
-
-            <div className="empty-icon">
-              ↔
-            </div>
-
-            <strong>
-              Sin movimientos recientes
-            </strong>
-
-            <p>
-              Tus transacciones de Token MD
-              aparecerán aquí.
-            </p>
-
-          </div>
-
-        </section>
-
-        {/* INFORMACIÓN */}
-
-        <section className="info-card">
-
-          <div className="info-row">
-
-            <span>
-              Red
-            </span>
-
-            <strong>
-              World Chain
-            </strong>
-
-          </div>
-
-          <div className="info-row">
-
-            <span>
-              Token
-            </span>
-
-            <strong>
-              {symbol}
-            </strong>
-
-          </div>
-
-          <div className="info-row">
-
-            <span>
-              Contrato
-            </span>
-
-            <strong className="contract-address">
-              {shortAddress(
-                MY_TOKEN_ADDRESS
-              )}
-            </strong>
-
-          </div>
-
-        </section>
-
-        {/* FOOTER */}
-
-        <footer className="wallet-footer">
-          Wallet MD · World Chain
-        </footer>
+          
+          <DynamicTokenWallet userWalletAddress={walletAddress as `0x${string}`} />
+        </div>
 
       </div>
-
-      {/* ================================================= */}
-      {/* MODAL ENVIAR */}
-      {/* ================================================= */}
-
-      {modal === 'send' && (
-
-        <div className="modal-overlay">
-
-          <div className="modal">
-
-            <button
-              className="modal-close"
-              onClick={() => setModal(null)}
-              disabled={sending}
-            >
-              ×
-            </button>
-
-            <div className="modal-icon">
-              ↑
-            </div>
-
-            <h2>
-              Enviar {symbol}
-            </h2>
-
-            <p className="modal-description">
-              Envía Token MD a otra dirección
-              de World Chain.
-            </p>
-
-            {/* DIRECCIÓN */}
-
-            <label>
-              Dirección destino
-            </label>
-
-            <div className="address-input">
-
-              <input
-                value={recipient}
-                onChange={(e) =>
-                  setRecipient(
-                    e.target.value.trim()
-                  )
-                }
-                placeholder="0x..."
-                disabled={sending}
-              />
-
-              <button
-                type="button"
-                className="qr-button"
-                disabled={sending}
-                onClick={() => {
-                  setStatus(
-                    'El lector QR debe conectarse mediante la API de QR de MiniKit.'
-                  )
-
-                  setStatusType('info')
-                }}
-              >
-                ▣
-              </button>
-
-            </div>
-
-            <p className="input-help">
-              Puedes introducir la dirección
-              manualmente o escanear un QR.
-            </p>
-
-            {/* MONTO */}
-
-            <label>
-              Cantidad
-            </label>
-
-            <div className="amount-input">
-
-              <input
-                type="number"
-                min="0"
-                step="any"
-                value={amount}
-                onChange={(e) =>
-                  setAmount(
-                    e.target.value
-                  )
-                }
-                placeholder="0.00"
-                disabled={sending}
-              />
-
-              <span>
-                {symbol}
-              </span>
-
-            </div>
-
-            <button
-              type="button"
-              className="max-button"
-              onClick={() => {
-                setAmount(balance)
-              }}
-              disabled={sending}
-            >
-              Usar saldo completo
-            </button>
-
-            {/* ESTADO */}
-
-            {status && (
-
-              <div
-                className={`status-box ${statusType}`}
-              >
-                {status}
-              </div>
-
-            )}
-
-            {/* CONFIRMAR */}
-
-            <button
-              className="primary-button"
-              onClick={confirmSend}
-              disabled={sending}
-            >
-              {sending
-                ? 'Procesando...'
-                : `Enviar ${symbol}`}
-            </button>
-
-            <button
-              className="secondary-button"
-              onClick={() =>
-                setModal(null)
-              }
-              disabled={sending}
-            >
-              Cancelar
-            </button>
-
-          </div>
-
-        </div>
-
-      )}
-
-      {/* ================================================= */}
-      {/* MODAL RECIBIR */}
-      {/* ================================================= */}
-
-      {modal === 'receive' && (
-
-        <div className="modal-overlay">
-
-          <div className="modal receive-modal">
-
-            <button
-              className="modal-close"
-              onClick={() =>
-                setModal(null)
-              }
-            >
-              ×
-            </button>
-
-            <div className="modal-icon receive">
-              ↓
-            </div>
-
-            <h2>
-              Recibir {symbol}
-            </h2>
-
-            <p className="modal-description">
-              Escanea este código QR o comparte
-              tu dirección para recibir Token MD.
-            </p>
-
-            {/* QR */}
-
-            <div className="qr-container">
-
-              <div className="qr-placeholder">
-
-                <div className="qr-pattern">
-
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-
-                </div>
-
-                <small>
-                  QR WALLET MD
-                </small>
-
-              </div>
-
-            </div>
-
-            {/* DIRECCIÓN */}
-
-            <div className="receive-address">
-
-              <span>
-                TU DIRECCIÓN
-              </span>
-
-              <strong>
-                {shortAddress(
-                  userWalletAddress
-                )}
-              </strong>
-
-            </div>
-
-            {/* BOTONES */}
-
-            <div className="receive-buttons">
-
-              <button
-                onClick={copyAddress}
-              >
-                {copied
-                  ? '✓ Copiado'
-                  : '📋 Copiar'}
-              </button>
-
-              <button
-                onClick={shareAddress}
-              >
-                ↗ Compartir
-              </button>
-
-            </div>
-
-            <button
-              className="secondary-button"
-              onClick={() =>
-                setModal(null)
-              }
-            >
-              Cerrar
-            </button>
-
-          </div>
-
-        </div>
-
-      )}
-
-    </>
-  )
+      
+      <footer className="text-center text-gray-400 text-[10px] pb-2">
+        Ediciones Mundo Didáctico 2026
+      </footer>
+    </main>
+  );
 }
