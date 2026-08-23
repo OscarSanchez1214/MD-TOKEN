@@ -41,10 +41,11 @@ export default function WorldLogin() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // CORRECCIÓN DE TYPESCRIPT: Castear MiniKit como 'any' para evitar el error de tipado
-      const result: any = await (MiniKit as any).walletAuth 
-        ? await (MiniKit as any).walletAuth(input)
-        : await (MiniKit as any).commandsAsync.walletAuth(input);
+      // SEPARACIÓN DE TIPO: Forzamos a 'any' en una variable previa para evitar que TypeScript falle en la compilación
+      const miniKitAny = MiniKit as any;
+      const result = miniKitAny.walletAuth 
+        ? await miniKitAny.walletAuth(input)
+        : await miniKitAny.commandsAsync.walletAuth(input);
 
       if (!result || result.executedWith === "fallback") {
         setAuthStatus("Error: Ejecutado fuera de World App.");
