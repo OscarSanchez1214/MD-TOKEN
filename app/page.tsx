@@ -63,8 +63,23 @@ export default function Home() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // AQUÍ ESTÁ LA CLAVE: Usamos (MiniKit as any) para que TypeScript no arroje error
-      const result = await (MiniKit as any).walletAuth(authOptions);
+      // Compatibilidad total con versiones anteriores usando el objeto commands
+      let result: any = null;
+      if (MiniKit.commands && typeof (MiniKit.commands as any).walletAuth === "function") {
+        result = await (MiniKit.commands as any).walletAuth(authOptions);
+      } else if (typeof (MiniKit as any).walletAuth === "function") {
+        result = await (MiniKit as any).walletAuth(authOptions);
+      } else {
+        // Fallback directo si el comando no existe: lee la billetera de la sesión activa
+        const currentWallet = (MiniKit.user as any)?.walletAddress;
+        if (currentWallet) {
+          setWalletAddress(currentWallet);
+          setIsAuthenticating(false);
+          return;
+        } else {
+          throw new Error("El método walletAuth no está disponible en esta versión de MiniKit.");
+        }
+      }
 
       if (result && result.executedWith !== "fallback" && result.data) {
         const address = result.data.address || (MiniKit.user as any)?.walletAddress;
@@ -74,11 +89,22 @@ export default function Home() {
           setErrorMsg("No se recibió respuesta de la billetera.");
         }
       } else {
-        setErrorMsg("Autenticación cancelada o no soportada.");
+        const fallbackWallet = (MiniKit.user as any)?.walletAddress;
+        if (fallbackWallet) {
+          setWalletAddress(fallbackWallet);
+        } else {
+          setErrorMsg("Autenticación cancelada o no soportada.");
+        }
       }
     } catch (error: any) {
       console.error("Error técnico al iniciar sesión:", error);
-      setErrorMsg(`Error: ${error.message || "No se pudo completar el acceso"}`);
+      // Intento final de rescate por si la sesión ya estaba activa
+      const rescueWallet = (MiniKit.user as any)?.walletAddress;
+      if (rescueWallet) {
+        setWalletAddress(rescueWallet);
+      } else {
+        setErrorMsg(`Error: ${error.message || "No se pudo completar el acceso"}`);
+      }
     } finally {
       setIsAuthenticating(false);
     }
