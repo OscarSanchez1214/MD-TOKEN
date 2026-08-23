@@ -40,7 +40,7 @@ export default function Home() {
     }
   }, []);
 
-  // Función segura de inicio de sesión compatible con MiniKit
+  // Función corregida y optimizada para manejar la respuesta de MiniKit v2+
   const handleSignIn = async () => {
     if (!MiniKit.isInstalled()) {
       alert("Debes abrir esta app dentro de World App.");
@@ -51,8 +51,8 @@ export default function Home() {
     setErrorMsg("");
 
     try {
-      // 1. Obtenemos el nonce de tu backend o generamos uno seguro
-      let nonce = crypto.randomUUID().replace(/-/g, "").substring(0, 10);
+      // 1. Obtener el nonce del backend o generar uno seguro de respaldo
+      let nonce = crypto.randomUUID().replace(/-/g, "");
       try {
         const res = await fetch("/api/nonce");
         if (res.ok) {
@@ -60,36 +60,47 @@ export default function Home() {
           if (data?.nonce) nonce = data.nonce;
         }
       } catch (err) {
-        console.warn("No se pudo conectar a /api/nonce, usando nonce local genérico.");
+        console.warn("Usando nonce local de respaldo.");
       }
 
       const authOptions = {
         nonce,
         statement: "Inicia sesión para acceder a tu billetera de Mundo Didáctico.",
-        expirationTime: new Date(Date.now() + 1000 * 60 * 60),
+        expirationTime: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
+        notBefore: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
+        chainId: 480, // Especificar red World Chain
       };
 
+      const miniKitAny = MiniKit as any;
       let result: any = null;
 
-      // 2. Invocación segura para prevenir errores de función no encontrada
-      if (typeof (MiniKit as any).walletAuth === "function") {
-        result = await (MiniKit as any).walletAuth(authOptions);
-      } else if (MiniKit.commands && typeof (MiniKit.commands as any).walletAuth === "function") {
-        result = await (MiniKit.commands as any).walletAuth(authOptions);
+      // 2. Invocación segura compatible con múltiples versiones del SDK
+      if (typeof miniKitAny.walletAuth === "function") {
+        result = await miniKitAny.walletAuth(authOptions);
+      } else if (miniKitAny.commands && typeof miniKitAny.commands.walletAuth === "function") {
+        result = await miniKitAny.commands.walletAuth(authOptions);
+      } else if (miniKitAny.commandsAsync && typeof miniKitAny.commandsAsync.walletAuth === "function") {
+        result = await miniKitAny.commandsAsync.walletAuth(authOptions);
       } else {
-        throw new Error("El método walletAuth no está disponible en esta versión del SDK.");
+        throw new Error("El método walletAuth no está disponible en esta versión.");
       }
 
-      // 3. Validar respuesta exitosa
-      if (result?.executedWith === "minikit" || result?.status === "success" || result?.data) {
-        const address = result?.data?.address || (MiniKit.user as any)?.walletAddress;
+      // 3. Procesar el resultado usando finalPayload (estándar correcto de MiniKit)
+      const finalPayload = result?.finalPayload;
+
+      if (!finalPayload) {
+        throw new Error("No se recibió respuesta de la billetera.");
+      }
+
+      if (finalPayload.status === "success") {
+        const address = MiniKit.user?.walletAddress || finalPayload.address;
         if (address) {
           setWalletAddress(address);
         } else {
-          setErrorMsg("No se pudo recuperar la dirección de la billetera.");
+          setErrorMsg("Autenticación exitosa, pero no se detectó la dirección.");
         }
       } else {
-        console.warn("Autenticación cancelada o rechazada por el usuario.");
+        setErrorMsg("El usuario rechazó la firma o la autenticación falló.");
       }
     } catch (error: any) {
       console.error("Error técnico al iniciar sesión:", error);
@@ -137,7 +148,7 @@ export default function Home() {
         {/* Tarjeta principal */}
         <div className="w-full max-w-sm bg-white/95 rounded-3xl shadow-lg p-5 mb-6 text-center backdrop-blur-sm space-y-5">
           
-          {/* RENDERIZADO CONDICIONAL: Si hay sesión muestra la billetera, si no, la pantalla principal */}
+          {/* RENDERIZADO CONDICIONAL */}
           {walletAddress ? (
             <div className="w-full">
               <div className="flex justify-between items-center pb-3 mb-3 border-b border-gray-100">
