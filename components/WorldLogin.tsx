@@ -9,7 +9,6 @@ export default function WorldLogin() {
   const [loading, setLoading] = useState(false);
   const [authStatus, setAuthStatus] = useState("");
 
-  // Asegurar la inicialización de MiniKit al cargar el componente
   useEffect(() => {
     if (typeof window !== "undefined" && !MiniKit.isInstalled()) {
       try {
@@ -42,8 +41,10 @@ export default function WorldLogin() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // Llamada directa oficial de la documentación de MiniKit
-      const result: any = await MiniKit.walletAuth(input);
+      // CORRECCIÓN DE TYPESCRIPT: Castear MiniKit como 'any' para evitar el error de tipado
+      const result: any = await (MiniKit as any).walletAuth 
+        ? await (MiniKit as any).walletAuth(input)
+        : await (MiniKit as any).commandsAsync.walletAuth(input);
 
       if (!result || result.executedWith === "fallback") {
         setAuthStatus("Error: Ejecutado fuera de World App.");
