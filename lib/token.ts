@@ -1,19 +1,15 @@
-import { createPublicClient, http, formatUnits, parseUnits, encodeFunctionData, type Address } from 'viem'
+import { createPublicClient, http, formatUnits, parseUnits, type Address } from 'viem'
 import { MiniKit } from '@worldcoin/minikit-js' 
 
 export const WORLD_CHAIN_ID = 480
-// IMPORTANTE: Asegúrate de poner tu contrato real aquí
-export const MY_TOKEN_ADDRESS = (process.env.NEXT_PUBLIC_TOKEN_ADDRESS || '0x_TU_CONTRATO_AQUI') as Address 
-const RPC = process.env.NEXT_PUBLIC_WORLDCHAIN_RPC || 'https://worldchain-mainnet.g.alchemy.com/public'
+// 1. Contrato oficial de MD Token
+export const MY_TOKEN_ADDRESS = '0x6335c1F2967A85e98cCc89dA0c87e672715284dB' as Address
 
-// 1. Cliente público para LEER la blockchain
+const RPC = 'https://worldchain-mainnet.g.alchemy.com/public'
+
+// Cliente público para LEER la blockchain
 const client = createPublicClient({
-  chain: { 
-    id: WORLD_CHAIN_ID, 
-    name: 'World Chain', 
-    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 }, 
-    rpcUrls: { default: { http: [RPC] } } 
-  },
+  chain: { id: WORLD_CHAIN_ID, name: 'World Chain', nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 }, rpcUrls: { default: { http: [RPC] } } },
   transport: http(RPC)
 })
 
@@ -24,38 +20,52 @@ const erc20Abi = [
   { type: 'function', name: 'transfer', stateMutability: 'nonpayable', inputs: [{ name: 'to', type: 'address' }, { name: 'amount', type: 'uint256' }], outputs: [{ name: '', type: 'bool' }] }
 ] as const
 
-// 2. Función para LEER saldo
+// Función para LEER saldo
 export async function getTokenDetails(wallet: Address) {
-  const [rawBalance, decimals, symbol] = await Promise.all([
-    client.readContract({ address: MY_TOKEN_ADDRESS, abi: erc20Abi, functionName: 'balanceOf', args: [wallet] }),
-    client.readContract({ address: MY_TOKEN_ADDRESS, abi: erc20Abi, functionName: 'decimals' }),
-    client.readContract({ address: MY_TOKEN_ADDRESS, abi: erc20Abi, functionName: 'symbol' })
-  ])
-  return { balance: formatUnits(rawBalance, decimals), symbol, decimals }
+  try {
+    const [rawBalance, decimals, symbol] = await Promise.all([
+      client.readContract({ address: MY_TOKEN_ADDRESS, abi: erc20Abi, functionName: 'balanceOf', args: [wallet] }),
+      client.readContract({ address: MY_TOKEN_ADDRESS, abi: erc20Abi, functionName: 'decimals' }),
+      client.readContract({ address: MY_TOKEN_ADDRESS, abi: erc20Abi, functionName: 'symbol' })
+    ])
+    return { balance: formatUnits(rawBalance, decimals), symbol, decimals }
+  } catch (error) {
+    console.error("Error leyendo saldo:", error)
+    return { balance: "0", symbol: "MD", decimals: 18 }
+  }
 }
 
-// 3. Función para ENVIAR tokens (Escritura)
+// Función para ENVIAR tokens (Escritura)
 export async function sendMyToken(sender: Address, recipient: Address, amount: string, decimals: number): Promise<string> {
   const parsedAmount = parseUnits(amount, decimals);
   
-  const data = encodeFunctionData({
-    abi: erc20Abi,
-    functionName: "transfer",
-    args: [recipient, parsedAmount],
-  });
+  // 2. Corrección del payload para evitar el error "reading map"
+  const payload = {
+    transaction: [
+      {
+        address: MY_TOKEN_ADDRESS,
+        abi: erc20Abi,
+        functionName: "transfer",
+        args: [recipient, parsedAmount.toString()],
+      }
+    ]
+  };
 
-  // CORRECCIÓN VERCEL: Usamos (MiniKit.commands as any) para evitar errores de TypeScript
-  const response = await (MiniKit.commands as any).sendTransaction({
-    chainId: WORLD_CHAIN_ID,
-    transactions: [{ to: MY_TOKEN_ADDRESS, data }],
-  });
-
-  // CORRECCIÓN RESPUESTA: Soportamos tanto la estructura vieja como la nueva de MiniKit
-  const resultData = response?.finalPayload || response?.data;
+  let response: any;
   
-  if (!resultData || resultData.status === "error") {
+  // Compatibilidad para diferentes versiones de MiniKit
+  if (MiniKit.commandsAsync?.sendTransaction) {
+    response = await MiniKit.commandsAsync.sendTransaction(payload);
+  } else {
+    // @ts-ignore
+    response = await MiniKit.commands.sendTransaction(payload);
+  }
+
+  const resultData = response?.finalPayload || response;
+
+  if (!resultData || resultData.status !== "success") {
     throw new Error("Transacción fallida o cancelada por el usuario");
   }
   
-  return resultData.transactionHash || resultData.userOpHash || "Éxito";
+  return resultData.transactionHash || "Éxito";
 }
