@@ -30,9 +30,10 @@ export default function DashboardPage() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       }
 
-      const result = await MiniKit.walletAuth(input)
+      // Llamada corregida compatible con MiniKit v3
+      const result = await (MiniKit as any).walletAuth(input)
 
-      if (result.executedWith === "fallback" || !result.data) {
+      if (!result || result.executedWith === "fallback" || !result.data) {
         setErrorMsg('❌ Autenticación fallida o cancelada.')
         return
       }
@@ -78,7 +79,7 @@ export default function DashboardPage() {
           
           <button 
             onClick={() => router.push("/")}
-            className="text-xs bg-gray-100 text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-200 transition font-medium"
+            className="text-xs bg-gray-100 text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-200 transition font-medium cursor-pointer"
           >
             Volver
           </button>
@@ -95,7 +96,7 @@ export default function DashboardPage() {
               <button
                 onClick={signInWithWallet}
                 disabled={loading}
-                className="w-full bg-black text-white py-3.5 rounded-2xl font-bold text-sm active:scale-[0.98] transition-all shadow-sm disabled:opacity-50"
+                className="w-full bg-black text-white py-3.5 rounded-2xl font-bold text-sm active:scale-[0.98] transition-all shadow-sm disabled:opacity-50 cursor-pointer"
               >
                 {loading ? 'Conectando...' : 'Abrir mi billetera'}
               </button>
@@ -110,7 +111,7 @@ export default function DashboardPage() {
                 <span className="text-xs font-bold text-[#003A70]">Panel Financiero</span>
                 <button 
                   onClick={() => setWalletAddress(null)}
-                  className="text-[10px] text-red-500 hover:underline font-medium"
+                  className="text-[10px] text-red-500 hover:underline font-medium cursor-pointer"
                 >
                   Cambiar cuenta
                 </button>
