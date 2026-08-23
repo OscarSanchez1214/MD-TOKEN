@@ -1,7 +1,7 @@
 "use client";
 
 import { MiniKit } from "@worldcoin/minikit-js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function WorldLogin() {
@@ -9,9 +9,20 @@ export default function WorldLogin() {
   const [loading, setLoading] = useState(false);
   const [authStatus, setAuthStatus] = useState("");
 
+  // Asegurar la inicialización de MiniKit al cargar el componente
+  useEffect(() => {
+    if (typeof window !== "undefined" && !MiniKit.isInstalled()) {
+      try {
+        MiniKit.install();
+      } catch (e) {
+        console.error("Error al inicializar MiniKit:", e);
+      }
+    }
+  }, []);
+
   async function signInWithWallet() {
     if (!MiniKit.isInstalled()) {
-      alert("Por favor, abre esta Mini App en World App.");
+      alert("Por favor, abre esta Mini App dentro de World App.");
       return;
     }
 
@@ -27,12 +38,12 @@ export default function WorldLogin() {
 
       const input = {
         nonce,
-        statement: "Firma para confirmar la propiedad de la billetera y autenticarte en MUNDO DIDACTICO.",
+        statement: "Inicia sesión para acceder al sistema de Mundo Didáctico.",
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // CORRECCIÓN: walletAuth está en la raíz de MiniKit, no en .commands
-      const result: any = await (MiniKit as any).walletAuth(input);
+      // Llamada directa oficial de la documentación de MiniKit
+      const result: any = await MiniKit.walletAuth(input);
 
       if (!result || result.executedWith === "fallback") {
         setAuthStatus("Error: Ejecutado fuera de World App.");
@@ -70,7 +81,7 @@ export default function WorldLogin() {
           setAuthStatus(`Firma inválida: ${verifyData.error || "Error desconocido"}`);
         }
       } else {
-        setAuthStatus("Fallo la firma. Respuesta: " + JSON.stringify(result.data));
+        setAuthStatus("Fallo la firma. Respuesta inesperada.");
       }
     } catch (error: any) {
       setAuthStatus(`Error técnico: ${error.message}`);
@@ -80,27 +91,20 @@ export default function WorldLogin() {
   }
 
   return (
-    <div className="flex flex-col items-center w-full max-w-sm mx-auto p-6 bg-white rounded-3xl shadow-sm border border-gray-100">
-      <div className="text-center w-full space-y-4">
-        <h2 className="text-xl font-bold text-gray-800">Bienvenido a MD</h2>
-        <p className="text-sm text-gray-500">
-          Inicia sesión de forma segura usando tu billetera de World App.
-        </p>
-        
-        <button
-          onClick={signInWithWallet}
-          disabled={loading}
-          className="w-full py-4 bg-black text-white text-md font-bold rounded-2xl hover:bg-gray-800 disabled:bg-gray-300 transition-all shadow-md"
-        >
-          {loading ? "Procesando..." : "Ingresar con World App 🚀"}
-        </button>
-        
-        {authStatus && (
-          <div className="text-xs font-medium text-blue-800 mt-2 bg-blue-50 p-3 rounded-lg break-all">
-            {authStatus}
-          </div>
-        )}
-      </div>
+    <div className="w-full flex flex-col items-center space-y-3">
+      <button
+        onClick={signInWithWallet}
+        disabled={loading}
+        className="w-full bg-[#111111] text-white py-3.5 rounded-xl font-semibold text-sm hover:bg-black/90 active:scale-95 transition-all shadow-md disabled:bg-gray-300"
+      >
+        {loading ? "Conectando..." : "Ingresar con World App 🚀"}
+      </button>
+
+      {authStatus && (
+        <div className="text-xs font-medium text-blue-800 bg-blue-50 p-2.5 rounded-lg w-full break-all text-center">
+          {authStatus}
+        </div>
+      )}
     </div>
   );
 }
