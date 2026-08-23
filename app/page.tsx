@@ -28,7 +28,6 @@ export default function Home() {
         }
       }
 
-      // Recuperar sesión si ya está activa
       const existingAddress = (MiniKit.user as any)?.walletAddress;
       if (existingAddress) {
         setWalletAddress(existingAddress);
@@ -64,8 +63,8 @@ export default function Home() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // Llamada directa y nativa actualizada a MiniKit
-      const result = await MiniKit.walletAuth(authOptions);
+      // Llamada segura casteando MiniKit como any
+      const result = await (MiniKit as any).walletAuth(authOptions);
 
       if (result && result.executedWith !== "fallback" && result.data) {
         const address = result.data.address || (MiniKit.user as any)?.walletAddress;
@@ -84,7 +83,7 @@ export default function Home() {
       }
     } catch (error: any) {
       console.error("Error técnico al iniciar sesión:", error);
-      const rescueWallet = (MiniKit.user as any)?.walletAddress;
+      const rescueWallet = (MiniKit as any).user?.walletAddress;
       if (rescueWallet) {
         setWalletAddress(rescueWallet);
       } else {
