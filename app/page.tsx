@@ -28,7 +28,7 @@ export default function Home() {
         }
       }
 
-      // Comprobar si ya hay una billetera inyectada en la sesión
+      // Recuperar sesión si ya está activa
       const existingAddress = (MiniKit.user as any)?.walletAddress;
       if (existingAddress) {
         setWalletAddress(existingAddress);
@@ -39,7 +39,6 @@ export default function Home() {
   const handleSignIn = async () => {
     setErrorMsg("");
 
-    // 1. Verificación estricta de entorno (MiniKit solo funciona dentro de World App)
     if (!MiniKit.isInstalled()) {
       setErrorMsg("⚠️ Abre esta mini app estrictamente dentro de World App.");
       return;
@@ -48,7 +47,6 @@ export default function Home() {
     setIsAuthenticating(true);
 
     try {
-      // 2. Obtener nonce del backend
       let nonce = crypto.randomUUID().replace(/-/g, "").substring(0, 10);
       try {
         const res = await fetch("/api/nonce");
@@ -66,8 +64,8 @@ export default function Home() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // 3. Ejecución segura de walletAuth con soporte para la API moderna de MiniKit
-      const result = await (MiniKit as any).walletAuth(authOptions);
+      // Llamada directa y nativa actualizada a MiniKit
+      const result = await MiniKit.walletAuth(authOptions);
 
       if (result && result.executedWith !== "fallback" && result.data) {
         const address = result.data.address || (MiniKit.user as any)?.walletAddress;
@@ -77,7 +75,6 @@ export default function Home() {
           setErrorMsg("No se recibió respuesta de la billetera.");
         }
       } else {
-        // Si devolvió fallback, intentamos tomar la wallet actual de la sesión si el usuario ya la había concedido
         const sessionWallet = (MiniKit.user as any)?.walletAddress;
         if (sessionWallet) {
           setWalletAddress(sessionWallet);
