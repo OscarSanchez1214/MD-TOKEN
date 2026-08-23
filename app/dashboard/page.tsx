@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import TokenWallet from "@/components/TokenWallet";
@@ -9,13 +9,7 @@ const DynamicTokenWallet = TokenWallet as any;
 
 export default function DashboardPage() {
   const router = useRouter();
-  
-  // Dirección de tu billetera MD por defecto para pruebas y visualización inmediata
-  const [walletAddress] = useState<string>("0x1bd597c5296b6a25f72ed557d5b85bff41186c28");
-
-  const handleBackHome = () => {
-    router.push("/");
-  };
+  const walletAddress = "0x1bd597c5296b6a25f72ed557d5b85bff41186c28";
 
   return (
     <main
@@ -47,7 +41,7 @@ export default function DashboardPage() {
           </div>
           
           <button 
-            onClick={handleBackHome}
+            onClick={() => router.push("/")}
             className="text-xs bg-gray-100 text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-200 transition font-medium"
           >
             Volver
@@ -61,7 +55,6 @@ export default function DashboardPage() {
             <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">Activo</span>
           </div>
 
-          {/* Renderizado directo y seguro de tu TokenWallet */}
           <DynamicTokenWallet userWalletAddress={walletAddress as `0x${string}`} />
         </div>
 
