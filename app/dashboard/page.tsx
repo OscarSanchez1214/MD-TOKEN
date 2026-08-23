@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { MiniKit } from '@worldcoin/minikit-js'
 import TokenWallet from '@/components/TokenWallet'
@@ -12,6 +12,16 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
 
+  // 1. INICIO DE SESIÓN SILENCIOSO (De tu arquitectura base)
+  useEffect(() => {
+    // Si MiniKit ya inyectó el usuario, obtenemos la billetera sin que el usuario haga clic
+    const address = (MiniKit.user as any)?.walletAddress
+    if (address) {
+      setWalletAddress(address)
+    }
+  }, [])
+
+  // 2. INICIO DE SESIÓN MANUAL (Fallback seguro)
   async function signInWithWallet() {
     if (!MiniKit.isInstalled()) {
       setErrorMsg('⚠️ MiniKit no detectado. Abre esta sección dentro de World App.')
@@ -22,15 +32,19 @@ export default function DashboardPage() {
     setErrorMsg('')
 
     try {
-      const nonce = crypto.randomUUID().replace(/-/g, '').substring(0, 10)
+      // Un nonce limpio sin guiones
+      const nonce = crypto.randomUUID().replace(/-/g, '')
 
+      // Parámetros estrictos para evitar rechazos en la World App
       const input = {
         nonce: nonce,
         statement: "Iniciar sesión en Billetera MD",
-        expirationTime: new Date(Date.now() + 1000 * 60 * 60),
+        expirationTime: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Expira en 7 días
+        notBefore: new Date(Date.now() - 24 * 60 * 60 * 1000) // Válido desde ayer (evita errores de reloj)
       }
 
-      const result = await (MiniKit as any).walletAuth(input)
+      // @ts-ignore
+      const result = await MiniKit.walletAuth(input)
 
       if (!result || result.executedWith === "fallback" || !result.data) {
         setErrorMsg('❌ Autenticación fallida o cancelada.')
@@ -116,7 +130,7 @@ export default function DashboardPage() {
                 </button>
               </div>
 
-              {/* @ts-ignore */}
+              {/* @ts-ignore - Compatible con ambas versiones de TokenWallet */}
               <TokenWallet userWalletAddress={walletAddress as `0x${string}`} />
             </div>
           )}
