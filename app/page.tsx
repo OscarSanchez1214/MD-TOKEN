@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation"; // <-- 1. Importamos el router de Next.js
+import { useRouter } from "next/navigation";
 import { MiniKit } from "@worldcoin/minikit-js";
 import PayComponent from "@/components/Pay";
 import recomendaciones from "@/data/recomendaciones.json";
@@ -14,20 +14,14 @@ export default function Home() {
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
 
-  const router = useRouter(); // <-- 2. Inicializamos el router
+  const router = useRouter();
 
   const hoy = new Date().toISOString().split("T")[0];
   const recomendacionDelDia = recomendaciones.find((r) => r.fecha === hoy);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (!MiniKit.isInstalled()) {
-        try {
-          MiniKit.install();
-        } catch (e) {
-          console.error("Error al inicializar MiniKit:", e);
-        }
-      }
+      // Nota: Ya NO usamos MiniKit.install() aquí porque minikit-provider.tsx se encarga de eso.
 
       // Verificamos si ya hay una billetera guardada en la sesión del usuario
       const existingAddress = (MiniKit.user as any)?.walletAddress || (MiniKit as any).walletAddress;
@@ -48,73 +42,35 @@ export default function Home() {
     setIsAuthenticating(true);
 
     try {
-      let nonce = crypto.randomUUID().replace(/-/g, "").substring(0, 10);
-      try {
-        const res = await fetch("/api/nonce");
-        if (res.ok) {
-          const data = await res.json();
-          if (data?.nonce) nonce = data.nonce;
-        }
-      } catch (err) {
-        console.warn("Usando nonce local de respaldo.");
-      }
+      // 1. Generar el nonce (como exige la documentación: alfanumérico y > 8 caracteres)
+      const nonce = crypto.randomUUID().replace(/-/g, "");
 
-      const authOptions = {
+      const input = {
         nonce,
         statement: "Inicia sesión para acceder a tu billetera de Mundo Didáctico.",
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      const minikitAny = MiniKit as any;
-      let result: any = null;
+      // 2. Llamada unificada recomendada por la documentación oficial
+      const result = await MiniKit.walletAuth(input);
 
-      // Compatibilidad total con cualquier estructura interna de comandos del SDK instalado
-      if (typeof minikitAny.walletAuth === "function") {
-        result = await minikitAny.walletAuth(authOptions);
-      } else if (minikitAny.commands && typeof minikitAny.commands.walletAuth === "function") {
-        result = await minikitAny.commands.walletAuth(authOptions);
-      } else if (minikitAny.commandsAsync && typeof minikitAny.commandsAsync.walletAuth === "function") {
-        result = await minikitAny.commandsAsync.walletAuth(authOptions);
-      } else if (minikitAny.commands && typeof minikitAny.commands.call === "function") {
-        result = await minikitAny.commands.call("walletAuth", authOptions);
-      } else {
-        // Rescate directo por sesión si la wallet ya está conectada en el proveedor
-        const activeWallet = minikitAny.user?.walletAddress || minikitAny.walletAddress;
-        if (activeWallet) {
-          setWalletAddress(activeWallet);
-          setIsAuthenticating(false);
-          router.push("/dashboard"); // <-- 3. Redirigir al dashboard si ya hay sesión
-          return;
-        }
-        throw new Error("El método walletAuth no está disponible en esta versión de MiniKit.");
+      // 3. Manejar el resultado según la documentación
+      if (result.executedWith === "fallback") {
+        setErrorMsg("Autenticación fallida o cancelada.");
+        setIsAuthenticating(false);
+        return;
       }
 
-      if (result && result.executedWith !== "fallback" && result.data) {
-        const address = result.data.address || minikitAny.user?.walletAddress;
-        if (address) {
-          setWalletAddress(address);
-          router.push("/dashboard"); // <-- 3. Redirigir al dashboard tras login exitoso
-        } else {
-          setErrorMsg("No se recibió la dirección de la billetera.");
-        }
+      // 4. Si es exitoso, extraemos la dirección y enviamos al dashboard
+      if (result.data && result.data.address) {
+        setWalletAddress(result.data.address);
+        router.push("/dashboard");
       } else {
-        const sessionWallet = minikitAny.user?.walletAddress || minikitAny.walletAddress;
-        if (sessionWallet) {
-          setWalletAddress(sessionWallet);
-          router.push("/dashboard"); // <-- 3. Redirigir al dashboard tras login exitoso
-        } else {
-          setErrorMsg("Autenticación cancelada o fuera de World App.");
-        }
+        setErrorMsg("No se recibió la dirección de la billetera.");
       }
     } catch (error: any) {
       console.error("Error técnico al iniciar sesión:", error);
-      const rescueWallet = (MiniKit as any).user?.walletAddress || (MiniKit as any).walletAddress;
-      if (rescueWallet) {
-        setWalletAddress(rescueWallet);
-        router.push("/dashboard"); // <-- 3. Redirigir si se rescata la sesión
-      } else {
-        setErrorMsg(`Error: ${error.message || "No se pudo completar el acceso"}`);
-      }
+      setErrorMsg(`Error: ${error.message || "No se pudo completar el acceso"}`);
     } finally {
       setIsAuthenticating(false);
     }
@@ -151,7 +107,6 @@ export default function Home() {
         <div className="w-full max-w-sm bg-white/95 rounded-3xl shadow-lg p-5 mb-6 text-center backdrop-blur-sm space-y-5">
           {walletAddress ? (
             
-            // 4. Nueva vista si el usuario ya está logueado pero volvió a la página de inicio
             <div className="space-y-4 py-4">
               <h2 className="text-lg font-bold text-[#003A70]">¡Bienvenido de nuevo!</h2>
               <p className="text-sm text-gray-600">Tu billetera está conectada.</p>
@@ -214,13 +169,20 @@ export default function Home() {
                 <button
                   onClick={handleSignIn}
                   disabled={isAuthenticating}
-                  className="w-full bg-black text-white py-3.5 rounded-2xl font-bold text-sm active:scale-[0.98] transition-all disabled:opacity-50 shadow-sm"
+                  className="w-full bg-black text-white py-3.5 rounded-2xl font-bold text-sm active:scale-[0.98] transition-all disabled:opacity-50 shadow-sm flex justify-center items-center gap-2"
                 >
-                  {isAuthenticating ? 'Conectando...' : 'IR A BILLETERA MD DASHBOARD'}
+                  {isAuthenticating ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <span>Conectando...</span>
+                    </>
+                  ) : (
+                    'IR A BILLETERA MD DASHBOARD'
+                  )}
                 </button>
 
                 {errorMsg && (
-                  <p className="text-red-500 mt-3 text-xs font-medium">{errorMsg}</p>
+                  <p className="text-red-500 mt-3 text-xs font-medium bg-red-50 p-2 rounded-lg">{errorMsg}</p>
                 )}
               </div>
 
