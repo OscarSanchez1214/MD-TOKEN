@@ -2,23 +2,14 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import PayComponent from "@/components/Pay";
 import recomendaciones from "@/data/recomendaciones.json";
 
 const RECEIVER_ADDRESS = "0x1bd597c5296b6a25f72ed557d5b85bff41186c28";
 
 export default function Home() {
-  const router = useRouter();
-  const [isNavigating, setIsNavigating] = useState<boolean>(false);
-
   const hoy = new Date().toISOString().split("T")[0];
   const recomendacionDelDia = recomendaciones.find((r) => r.fecha === hoy);
-
-  const handleGoToDashboard = () => {
-    setIsNavigating(true);
-    router.push("/dashboard");
-  };
 
   return (
     <main
@@ -88,13 +79,12 @@ export default function Home() {
 
             {/* Botón de Acceso directo al Dashboard */}
             <div className="pt-2">
-              <button
-                onClick={handleGoToDashboard}
-                disabled={isNavigating}
-                className="w-full bg-black text-white py-3.5 rounded-2xl font-bold text-sm active:scale-[0.98] transition-all shadow-sm flex justify-center items-center gap-2"
+              <a
+                href="/dashboard"
+                className="w-full bg-black text-white py-3.5 rounded-2xl font-bold text-sm active:scale-[0.98] transition-all shadow-sm flex justify-center items-center gap-2 no-underline text-center block"
               >
-                {isNavigating ? 'Cargando...' : 'IR A DASHBOARD'}
-              </button>
+                IR A DASHBOARD
+              </a>
             </div>
 
           </div>
