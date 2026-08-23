@@ -46,6 +46,7 @@ export default function Home() {
     setIsAuthenticating(true);
 
     try {
+      // 1. Generamos el nonce requerido
       let nonce = crypto.randomUUID().replace(/-/g, "").substring(0, 10);
       try {
         const res = await fetch("/api/nonce");
@@ -63,51 +64,24 @@ export default function Home() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      const minikitAny = MiniKit as any;
-      let result: any = null;
+      // 2. Llamada directa limpia que sabemos que funciona en tu entorno
+      const result = await MiniKit.walletAuth(authOptions);
 
-      // Búsqueda inteligente y segura del método de autenticación en cualquier versión de MiniKit
-      if (typeof minikitAny.walletAuth === "function") {
-        result = await minikitAny.walletAuth(authOptions);
-      } else if (minikitAny.commands && typeof minikitAny.commands.walletAuth === "function") {
-        result = await minikitAny.commands.walletAuth(authOptions);
-      } else if (minikitAny.commandsAsync && typeof minikitAny.commandsAsync.walletAuth === "function") {
-        result = await minikitAny.commandsAsync.walletAuth(authOptions);
-      } else if (minikitAny.commands && typeof minikitAny.commands.call === "function") {
-        result = await minikitAny.commands.call("walletAuth", authOptions);
-      } else {
-        const activeWallet = minikitAny.user?.walletAddress;
-        if (activeWallet) {
-          setWalletAddress(activeWallet);
-          setIsAuthenticating(false);
-          return;
-        }
-        throw new Error("walletAuth no está disponible en este entorno.");
+      // 3. Validación de respuesta
+      if (!result || result.executedWith === "fallback" || !result.data) {
+        setErrorMsg("❌ Autenticación fallida o cancelada.");
+        return;
       }
 
-      if (result && result.executedWith !== "fallback" && result.data) {
-        const address = result.data.address || minikitAny.user?.walletAddress;
-        if (address) {
-          setWalletAddress(address);
-        } else {
-          setErrorMsg("No se recibió respuesta de la billetera.");
-        }
+      const address = result.data.address || (MiniKit.user as any)?.walletAddress;
+      if (address) {
+        setWalletAddress(address);
       } else {
-        const sessionWallet = minikitAny.user?.walletAddress;
-        if (sessionWallet) {
-          setWalletAddress(sessionWallet);
-        } else {
-          setErrorMsg("Autenticación cancelada o fuera de World App.");
-        }
+        setErrorMsg("No se recibió la dirección de la billetera.");
       }
     } catch (error: any) {
       console.error("Error técnico al iniciar sesión:", error);
-      const rescueWallet = (MiniKit as any).user?.walletAddress;
-      if (rescueWallet) {
-        setWalletAddress(rescueWallet);
-      } else {
-        setErrorMsg(`Error: ${error.message || "No se pudo completar el acceso"}`);
-      }
+      setErrorMsg(`Error: ${error.message || "No se pudo completar el acceso"}`);
     } finally {
       setIsAuthenticating(false);
     }
