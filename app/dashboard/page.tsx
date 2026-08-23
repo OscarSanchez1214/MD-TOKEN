@@ -14,7 +14,6 @@ export default function DashboardPage() {
 
   // 1. INICIO DE SESIÓN SILENCIOSO
   useEffect(() => {
-    // Busca si ya hay una billetera autorizada en la memoria de MiniKit
     const address = (MiniKit.user as any)?.walletAddress || (MiniKit as any).walletAddress;
     if (address) {
       setWalletAddress(address)
@@ -41,7 +40,7 @@ export default function DashboardPage() {
         notBefore: new Date(Date.now() - 24 * 60 * 60 * 1000)
       }
 
-      let result;
+      let result: any;
       
       if ((MiniKit as any).commandsAsync?.walletAuth) {
         result = await (MiniKit as any).commandsAsync.walletAuth(input);
@@ -53,22 +52,35 @@ export default function DashboardPage() {
         throw new Error("Tu versión de MiniKit no soporta walletAuth.");
       }
 
-      // LA SOLUCIÓN ESTÁ AQUÍ: Evaluamos estrictamente si fue exitoso
-      if (result && result.status === 'success') {
+      // Convertimos todo el resultado a texto para inspeccionarlo
+      const rawResult = JSON.stringify(result || {});
+      
+      // Comprobamos si el estado es exitoso en cualquier parte de la respuesta
+      const isSuccess = result?.status === 'success' || result?.finalPayload?.status === 'success' || rawResult.includes('"success"');
+
+      if (isSuccess) {
         
-        // Extraemos la dirección de la memoria interna de MiniKit
-        const addr = (MiniKit.user as any)?.walletAddress || (MiniKit as any).walletAddress || result?.address;
+        // Extracción infalible de la billetera:
+        // 1. Busca con una expresión regular cualquier dirección válida de Ethereum (0x seguida de 40 caracteres)
+        const regexMatch = rawResult.match(/0x[a-fA-F0-9]{40}/i);
         
-        if (addr) {
-          setWalletAddress(addr);
+        // 2. Compara todas las posibles ubicaciones donde la App puede guardar la dirección
+        const foundAddress = 
+          result?.finalPayload?.address || 
+          result?.finalPayload?.dirección || 
+          result?.address || 
+          (MiniKit.user as any)?.walletAddress || 
+          (MiniKit as any).walletAddress || 
+          (regexMatch ? regexMatch[0] : null);
+        
+        if (foundAddress) {
+          setWalletAddress(foundAddress);
         } else {
-          // Si World App dio éxito pero tarda en guardar la info:
-          setErrorMsg('✅ Autorizado. Dale clic a "Volver" y entra de nuevo para ver tu saldo.');
+          setErrorMsg('✅ Autorizado. Dale clic a "Volver" y entra de nuevo para cargar tu saldo.');
         }
 
       } else {
-        // Solo si el usuario realmente canceló o falló mostramos el error técnico
-        setErrorMsg(`❌ Conexión rechazada. Razón: ${result?.status || JSON.stringify(result)}`);
+        setErrorMsg(`❌ Conexión rechazada. Razón: ${rawResult}`);
       }
 
     } catch (error: any) {
@@ -133,7 +145,7 @@ export default function DashboardPage() {
               </button>
 
               {errorMsg && (
-                <p className="text-red-500 text-xs font-medium bg-red-50 p-2 rounded-lg break-words">{errorMsg}</p>
+                <p className="text-red-500 text-xs font-medium bg-red-50 p-2 rounded-lg break-words text-left">{errorMsg}</p>
               )}
             </div>
           ) : (
