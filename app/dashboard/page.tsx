@@ -1,66 +1,25 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { MiniKit } from "@worldcoin/minikit-js";
 import TokenWallet from "@/components/TokenWallet";
 
-// Importación dinámica segura
 const DynamicTokenWallet = TokenWallet as any;
 
-export default function Dashboard() {
+export default function DashboardPage() {
   const router = useRouter();
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [isChecking, setIsChecking] = useState(true);
+  
+  // Dirección de tu billetera MD por defecto para pruebas y visualización inmediata
+  const [walletAddress] = useState<string>("0x1bd597c5296b6a25f72ed557d5b85bff41186c28");
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!MiniKit.isInstalled()) {
-        try {
-          MiniKit.install();
-        } catch (e) {
-          console.error("Error al inicializar MiniKit:", e);
-        }
-      }
-
-      // Buscamos la billetera activa
-      const existingAddress = 
-        (MiniKit.user as any)?.walletAddress || 
-        (MiniKit as any).walletAddress ||
-        (MiniKit as any).user?.address;
-      
-      if (existingAddress) {
-        setWalletAddress(existingAddress);
-      } else {
-        // MODO PRUEBA: Si no hay wallet detectada, asignamos una de prueba o simulada 
-        // para que puedas ver el TokenWallet y probar los botones sin que te devuelva al inicio.
-        // (Luego puedes cambiar esto cuando estés 100% dentro de la World App).
-        setWalletAddress("0x1bd597c5296b6a25f72ed557d5b85bff41186c28");
-      }
-      setIsChecking(false);
-    }
-  }, []);
-
-  const handleLogout = () => {
-    setWalletAddress(null);
+  const handleBackHome = () => {
     router.push("/");
   };
 
-  if (isChecking) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-blue-50">
-        <div className="flex flex-col items-center gap-3">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#003A70]"></div>
-          <p className="text-[#003A70] font-semibold text-sm">Cargando tu billetera...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <main
-      className="min-h-screen flex flex-col items-center bg-gradient-to-b from-blue-50 to-white px-4 py-6 text-gray-800 relative"
+      className="min-h-screen flex flex-col items-center justify-between bg-gradient-to-b from-blue-50 to-white px-4 py-6 text-gray-800 relative"
       style={{
         backgroundImage: "url('/fondo-md.jpg')",
         backgroundSize: "cover",
@@ -80,31 +39,30 @@ export default function Dashboard() {
               className="rounded-full shadow-sm"
             />
             <div>
-              <h1 className="font-bold text-[#003A70] text-sm">Dashboard MD</h1>
+              <h1 className="font-bold text-[#003A70] text-sm">Billetera MD</h1>
               <p className="text-[10px] text-gray-500 font-mono truncate w-24">
-                {walletAddress ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}` : "Sin wallet"}
+                {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
               </p>
             </div>
           </div>
           
           <button 
-            onClick={handleLogout}
-            className="text-xs bg-red-50 text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-100 transition font-medium"
+            onClick={handleBackHome}
+            className="text-xs bg-gray-100 text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-200 transition font-medium"
           >
-            Salir
+            Volver
           </button>
         </div>
 
-        {/* Contenedor Principal de la Billetera */}
-        <div className="w-full bg-white/95 rounded-3xl shadow-lg p-5 mb-6 backdrop-blur-sm">
-          <div className="pb-3 mb-3 border-b border-gray-100 flex justify-between items-center">
-            <span className="text-xs font-bold text-gray-700">Mi Billetera (World Chain)</span>
-            <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">Conectado</span>
+        {/* Contenedor Principal de la Billetera MD */}
+        <div className="w-full bg-white/95 rounded-3xl shadow-lg p-5 mb-6 backdrop-blur-sm space-y-4">
+          <div className="pb-3 border-b border-gray-100 flex justify-between items-center">
+            <span className="text-xs font-bold text-[#003A70]">Panel de Control Financiero</span>
+            <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">Activo</span>
           </div>
-          
-          {walletAddress && (
-            <DynamicTokenWallet userWalletAddress={walletAddress as `0x${string}`} />
-          )}
+
+          {/* Renderizado directo y seguro de tu TokenWallet */}
+          <DynamicTokenWallet userWalletAddress={walletAddress as `0x${string}`} />
         </div>
 
       </div>
