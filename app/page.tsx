@@ -2,18 +2,19 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; // <-- 1. Importamos el router de Next.js
 import { MiniKit } from "@worldcoin/minikit-js";
 import PayComponent from "@/components/Pay";
-import TokenWallet from "@/components/TokenWallet";
 import recomendaciones from "@/data/recomendaciones.json";
 
-const DynamicTokenWallet = TokenWallet as any;
 const RECEIVER_ADDRESS = "0x1bd597c5296b6a25f72ed557d5b85bff41186c28";
 
 export default function Home() {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>("");
+
+  const router = useRouter(); // <-- 2. Inicializamos el router
 
   const hoy = new Date().toISOString().split("T")[0];
   const recomendacionDelDia = recomendaciones.find((r) => r.fecha === hoy);
@@ -82,6 +83,7 @@ export default function Home() {
         if (activeWallet) {
           setWalletAddress(activeWallet);
           setIsAuthenticating(false);
+          router.push("/dashboard"); // <-- 3. Redirigir al dashboard si ya hay sesión
           return;
         }
         throw new Error("El método walletAuth no está disponible en esta versión de MiniKit.");
@@ -91,6 +93,7 @@ export default function Home() {
         const address = result.data.address || minikitAny.user?.walletAddress;
         if (address) {
           setWalletAddress(address);
+          router.push("/dashboard"); // <-- 3. Redirigir al dashboard tras login exitoso
         } else {
           setErrorMsg("No se recibió la dirección de la billetera.");
         }
@@ -98,6 +101,7 @@ export default function Home() {
         const sessionWallet = minikitAny.user?.walletAddress || minikitAny.walletAddress;
         if (sessionWallet) {
           setWalletAddress(sessionWallet);
+          router.push("/dashboard"); // <-- 3. Redirigir al dashboard tras login exitoso
         } else {
           setErrorMsg("Autenticación cancelada o fuera de World App.");
         }
@@ -107,6 +111,7 @@ export default function Home() {
       const rescueWallet = (MiniKit as any).user?.walletAddress || (MiniKit as any).walletAddress;
       if (rescueWallet) {
         setWalletAddress(rescueWallet);
+        router.push("/dashboard"); // <-- 3. Redirigir si se rescata la sesión
       } else {
         setErrorMsg(`Error: ${error.message || "No se pudo completar el acceso"}`);
       }
@@ -145,18 +150,27 @@ export default function Home() {
         {/* Tarjeta Principal */}
         <div className="w-full max-w-sm bg-white/95 rounded-3xl shadow-lg p-5 mb-6 text-center backdrop-blur-sm space-y-5">
           {walletAddress ? (
-            <div className="w-full">
-              <div className="flex justify-between items-center pb-3 mb-3 border-b border-gray-100">
-                <span className="text-xs font-bold text-gray-700">Wallet MD (World Chain)</span>
-                <button 
-                  onClick={() => setWalletAddress(null)}
-                  className="text-xs bg-gray-100 text-gray-700 px-2.5 py-1 rounded-lg hover:bg-gray-200 transition"
-                >
-                  Cerrar sesión
-                </button>
-              </div>
-              <DynamicTokenWallet userWalletAddress={walletAddress as `0x${string}`} />
+            
+            // 4. Nueva vista si el usuario ya está logueado pero volvió a la página de inicio
+            <div className="space-y-4 py-4">
+              <h2 className="text-lg font-bold text-[#003A70]">¡Bienvenido de nuevo!</h2>
+              <p className="text-sm text-gray-600">Tu billetera está conectada.</p>
+              
+              <button 
+                onClick={() => router.push("/dashboard")}
+                className="w-full bg-black text-white py-3.5 rounded-2xl font-bold text-sm active:scale-[0.98] transition-all shadow-sm"
+              >
+                IR A BILLETERA MD DASHBOARD
+              </button>
+
+              <button 
+                onClick={() => setWalletAddress(null)}
+                className="text-xs text-red-500 hover:underline mt-2 block w-full"
+              >
+                Cerrar sesión
+              </button>
             </div>
+
           ) : (
             <div className="space-y-5">
               
@@ -202,7 +216,7 @@ export default function Home() {
                   disabled={isAuthenticating}
                   className="w-full bg-black text-white py-3.5 rounded-2xl font-bold text-sm active:scale-[0.98] transition-all disabled:opacity-50 shadow-sm"
                 >
-                  {isAuthenticating ? 'Conectando...' : 'Abrir mi billetera'}
+                  {isAuthenticating ? 'Conectando...' : 'IR A BILLETERA MD DASHBOARD'}
                 </button>
 
                 {errorMsg && (
