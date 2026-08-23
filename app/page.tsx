@@ -28,6 +28,7 @@ export default function Home() {
         }
       }
 
+      // Comprobar si ya hay una billetera inyectada en la sesión
       const existingAddress = (MiniKit.user as any)?.walletAddress;
       if (existingAddress) {
         setWalletAddress(existingAddress);
@@ -36,17 +37,19 @@ export default function Home() {
   }, []);
 
   const handleSignIn = async () => {
+    setErrorMsg("");
+
+    // 1. Verificación estricta de entorno (MiniKit solo funciona dentro de World App)
     if (!MiniKit.isInstalled()) {
-      setErrorMsg("⚠️ Debes abrir esta app dentro de World App.");
+      setErrorMsg("⚠️ Abre esta mini app estrictamente dentro de World App.");
       return;
     }
 
     setIsAuthenticating(true);
-    setErrorMsg("");
 
     try {
+      // 2. Obtener nonce del backend
       let nonce = crypto.randomUUID().replace(/-/g, "").substring(0, 10);
-      
       try {
         const res = await fetch("/api/nonce");
         if (res.ok) {
@@ -63,23 +66,8 @@ export default function Home() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // Compatibilidad total con versiones anteriores usando el objeto commands
-      let result: any = null;
-      if (MiniKit.commands && typeof (MiniKit.commands as any).walletAuth === "function") {
-        result = await (MiniKit.commands as any).walletAuth(authOptions);
-      } else if (typeof (MiniKit as any).walletAuth === "function") {
-        result = await (MiniKit as any).walletAuth(authOptions);
-      } else {
-        // Fallback directo si el comando no existe: lee la billetera de la sesión activa
-        const currentWallet = (MiniKit.user as any)?.walletAddress;
-        if (currentWallet) {
-          setWalletAddress(currentWallet);
-          setIsAuthenticating(false);
-          return;
-        } else {
-          throw new Error("El método walletAuth no está disponible en esta versión de MiniKit.");
-        }
-      }
+      // 3. Ejecución segura de walletAuth con soporte para la API moderna de MiniKit
+      const result = await (MiniKit as any).walletAuth(authOptions);
 
       if (result && result.executedWith !== "fallback" && result.data) {
         const address = result.data.address || (MiniKit.user as any)?.walletAddress;
@@ -89,16 +77,16 @@ export default function Home() {
           setErrorMsg("No se recibió respuesta de la billetera.");
         }
       } else {
-        const fallbackWallet = (MiniKit.user as any)?.walletAddress;
-        if (fallbackWallet) {
-          setWalletAddress(fallbackWallet);
+        // Si devolvió fallback, intentamos tomar la wallet actual de la sesión si el usuario ya la había concedido
+        const sessionWallet = (MiniKit.user as any)?.walletAddress;
+        if (sessionWallet) {
+          setWalletAddress(sessionWallet);
         } else {
-          setErrorMsg("Autenticación cancelada o no soportada.");
+          setErrorMsg("Autenticación cancelada o fuera de World App.");
         }
       }
     } catch (error: any) {
       console.error("Error técnico al iniciar sesión:", error);
-      // Intento final de rescate por si la sesión ya estaba activa
       const rescueWallet = (MiniKit.user as any)?.walletAddress;
       if (rescueWallet) {
         setWalletAddress(rescueWallet);
