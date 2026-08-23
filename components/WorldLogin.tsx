@@ -31,24 +31,21 @@ export default function WorldLogin() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // USANDO LA API OFICIAL DE LA DOCUMENTACIÓN
-      // (Si Vercel se queja del tipo, usa: const result: any = await (MiniKit as any).walletAuth(input); )
-      const result: any = await MiniKit.walletAuth(input);
+      // CORRECCIÓN VERCEL: Usamos (MiniKit.commands as any) para superar el chequeo estricto de tipos
+      const result: any = await (MiniKit.commands as any).walletAuth(input);
 
-      if (result.executedWith === "fallback") {
+      if (!result || result.executedWith === "fallback") {
         setAuthStatus("Error: Ejecutado fuera de World App.");
         setLoading(false);
         return;
       }
 
-      // Si el usuario presiona cancelar explícitamente
       if (result.data?.status === "error") {
         setAuthStatus("El usuario rechazó la firma.");
         setLoading(false);
         return;
       }
 
-      // Verificamos si la data contiene la firma (signature)
       if (result.data && result.data.signature) {
         setAuthStatus("3. Verificando firma en el servidor...");
 
@@ -73,7 +70,6 @@ export default function WorldLogin() {
           setAuthStatus(`Firma inválida: ${verifyData.error || "Error desconocido"}`);
         }
       } else {
-        // En caso de que World App bloquee la URL, veremos la respuesta exacta aquí
         setAuthStatus("Fallo la firma. Respuesta: " + JSON.stringify(result.data));
       }
     } catch (error: any) {
