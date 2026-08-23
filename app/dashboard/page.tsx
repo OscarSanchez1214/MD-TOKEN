@@ -14,13 +14,14 @@ export default function DashboardPage() {
 
   // 1. INICIO DE SESIÓN SILENCIOSO
   useEffect(() => {
-    const address = (MiniKit.user as any)?.walletAddress
+    // Busca si ya hay una billetera autorizada en la memoria de MiniKit
+    const address = (MiniKit.user as any)?.walletAddress || (MiniKit as any).walletAddress;
     if (address) {
       setWalletAddress(address)
     }
   }, [])
 
-  // 2. INICIO DE SESIÓN MANUAL (Con debug detallado)
+  // 2. INICIO DE SESIÓN MANUAL
   async function signInWithWallet() {
     if (!MiniKit.isInstalled()) {
       setErrorMsg('⚠️ MiniKit no detectado. Abre esta sección dentro de World App.')
@@ -42,7 +43,6 @@ export default function DashboardPage() {
 
       let result;
       
-      // Intentamos todas las formas posibles de invocar MiniKit para evitar fallos de versión
       if ((MiniKit as any).commandsAsync?.walletAuth) {
         result = await (MiniKit as any).commandsAsync.walletAuth(input);
       } else if ((MiniKit as any).commands?.walletAuth) {
@@ -50,20 +50,30 @@ export default function DashboardPage() {
       } else if ((MiniKit as any).walletAuth) {
         result = await (MiniKit as any).walletAuth(input);
       } else {
-        throw new Error("Tu versión de MiniKit no soporta walletAuth o no está inicializada.");
+        throw new Error("Tu versión de MiniKit no soporta walletAuth.");
       }
 
-      if (!result || result.executedWith === "fallback" || !result.data) {
-        setErrorMsg('❌ Autenticación cancelada o ejecutada en modo fallback.')
-        return
-      }
+      // LA SOLUCIÓN ESTÁ AQUÍ: Evaluamos estrictamente si fue exitoso
+      if (result && result.status === 'success') {
+        
+        // Extraemos la dirección de la memoria interna de MiniKit
+        const addr = (MiniKit.user as any)?.walletAddress || (MiniKit as any).walletAddress || result?.address;
+        
+        if (addr) {
+          setWalletAddress(addr);
+        } else {
+          // Si World App dio éxito pero tarda en guardar la info:
+          setErrorMsg('✅ Autorizado. Dale clic a "Volver" y entra de nuevo para ver tu saldo.');
+        }
 
-      setWalletAddress(result.data.address)
+      } else {
+        // Solo si el usuario realmente canceló o falló mostramos el error técnico
+        setErrorMsg(`❌ Conexión rechazada. Razón: ${result?.status || JSON.stringify(result)}`);
+      }
 
     } catch (error: any) {
       console.error(error)
-      // ESTO ES CLAVE: Nos mostrará el error técnico real en pantalla
-      setErrorMsg(`❌ Error real: ${error?.message || String(error)}`)
+      setErrorMsg(`❌ Error: ${error?.message || String(error)}`)
     } finally {
       setLoading(false)
     }
@@ -138,8 +148,8 @@ export default function DashboardPage() {
                 </button>
               </div>
 
-              {/* @ts-ignore */}
-              <TokenWallet userWalletAddress={walletAddress as `0x${string}`} />
+              {/* El componente TokenWallet hace su propia magia, no necesita props */}
+              <TokenWallet />
             </div>
           )}
 
