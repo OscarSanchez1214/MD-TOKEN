@@ -8,19 +8,22 @@ import recomendaciones from "@/data/recomendaciones.json";
 const RECEIVER_ADDRESS = "0x1bd597c5296b6a25f72ed557d5b85bff41186c28";
 
 export default function Home() {
+  const [isNavigating, setIsNavigating] = useState<boolean>(false);
+
   const hoy = new Date().toISOString().split("T")[0];
   const recomendacionDelDia = recomendaciones.find((r) => r.fecha === hoy);
 
   return (
     <main
-      className="min-h-screen flex flex-col items-center justify-between bg-gradient-to-b from-blue-50 to-white px-4 py-6 text-gray-800 relative"
+      className="min-h-screen flex flex-col items-center justify-between px-4 py-6 text-gray-800 relative bg-cover bg-center"
       style={{
         backgroundImage: "url('/fondo-md.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
       }}
     >
-      <div className="w-full flex flex-col items-center flex-1">
+      {/* Capa de brillo sutil para evitar oscurecidos no deseados */}
+      <div className="absolute inset-0 bg-white/30 backdrop-blur-[2px] pointer-events-none"></div>
+
+      <div className="w-full flex flex-col items-center flex-1 relative z-10">
         
         {/* Encabezado */}
         <div className="mt-4 mb-6 text-center">
@@ -30,16 +33,16 @@ export default function Home() {
               alt="Mundo Didáctico Logo"
               width={90}
               height={90}
-              className="mx-auto rounded-full shadow-md hover:scale-105 transition-transform"
+              className="mx-auto rounded-full shadow-md hover:scale-105 transition-transform bg-white/80 p-1"
               priority
             />
           </a>
-          <h1 className="mt-3 text-2xl font-bold text-[#003A70]">MUNDO DIDÁCTICO</h1>
-          <p className="text-gray-600 text-xs mt-0.5">Educación Emocional y Financiera</p>
+          <h1 className="mt-3 text-2xl font-bold text-[#003A70] drop-shadow-sm">MUNDO DIDÁCTICO</h1>
+          <p className="text-gray-700 text-xs font-medium mt-0.5">Educación Emocional y Financiera</p>
         </div>
 
         {/* Tarjeta Principal */}
-        <div className="w-full max-w-sm bg-white/95 rounded-3xl shadow-lg p-5 mb-6 text-center backdrop-blur-sm space-y-5">
+        <div className="w-full max-w-sm bg-white/95 rounded-3xl shadow-lg p-5 mb-6 text-center backdrop-blur-md space-y-5 border border-white/50">
           <div className="space-y-5">
             
             {/* Recomendación del Día */}
@@ -79,19 +82,23 @@ export default function Home() {
 
             {/* Botón de Acceso directo al Dashboard */}
             <div className="pt-2">
-              <a
-                href="/dashboard"
-                className="w-full bg-black text-white py-3.5 rounded-2xl font-bold text-sm active:scale-[0.98] transition-all shadow-sm flex justify-center items-center gap-2 no-underline text-center block"
+              <button
+                onClick={() => {
+                  setIsNavigating(true);
+                  window.location.href = "/dashboard";
+                }}
+                disabled={isNavigating}
+                className="w-full bg-black text-white py-3.5 rounded-2xl font-bold text-sm active:scale-[0.98] transition-all shadow-sm flex justify-center items-center gap-2 cursor-pointer"
               >
-                IR A DASHBOARD
-              </a>
+                {isNavigating ? 'Cargando...' : 'IR A DASHBOARD'}
+              </button>
             </div>
 
           </div>
         </div>
       </div>
 
-      <footer className="text-center text-gray-400 text-[10px] pb-2">
+      <footer className="text-center text-gray-700 font-medium text-[10px] pb-2 relative z-10">
         Ediciones Mundo Didáctico 2026
       </footer>
     </main>
