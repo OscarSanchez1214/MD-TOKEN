@@ -30,7 +30,6 @@ export default function DashboardPage() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       }
 
-      // Llamada corregida compatible con MiniKit v3
       const result = await (MiniKit as any).walletAuth(input)
 
       if (!result || result.executedWith === "fallback" || !result.data) {
@@ -117,6 +116,7 @@ export default function DashboardPage() {
                 </button>
               </div>
 
+              {/* @ts-ignore */}
               <TokenWallet userWalletAddress={walletAddress as `0x${string}`} />
             </div>
           )}
