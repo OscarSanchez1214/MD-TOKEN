@@ -30,14 +30,15 @@ export default function WorldLogin() {
       const input = {
         nonce,
         statement: "Firma para confirmar la propiedad de la billetera y autenticarte en MUNDO DIDACTICO.",
-        // CORRECCIÓN: expirationTime debe ser un string ISO, no un objeto Date
-        expirationTime: new Date(Date.now() + 1000 * 60 * 60).toISOString(),
+        // Se envía como Date puro, el SDK se encarga de procesarlo internamente
+        expirationTime: new Date(Date.now() + 1000 * 60 * 60), 
       };
 
+      // Invocación protegida para pasar el chequeo de Vercel y ejecutar el comando correctamente
       const result: any = await (MiniKit.commands as any).walletAuth(input);
 
       if (!result || result.executedWith === "fallback") {
-        setAuthStatus("Autenticación cancelada o no soportada.");
+        setAuthStatus("Autenticación cancelada o no soportada por el dispositivo.");
         setLoading(false);
         return;
       }
@@ -67,7 +68,7 @@ export default function WorldLogin() {
           setAuthStatus(`Error del servidor: ${verifyData.error || "Firma inválida"}`);
         }
       } else {
-        setAuthStatus("El usuario rechazó la firma o no se completó.");
+        setAuthStatus("El usuario rechazó la firma o la operación no se completó.");
       }
     } catch (error: any) {
       console.error("Error detallado en autenticación:", error);
@@ -101,7 +102,7 @@ export default function WorldLogin() {
         </div>
       ) : (
         <div className="w-full space-y-4">
-          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs py-2 px-3 rounded-lg text-center font-medium">
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs py-2 px-3 rounded-lg text-center font-medium shadow-sm">
             ✓ Sesión iniciada: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
           </div>
           <TokenWallet />
