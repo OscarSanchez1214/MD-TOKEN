@@ -21,9 +21,6 @@ export default function Home() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      // Nota: Ya NO usamos MiniKit.install() aquí porque minikit-provider.tsx se encarga de eso.
-
-      // Verificamos si ya hay una billetera guardada en la sesión del usuario
       const existingAddress = (MiniKit.user as any)?.walletAddress || (MiniKit as any).walletAddress;
       if (existingAddress) {
         setWalletAddress(existingAddress);
@@ -42,31 +39,37 @@ export default function Home() {
     setIsAuthenticating(true);
 
     try {
-      // 1. Generar el nonce (como exige la documentación: alfanumérico y > 8 caracteres)
+      // Generar el nonce exigido por la documentación (alfanumérico y > 8 caracteres)
       const nonce = crypto.randomUUID().replace(/-/g, "");
 
-      const input = {
+      const authOptions = {
         nonce,
         statement: "Inicia sesión para acceder a tu billetera de Mundo Didáctico.",
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // 2. Llamada unificada recomendada por la documentación oficial
-      const result = await MiniKit.walletAuth(input);
+      const minikitAny = MiniKit as any;
+      let result: any = null;
 
-      // 3. Manejar el resultado según la documentación
-      if (result.executedWith === "fallback") {
-        setErrorMsg("Autenticación fallida o cancelada.");
-        setIsAuthenticating(false);
-        return;
+      // Llamada segura compatible con la estructura de comandos del SDK instalado
+      if (minikitAny.commands && typeof minikitAny.commands.walletAuth === "function") {
+        result = await minikitAny.commands.walletAuth(authOptions);
+      } else if (typeof minikitAny.walletAuth === "function") {
+        result = await minikitAny.walletAuth(authOptions);
+      } else {
+        throw new Error("El método walletAuth no está disponible en esta versión de MiniKit.");
       }
 
-      // 4. Si es exitoso, extraemos la dirección y enviamos al dashboard
-      if (result.data && result.data.address) {
-        setWalletAddress(result.data.address);
-        router.push("/dashboard");
+      if (result && result.executedWith !== "fallback" && result.data) {
+        const address = result.data.address || minikitAny.user?.walletAddress;
+        if (address) {
+          setWalletAddress(address);
+          router.push("/dashboard");
+        } else {
+          setErrorMsg("No se recibió la dirección de la billetera.");
+        }
       } else {
-        setErrorMsg("No se recibió la dirección de la billetera.");
+        setErrorMsg("Autenticación cancelada o fuera de World App.");
       }
     } catch (error: any) {
       console.error("Error técnico al iniciar sesión:", error);
