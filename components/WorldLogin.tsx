@@ -30,10 +30,10 @@ export default function WorldLogin() {
       const input = {
         nonce,
         statement: "Firma para confirmar la propiedad de la billetera y autenticarte en MUNDO DIDACTICO.",
-        expirationTime: new Date(Date.now() + 1000 * 60 * 60),
+        // CORRECCIÓN: expirationTime debe ser un string ISO, no un objeto Date
+        expirationTime: new Date(Date.now() + 1000 * 60 * 60).toISOString(),
       };
 
-      // CORRECCIÓN: Llamamos al comando a través de MiniKit.commands
       const result: any = await (MiniKit.commands as any).walletAuth(input);
 
       if (!result || result.executedWith === "fallback") {
