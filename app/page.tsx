@@ -64,8 +64,8 @@ export default function Home() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // 2. Llamada directa limpia que sabemos que funciona en tu entorno
-      const result = await MiniKit.walletAuth(authOptions);
+      // 2. Llamada directa casteada a any para pasar la validación de TypeScript
+      const result = await (MiniKit as any).walletAuth(authOptions);
 
       // 3. Validación de respuesta
       if (!result || result.executedWith === "fallback" || !result.data) {
