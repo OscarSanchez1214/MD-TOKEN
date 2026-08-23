@@ -35,7 +35,6 @@ export default function Home() {
     }
   }, []);
 
-  // Función corregida y segura para iniciar sesión con MiniKit
   const handleSignIn = async () => {
     if (!MiniKit.isInstalled()) {
       setErrorMsg("⚠️ Debes abrir esta app dentro de World App.");
@@ -46,7 +45,6 @@ export default function Home() {
     setErrorMsg("");
 
     try {
-      // 1. Generar un nonce seguro alfanumérico por defecto (mínimo 8 caracteres)
       let nonce = crypto.randomUUID().replace(/-/g, "").substring(0, 10);
       
       try {
@@ -65,10 +63,9 @@ export default function Home() {
         expirationTime: new Date(Date.now() + 1000 * 60 * 60),
       };
 
-      // 2. Llamada directa al método nativo de MiniKit
-      const result = await MiniKit.walletAuth(authOptions);
+      // Casteo seguro para evitar errores de compilación en TypeScript / Vercel
+      const result = await (MiniKit as any).walletAuth(authOptions);
 
-      // 3. Manejo de respuesta basado en el estándar actual de MiniKit ({ executedWith, data })
       if (result && result.executedWith !== "fallback" && result.data) {
         const address = result.data.address || (MiniKit.user as any)?.walletAddress;
         if (address) {
